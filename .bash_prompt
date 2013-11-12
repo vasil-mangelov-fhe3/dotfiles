@@ -53,6 +53,7 @@ _update_prompt () {
     fi
     if [ -n "$svn_branch" ] ; then
 	$svn_branch=`__svn_stat`
+	echo $svn_branch
     fi
 
     export PS1="$_prompt$git_branch$svn_branch $path ";
