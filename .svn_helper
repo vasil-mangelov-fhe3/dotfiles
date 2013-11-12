@@ -74,7 +74,7 @@ __svn_clean ()
 	    pwd | egrep -q $SVNP_HUGE_REPO_EXCLUDE_PATH && HUGE_REPO=" -N "
 	fi
 	STATE=$(LANG='C' svn $HUGE_REPO status -q 2>/dev/null | grep "^[MA]" | wc -l)
-	if [ $STATE != 0 ]; then
+	if [ $STATE == 0 ]; then
 	    echo "0"
 	else
 	    echo "1"
