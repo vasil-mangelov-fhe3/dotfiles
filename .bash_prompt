@@ -64,7 +64,7 @@ git_promt () {
 	    git status --porcelain | perl -ne 'exit(1) if /^ /; exit(2) if /^[?]/'
 	    case "$?" in
 		"0" )  git_branch=" $Green$git_branch$Color_Off"; path="$Yellow$PathShort$Color_Off$";; 
-		"1" )  git_branch=" $Red$git_branch$Color_off"; path="$Yellow$PathShort$Color_Off$";; 
+		"1" )  git_branch=" $Red$git_branch$Color_Off"; path="$Yellow$PathShort$Color_Off$";; 
 		"2" )  git_branch=" $Yellow$git_branch$Color_Off"; path="$Yellow$PathShort$Color_Off$";;
 		"130" ) git_branch=" $White$git_branch$Color_Off"; path="$LightBlue$PathShort$Color_Off$"; _dumb_prompt=1 ;; 
 		esac
@@ -76,9 +76,9 @@ git_promt () {
 
 svn_promt () {
     case `__svn_clean` in
-	"0")▷⋅⋅⋅svn_branch=" $Green($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path="$Yellow$PathShort$Color_Off$";;
-	"1")▷⋅⋅⋅svn_branch=" $Yellow($(basename $(__svn_repo)):$(__svn_rev))Color_off"; path="$Yellow$PathShort$Color_Off$";;
-	"130")▷⋅svn_branch=" $White$git_branch$Color_Off"; path="$LightBlue$PathShort$Color_Off$"
+	"0")	svn_branch=" $Green($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path="$Yellow$PathShort$Color_Off$";;
+	"1")	svn_branch=" $Yellow($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path="$Yellow$PathShort$Color_Off$";;
+	"130")	svn_branch=""; path="$LightBlue$PathShort$Color_Off$"
     esac
 }
 
