@@ -47,11 +47,13 @@ _update_prompt () {
 
     ## Color git status if any
     git_branch=`__git_ps1 "(%s)"`
+    svn_branch=`__svn_rev`
     if [ -n "$git_branch" ] ; then
-        git_promt git_branch
+	git_promt git_branch
     fi
-
-    $svn_branch=__svn_stat
+    if [ -n "$git_branch" ] ; then
+	$svn_branch=$(echo " [`__svn_stat`] ")
+    fi
 
     export PS1="$_prompt$git_branch$svn_branch $path ";
 }

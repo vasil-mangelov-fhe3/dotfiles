@@ -60,6 +60,10 @@ __svn_last_changed ()
         LANG='C' svn info 2>/dev/null | awk '/Last Changed Rev:/ { print $4;}'
 }
 
+__svn_repo ()
+{
+    basename $(LANG='C' svn info 2>/dev/null | awk '/URL:/ {print $2; }')
+}
 
 __svn_clean ()
 {
@@ -70,9 +74,9 @@ __svn_clean ()
         fi
         STATE=$(LANG='C' svn $HUGE_REPO status -q 2>/dev/null | grep "^[MA]" | wc -l)
         if [ $STATE != 0 ]; then
-                echo "$2"
+                echo "0"
         else
-                echo "$1"
+                echo "1"
         fi
 }
 __svn_remote_clean ()
@@ -84,9 +88,9 @@ __svn_remote_clean ()
         fi
         STATE=$(LANG='C' svn $HUGE_REPO status -u -q 2>/dev/null | egrep  " *\*" | wc -l)
         if [ $STATE != 0 ]; then
-                echo "$2"
+                echo "0"
         else
-                echo "$1"
+                echo "1"
         fi
 }
 
@@ -98,6 +102,6 @@ __svn_stat ()
                         REMOTE_STATUS=$(__svn_remote_clean "" "*")
                 fi
                 LOCAL_STATUS=$(__svn_clean "" "*")
-                echo " ($REMOTE_STATUS$REV$LOCAL_STATUS]) "
+		echo " ($(__svn_repo):${REV}) "
         fi
 }
