@@ -43,24 +43,73 @@ _update_prompt () {
     _prompt="$LightGrey$Time24h$Color_Off $u@$Green$sHostname$Color_Off";
 
     ## Color git status if any
-    branch=`__git_ps1 "(%s)"`
-    if [ -n "$branch" ] ; then
+    git_branch=`__git_ps1 "(%s)"`
+    svn_url=`svn info | awk '/URL:/ {print $2}'`
+    if [ -n "$git_branch" ] ; then
+        git_promt git_branch
+    fi
+    if [ -n "$svn_url" ]; then
+        svn_prompt
+    fi
+    export PS1="$_prompt$git_branch$svn_branch $path ";
+}
+
+git_promt () {
+    git_branch=${1}
+    if [ -n "$git_branch" ] ; then
         if [ -z "$_dumb_prompt" ]; then
             ## Assumes that untracked files are always listed after modified ones
             ## True for all git versions I could find
             git status --porcelain | perl -ne 'exit(1) if /^ /; exit(2) if /^[?]/'
             case "$?" in
-                "0" )  branch=" $Green$branch$Color_Off"; path="$Yellow$PathShort$Color_Off$";; 
-                "1" )  branch=" $Red$branch$Color_off"; path="$Yellow$PathShort$Color_Off$";; 
-                "2" )  branch=" $Yellow$branch$Color_Off"; path="$Yellow$PathShort$Color_Off$";;
-                "130" ) branch=" $White$branch$Color_Off"; path="$LightBlue$PathShort$Color_Off$"; _dumb_prompt=1 ;; 
+                "0" )  git_branch=" $Green$git_branch$Color_Off"; path="$Yellow$PathShort$Color_Off$";; 
+                "1" )  git_branch=" $Red$git_branch$Color_off"; path="$Yellow$PathShort$Color_Off$";; 
+                "2" )  git_branch=" $Yellow$git_branch$Color_Off"; path="$Yellow$PathShort$Color_Off$";;
+                "130" ) git_branch=" $White$git_branch$Color_Off"; path="$LightBlue$PathShort$Color_Off$"; _dumb_prompt=1 ;; 
             esac
         else
-            branch=" $White$branch$Color_Off"; path="$LightBlue$PathShort$Color_Off$"
+            branch=" $White$git_branch$Color_Off"; path="$LightBlue$PathShort$Color_Off$"
         fi
     fi
+}
 
-    export PS1="$_prompt$branch $path ";
+svn_prompt () {
+    svn_status=`svn status`
+    if [ -z "$svn_status" ] && [ "$?" == "0"]; then
+        svn_branch=" $Green$(__svn_branch)$Color_Off"; path="$Yellow$PathShort$Color_Off$"
+    elif [ ! -z "$svn_status" ] && [ "$?" == "0"]; then
+        svn_branch=" $Yellow$(__svn_branch)$Color_off"; path="$Yellow$PathShort$Color_Off$"
+    elif [ "$?" == "0"]; then
+        svn_branch=" $Red$(__svn_branch)$Color_off"; path="$Yellow$PathShort$Color_Off$"
+    fi
+}
+
+# Outputs the current trunk, branch, or tag
+__svn_branch() {
+    local url=
+    if [[ -d .svn ]]; then
+        url=`svn info | awk '/URL:/ {print $2}'`
+        if [[ $url =~ trunk ]]; then
+            echo trunk
+        elif [[ $url =~ /branches/ ]]; then
+            echo $url | sed -e 's#^.*/\(branches/.*\)/.*$#\1#'
+        elif [[ $url =~ /tags/ ]]; then
+            echo $url | sed -e 's#^.*/\(tags/.*\)/.*$#\1#'
+        fi
+    fi
+}
+
+# Outputs the current revision
+__svn_rev() {
+    local r=$(svn info | awk '/Revision:/ {print $2}')
+
+    if [ ! -z $SVN_SHOWDIRTYSTATE ]; then
+        local svnst flag
+        svnst=$(svn status | grep '^\s*[?ACDMR?!]')
+        [ -z "$svnst" ] && flag=*
+        r=$r$flag
+    fi
+    echo $r
 }
 
 dumb_prompt () {
