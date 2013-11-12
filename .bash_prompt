@@ -75,7 +75,7 @@ git_promt () {
     fi
 }
 
-svn_prompt () {
+svn_promt () {
     if [ `__svn_clean` ]; then
 	svn_branch=" $Green$(__svn_repo)\:$(__svn_branch)$Color_Off"; path="$Yellow$PathShort$Color_Off$"
     else
