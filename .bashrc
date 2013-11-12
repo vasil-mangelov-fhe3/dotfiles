@@ -2,11 +2,11 @@
 [ -z "$PS1" ] && return
 
 #check if ghar is installed
-if [ -d $HOME/ghar ]; then
-    export PATH=$PATH:$HOME/ghar/bin/
-    . $HOME/ghar/ghar-bash-completion.sh
+if [ -d $HOME/.ghar ]; then
+    export PATH=$PATH:$HOME/.ghar/bin/
+    . $HOME/.ghar/ghar-bash-completion.sh
 else
-    echo "Please install ghar (https://github.com/philips/ghar.git)"
+    echo "Please install ghar for full functionality (https://github.com/philips/ghar.git)"
 fi
 
 #osx color terminal
