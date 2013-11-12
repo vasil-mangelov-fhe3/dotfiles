@@ -72,6 +72,51 @@ git_promt () {
         fi
     fi
 }
+# Returns (svn:<revision>:<branch|tag>[*]) if applicable
+svn_prompt() {
+    if [ -d ".svn" ]; then
+        local branch dirty rev info=$(svn info 2>/dev/null)
+
+        branch=$(svn_parse_branch "$info")
+
+        # Uncomment if you want to display the current revision.
+        rev=$(echo "$info" | awk '/^Revision: [0-9]+/{print $2}')
+
+        # Uncomment if you want to display whether the repo is 'dirty.' In some
+        # cases (on large repos) this may take a few seconds, which can
+        # noticeably delay your prompt after a command executes.
+        [ "$(svn status)" ] && dirty='1'
+
+        if [ "$branch" != "" ] ; then
+            if [ ! $dirty ]; then
+                svn_branch=" $Green (${branch}:${rev}) $Color_Off"; path="$Yellow$PathShort$Color_Off$"
+            else
+                svn_branch=" $Yellow (${branch}:${rev}) $Color_Off"; path="$Yellow$PathShort$Color_Off$"
+            fi
+        fi
+    fi
+}
+
+# Returns the current branch or tag name from the given `svn info` output
+svn_parse_branch() {
+    local chunk url=$(echo "$1" | awk '/^URL: .*/{print $2}')
+
+    echo $url | grep -q "/trunk\b"
+    if [ $? -eq 0 ] ; then
+        echo trunk
+        return
+    else
+        chunk=$(echo $url | grep -o "/releases.*")
+        if [ "$chunk" == "" ] ; then
+            chunk=$(echo $url | grep -o "/branches.*")
+            if [ "$chunk" == "" ] ; then
+                chunk=$(echo $url | grep -o "/tags.*")
+            fi
+        fi
+    fi
+
+    echo $chunk | awk -F/ '{print $3}'
+}
 
 svn_prompt () {
     svn_status=`svn status`
@@ -82,34 +127,6 @@ svn_prompt () {
     elif [ "$?" == "0"]; then
         svn_branch=" $Red$(__svn_branch)$Color_off"; path="$Yellow$PathShort$Color_Off$"
     fi
-}
-
-# Outputs the current trunk, branch, or tag
-__svn_branch() {
-    local url=
-    if [[ -d .svn ]]; then
-        url=`svn info | awk '/URL:/ {print $2}'`
-        if [[ $url =~ trunk ]]; then
-            echo trunk
-        elif [[ $url =~ /branches/ ]]; then
-            echo $url | sed -e 's#^.*/\(branches/.*\)/.*$#\1#'
-        elif [[ $url =~ /tags/ ]]; then
-            echo $url | sed -e 's#^.*/\(tags/.*\)/.*$#\1#'
-        fi
-    fi
-}
-
-# Outputs the current revision
-__svn_rev() {
-    local r=$(svn info | awk '/Revision:/ {print $2}')
-
-    if [ ! -z $SVN_SHOWDIRTYSTATE ]; then
-        local svnst flag
-        svnst=$(svn status | grep '^\s*[?ACDMR?!]')
-        [ -z "$svnst" ] && flag=*
-        r=$r$flag
-    fi
-    echo $r
 }
 
 dumb_prompt () {
