@@ -45,12 +45,12 @@ SVNP_HUGE_REPO_EXCLUDE_PATH=""
 . ~/.svn_helper
 
 ## Color git status if any
-git_test=`__git_ps1 "(%s)"`
-svn_test=`__svn_rev`
-if [ -n "$git_test" ] ; then
-    git_promt $git_test
+git_branch=`__git_ps1 "(%s)"`
+svn_branch=`__svn_rev`
+if [ -n "$git_branch" ] ; then
+    git_promt $git_branch
 fi
-if [ -n "$svn_test" ] ; then
+if [ -n "$svn_branch" ] ; then
     svn_promt
 fi
 
