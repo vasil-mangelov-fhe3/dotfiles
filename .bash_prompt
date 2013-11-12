@@ -43,7 +43,7 @@ _update_prompt () {
     _prompt="$LightGrey$Time24h$Color_Off $u@$Green$sHostname$Color_Off";
     
     SVNP_HUGE_REPO_EXCLUDE_PATH="nufw-svn$|/tags$|/branches$"
-    . .svn-helper
+    . .svn_helper
 
     ## Color git status if any
     git_branch=`__git_ps1 "(%s)"`
