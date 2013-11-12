@@ -22,7 +22,6 @@ LightPurple="\[\033[01;35m\]"
 LightGrey="\[\033[00;37m\]"
 White="\[\033[01;37m\]"
 
-s variables you might want for your PS1 prompt instead
 Time12h="\T"
 Time24h="\t"
 Time12a="\@"
