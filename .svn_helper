@@ -72,7 +72,7 @@ __svn_clean ()
     else
 	pwd | egrep -q $SVNP_HUGE_REPO_EXCLUDE_PATH && HUGE_REPO=" -N "
     fi
-    STATE=$(LANG='C' svn $HUGE_REPO status -q 2>/dev/null | grep "^[MA]" | wc -l)
+    STATE=$(LANG='C' svn $HUGE_REPO status 2>/dev/null | grep "^[MA]" | wc -l)
     if [ $STATE == 0 ]; then
 	echo "0"
     else
@@ -86,7 +86,7 @@ __svn_remote_clean ()
     else
 	pwd | egrep -q $SVNP_HUGE_REPO_EXCLUDE_PATH && HUGE_REPO=" -N "
     fi
-    STATE=$(LANG='C' svn $HUGE_REPO status -u -q 2>/dev/null | egrep  " *\*" | wc -l)
+    STATE=$(LANG='C' svn $HUGE_REPO status -u 2>/dev/null | egrep  " *\*" | wc -l)
     if [ $STATE != 0 ]; then
 	echo "0"
     else

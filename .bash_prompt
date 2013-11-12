@@ -77,7 +77,7 @@ git_promt () {
 svn_promt () {
     case `__svn_clean` in
 	"0")	svn_branch=" $Green($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path=" $Yellow$PathShort$Color_Off$";;
-	"1")	svn_branch=" $Yellow($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path=" $Yellow$PathShort$Color_Off$";;
+	"1")	svn_branch=" $Red($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path=" $Yellow$PathShort$Color_Off$";;
     esac
 }
 
