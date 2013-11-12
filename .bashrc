@@ -115,8 +115,8 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 # Prompt
-if [ -f ~/.bash_prompt ]; then
-    . ~/.bash_prompt
+if [ -f ~/.bash_promt ]; then
+    . ~/.bash_promt
 fi
 
 
