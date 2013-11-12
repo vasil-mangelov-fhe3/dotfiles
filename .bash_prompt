@@ -78,7 +78,7 @@ svn_promt () {
     if [ `__svn_clean` ]; then
 	svn_branch=" $Green$(__svn_repo):$(__svn_rev)$Color_Off"; path="$Yellow$PathShort$Color_Off$"
     else
-	svn_branch=" $Yellow$(__svn_repo):$(__svn_rev)Color_off"; path="$Yellow$PathShort$Color_Off$"
+	svn_branch=" $Yellow($(__svn_repo):$(__svn_rev))Color_off"; path="$Yellow$PathShort$Color_Off$"
     fi
 }
 
