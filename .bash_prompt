@@ -41,19 +41,18 @@ _update_prompt () {
 
     ## Initial prompt
     _prompt="$LightGrey$Time24h$Color_Off $u@$Green$sHostname$Color_Off";
-    
+
     SVNP_HUGE_REPO_EXCLUDE_PATH="nufw-svn$|/tags$|/branches$"
-    . .svn_helper
+    . ~/.svn_helper
 
     ## Color git status if any
     git_branch=`__git_ps1 "(%s)"`
-    svn_url=`svn info | awk '/URL:/ {print $2}'`
     if [ -n "$git_branch" ] ; then
         git_promt git_branch
     fi
-    if [ -n "$svn_url" ]; then
-        $svn_branch=__svn_stat
-    fi
+
+    $svn_branch=__svn_stat
+
     export PS1="$_prompt$git_branch$svn_branch $path ";
 }
 
