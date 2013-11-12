@@ -41,6 +41,9 @@ _update_prompt () {
 
     ## Initial prompt
     _prompt="$LightGrey$Time24h$Color_Off $u@$Green$sHostname$Color_Off";
+    
+    SVNP_HUGE_REPO_EXCLUDE_PATH="nufw-svn$|/tags$|/branches$"
+    . .subversion-prompt
 
     ## Color git status if any
     git_branch=`__git_ps1 "(%s)"`
@@ -49,7 +52,7 @@ _update_prompt () {
         git_promt git_branch
     fi
     if [ -n "$svn_url" ]; then
-        svn_prompt
+        $svn_branch=__svn_stat
     fi
     export PS1="$_prompt$git_branch$svn_branch $path ";
 }
@@ -69,30 +72,6 @@ git_promt () {
             esac
         else
             branch=" $White$git_branch$Color_Off"; path="$LightBlue$PathShort$Color_Off$"
-        fi
-    fi
-}
-# Returns (svn:<revision>:<branch|tag>[*]) if applicable
-svn_prompt() {
-    if [ -d ".svn" ]; then
-        local branch dirty rev info=$(svn info 2>/dev/null)
-
-        branch=$(svn_parse_branch "$info")
-
-        # Uncomment if you want to display the current revision.
-        rev=$(echo "$info" | awk '/^Revision: [0-9]+/{print $2}')
-
-        # Uncomment if you want to display whether the repo is 'dirty.' In some
-        # cases (on large repos) this may take a few seconds, which can
-        # noticeably delay your prompt after a command executes.
-        [ "$(svn status)" ] && dirty='1'
-
-        if [ "$branch" != "" ] ; then
-            if [ ! $dirty ]; then
-                svn_branch=" $Green (${branch}:${rev}) $Color_Off"; path="$Yellow$PathShort$Color_Off$"
-            else
-                svn_branch=" $Yellow (${branch}:${rev}) $Color_Off"; path="$Yellow$PathShort$Color_Off$"
-            fi
         fi
     fi
 }
