@@ -51,7 +51,7 @@ _update_prompt () {
     if [ -n "$git_branch" ] ; then
 	git_promt git_branch
     fi
-    if [ -n "$git_branch" ] ; then
+    if [ -n "$svn_branch" ] ; then
 	$svn_branch=`__svn_stat`
     fi
 
