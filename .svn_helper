@@ -67,7 +67,7 @@ __svn_repo ()
 
 __svn_clean ()
 {
-    if [ -n __svn_rev ]
+    if [ -n __svn_rev ]; then
 	if [ $SVNP_HAVE_HUGE_REPO ]; then
 	    HUGE_REPO=" -N ";
 	else
