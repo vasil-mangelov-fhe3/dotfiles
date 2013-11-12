@@ -62,7 +62,7 @@ __svn_last_changed ()
 
 __svn_repo ()
 {
-    LANG='C' svn info 2>/dev/null | awk '/URL:/ {print $2; }'
+    LANG='C' svn info 2>/dev/null | awk '/Repository Root:/ {print $2; }'
 }
 
 __svn_clean ()
