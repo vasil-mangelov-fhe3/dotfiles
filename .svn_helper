@@ -97,11 +97,12 @@ __svn_remote_clean ()
 __svn_stat ()
 {
         REV=$(__svn_rev)
+	REPO=$(__svn_repo)
         if [ $REV ]; then
                 if [ $SVNP_CHECK_DISTANT_REPO ]; then
-                        REMOTE_STATUS=$(__svn_remote_clean "" "*")
+                        REMOTE_STATUS=$(__svn_remote_clean)
                 fi
-                LOCAL_STATUS=$(__svn_clean "" "*")
-		echo " ($(__svn_repo):${REV}) "
+                LOCAL_STATUS=$(__svn_clean)
+		echo " (${REPO}:${REV}) "
         fi
 }
