@@ -1,112 +1,85 @@
 _update_prompt () {
-    ## Save $? early, we'll need it later
+## Save $? early, we'll need it later
     local exit="$?"  
 
-    ## define some colors
-    Color_Off="\[\033[0m\]"       # Text Reset
+## define some colors
+Color_Off="\[\033[0m\]"       # Text Reset
 
-    Black="\[\033[00;30m\]"
-    DarkGrey="\[\033[01;30m\]"
-    Red="\[\033[00;31m\]"
-    LightRed="\[\033[01;31m\]"
-    Green="\[\033[00;32m\]"
-    LightGreen="\[\033[01;32m\]"
-    Brown="\[\033[00;33m\]"
-    Yellow="\[\033[01;33m\]"
-    Blue="\[\033[00;34m\]"
-    LightBlue="\[\033[01;34m\]"
-    Cyan="\[\033[00;36m\]"
-    LightCyan="\[\033[01;36m\]"
-    Purple="\[\033[00;35m\]"
-    LightPurple="\[\033[01;35m\]"
-    LightGrey="\[\033[00;37m\]"
-    White="\[\033[01;37m\]"
+Black="\[\033[00;30m\]"
+DarkGrey="\[\033[01;30m\]"
+Red="\[\033[00;31m\]"
+LightRed="\[\033[01;31m\]"
+Green="\[\033[00;32m\]"
+LightGreen="\[\033[01;32m\]"
+Brown="\[\033[00;33m\]"
+Yellow="\[\033[01;33m\]"
+Blue="\[\033[00;34m\]"
+LightBlue="\[\033[01;34m\]"
+Cyan="\[\033[00;36m\]"
+LightCyan="\[\033[01;36m\]"
+Purple="\[\033[00;35m\]"
+LightPurple="\[\033[01;35m\]"
+LightGrey="\[\033[00;37m\]"
+White="\[\033[01;37m\]"
 
-    # Various variables you might want for your PS1 prompt instead
-    Time12h="\T"
-    Time24h="\t"
-    Time12a="\@"
-    PathShort="\w"
-    PathFull="\W"
-    NewLine="\n"
-    Jobs="\j"
-    sHostname=`hostname`
-    path="$LightBlue$PathShort$Color_Off$"
+s variables you might want for your PS1 prompt instead
+Time12h="\T"
+Time24h="\t"
+Time12a="\@"
+PathShort="\w"
+PathFull="\W"
+NewLine="\n"
+Jobs="\j"
+sHostname=`hostname`
+path="$LightBlue$PathShort$Color_Off$"
 
-    if [ "$UID" = "0" ]; then
-        u="$Red\u$ColorOff";
-    else
-        u="$Green\u$ColorOff";
-    fi
+if [ "$UID" = "0" ]; then
+    u="$Red\u$ColorOff";
+else
+    u="$Green\u$ColorOff";
+fi
 
-    ## Initial prompt
-    _prompt="$LightGrey$Time24h$Color_Off $u@$Green$sHostname$Color_Off";
+## Initial prompt
+_prompt="$LightGrey$Time24h$Color_Off $u@$Green$sHostname$Color_Off";
 
-    SVNP_HUGE_REPO_EXCLUDE_PATH=""
-    . ~/.svn_helper
+SVNP_HUGE_REPO_EXCLUDE_PATH=""
+. ~/.svn_helper
 
-    ## Color git status if any
-    git_branch=`__git_ps1 "(%s)"`
-    svn_branch=`__svn_rev`
-    if [ -n "$git_branch" ] ; then
-	git_promt git_branch
-    fi
-    if [ -n "$svn_branch" ] ; then
-	$svn_branch=`__svn_stat`
-	echo $svn_branch
-    fi
+## Color git status if any
+git_test=`__git_ps1 "(%s)"`
+svn_test=`__svn_rev`
+if [ -n "$git_branch" ] ; then
+    git_promt $git_test
+fi
+if [ -n "$svn_test" ] ; then
+    svn_promt
+fi
 
-    export PS1="$_prompt$git_branch$svn_branch $path ";
+export PS1="$_prompt$git_branch$svn_branch $path ";
 }
 
 git_promt () {
     git_branch=${1}
     if [ -n "$git_branch" ] ; then
-        if [ -z "$_dumb_prompt" ]; then
-            ## Assumes that untracked files are always listed after modified ones
-            ## True for all git versions I could find
-            git status --porcelain | perl -ne 'exit(1) if /^ /; exit(2) if /^[?]/'
-            case "$?" in
-                "0" )  git_branch=" $Green$git_branch$Color_Off"; path="$Yellow$PathShort$Color_Off$";; 
-                "1" )  git_branch=" $Red$git_branch$Color_off"; path="$Yellow$PathShort$Color_Off$";; 
-                "2" )  git_branch=" $Yellow$git_branch$Color_Off"; path="$Yellow$PathShort$Color_Off$";;
-                "130" ) git_branch=" $White$git_branch$Color_Off"; path="$LightBlue$PathShort$Color_Off$"; _dumb_prompt=1 ;; 
-            esac
-        else
-            branch=" $White$git_branch$Color_Off"; path="$LightBlue$PathShort$Color_Off$"
-        fi
+	if [ -z "$_dumb_prompt" ]; then
+	    git status --porcelain | perl -ne 'exit(1) if /^ /; exit(2) if /^[?]/'
+	    case "$?" in
+		"0" )  git_branch=" $Green$git_branch$Color_Off"; path="$Yellow$PathShort$Color_Off$";; 
+		"1" )  git_branch=" $Red$git_branch$Color_off"; path="$Yellow$PathShort$Color_Off$";; 
+		"2" )  git_branch=" $Yellow$git_branch$Color_Off"; path="$Yellow$PathShort$Color_Off$";;
+		"130" ) git_branch=" $White$git_branch$Color_Off"; path="$LightBlue$PathShort$Color_Off$"; _dumb_prompt=1 ;; 
+		esac
+	else
+	    branch=" $White$git_branch$Color_Off"; path="$LightBlue$PathShort$Color_Off$"
+	fi
     fi
-}
-
-# Returns the current branch or tag name from the given `svn info` output
-svn_parse_branch() {
-    local chunk url=$(echo "$1" | awk '/^URL: .*/{print $2}')
-
-    echo $url | grep -q "/trunk\b"
-    if [ $? -eq 0 ] ; then
-        echo trunk
-        return
-    else
-        chunk=$(echo $url | grep -o "/releases.*")
-        if [ "$chunk" == "" ] ; then
-            chunk=$(echo $url | grep -o "/branches.*")
-            if [ "$chunk" == "" ] ; then
-                chunk=$(echo $url | grep -o "/tags.*")
-            fi
-        fi
-    fi
-
-    echo $chunk | awk -F/ '{print $3}'
 }
 
 svn_prompt () {
-    svn_status=`svn status`
-    if [ -z "$svn_status" ] && [ "$?" == "0"]; then
-        svn_branch=" $Green$(__svn_branch)$Color_Off"; path="$Yellow$PathShort$Color_Off$"
-    elif [ ! -z "$svn_status" ] && [ "$?" == "0"]; then
-        svn_branch=" $Yellow$(__svn_branch)$Color_off"; path="$Yellow$PathShort$Color_Off$"
-    elif [ "$?" == "0"]; then
-        svn_branch=" $Red$(__svn_branch)$Color_off"; path="$Yellow$PathShort$Color_Off$"
+    if [ `__svn_clean` ]; then
+	svn_branch=" $Green$(__svn_repo)\:$(__svn_branch)$Color_Off"; path="$Yellow$PathShort$Color_Off$"
+    else
+	svn_branch=" $Yellow$(__svn_repo)\:$(__svn_branch)Color_off"; path="$Yellow$PathShort$Color_Off$"
     fi
 }
 
