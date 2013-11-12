@@ -1,9 +1,9 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-if [ -d $HOME/ghar ]; then
-    export PATH=$PATH:$HOME/ghar/bin/
-    . $HOME/ghar/ghar-bash-completion.sh
+if [ -d $HOME/.ghar ]; then
+    export PATH=$PATH:$HOME/.ghar/bin/
+    . $HOME/.ghar/ghar-bash-completion.sh
 else 
     echo "Please install ghar (https://repo.nrecom.net/nre-com-net/ghar)"
 fi
