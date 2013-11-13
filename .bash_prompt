@@ -1,4 +1,4 @@
-_update_prompt () {
+_update_sh_prompt () {
 ## Save $? early, we'll need it later
 local exit="$?"  
 
@@ -48,16 +48,16 @@ SVNP_HUGE_REPO_EXCLUDE_PATH=""
 git_branch=`__git_ps1 "(%s)"`
 svn_branch=`__svn_rev`
 if [ -n "$git_branch" ] ; then
-    git_promt $git_branch
+    git_prompt $git_branch
 fi
 if [ -n "$svn_branch" ] ; then
-    svn_promt
+    svn_prompt
 fi
 
 export PS1="$_prompt$git_branch$svn_branch$path ";
 }
 
-git_promt () {
+git_prompt () {
     git_branch=${1}
     if [ -n "$git_branch" ] ; then
 	if [ -z "$_dumb_prompt" ]; then
@@ -74,7 +74,7 @@ git_promt () {
     fi
 }
 
-svn_promt () {
+svn_prompt () {
     case `__svn_clean` in
 	"0")	svn_branch=" $Green($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";;
 	"1")	svn_branch=" $Red($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";;
@@ -89,15 +89,15 @@ smart_prompt () {
     unset _dumb_prompt
 }
 
-_update_ps1 () {
-    export PS1="$( $HOME/.powerline-shell.py $? 2> /dev/null)"
+_update_py_prompt () {
+    export PS1="$( $HOME/.powerline-shell.py --mode compatible $? 2> /dev/null)"
 }
 
 if [ -n "$PS1" ] ; then
     if [ -x $HOME/.powerline-shell.py ] && [ -x $(which python) ]; then
-	PROMPT_COMMAND='_update_ps1'
+	PROMPT_COMMAND='_update_py_prompt'
     else
-	PROMPT_COMMAND='_update_prompt'
+	PROMPT_COMMAND='_update_sh_prompt'
     fi
     export PROMPT_COMMAND
 fi

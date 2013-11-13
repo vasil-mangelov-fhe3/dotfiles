@@ -1,10 +1,12 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+export TERM=xterm-256color
+
 #check if ghar is installed
-if [ -d $HOME/.ghar ]; then
-    export PATH=$PATH:$HOME/.ghar/bin/
-    . $HOME/.ghar/ghar-bash-completion.sh
+if [ -d ~/.ghar ]; then
+    export PATH=$PATH:~/.ghar/bin/
+    . ~/.ghar/ghar-bash-completion.sh
 else
     echo "Please install ghar for full functionality (https://github.com/philips/ghar.git)"
 fi
@@ -115,8 +117,8 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 # Prompt
-if [ -f ~/.bash_promt ]; then
-    . ~/.bash_promt
+if [ -f ~/.bash_prompt ]; then
+    . ~/.bash_prompt
 fi
 
 
