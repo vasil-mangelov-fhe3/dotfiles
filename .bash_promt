@@ -1,6 +1,6 @@
 _update_prompt () {
 ## Save $? early, we'll need it later
-    local exit="$?"  
+local exit="$?"  
 
 ## define some colors
 Color_Off="\[\033[0m\]"       # Text Reset
@@ -89,7 +89,14 @@ smart_prompt () {
     unset _dumb_prompt
 }
 
+_update_ps1 () {
+    export PS1="$(~/powerline-shell.py $? 2> /dev/null)"
+}
+
 if [ -n "$PS1" ] ; then
-    PROMPT_COMMAND='_update_prompt'
-    export PROMPT_COMMAND
+    if [ -x .powerline-shell/powerline-shell.py ] && [ -x $(which python) ]; then
+	export PROMPT_COMMAND="_update_ps1"
+    else
+	export PROMPT_COMMAND='_update_prompt'
+    fi
 fi
