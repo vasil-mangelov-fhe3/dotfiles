@@ -39,7 +39,7 @@ else
 fi
 
 ## Initial prompt
-_prompt="$LightGrey$Time24h$Color_Off $u@$Green$sHostname$Color_Off";
+_prompt="$u@$Green$sHostname$Color_Off";
 
 SVNP_HUGE_REPO_EXCLUDE_PATH=""
 . ~/.svn_helper
