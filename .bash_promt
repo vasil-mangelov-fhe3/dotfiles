@@ -30,7 +30,7 @@ PathFull="\W"
 NewLine="\n"
 Jobs="\j"
 sHostname=`hostname`
-path=" $LightBlue$PathShort$Color_Off$"
+path=" $LightBlue$PathShort$Color_Off\$"
 
 if [ "$UID" = "0" ]; then
     u="$Red\u$ColorOff";
@@ -63,21 +63,21 @@ git_promt () {
 	if [ -z "$_dumb_prompt" ]; then
 	    git status --porcelain | perl -ne 'exit(1) if /^ /; exit(2) if /^[?]/'
 	    case "$?" in
-		"0" )  git_branch=" $Green$git_branch$Color_Off"; path=" $Yellow$PathShort$Color_Off$";; 
-		"1" )  git_branch=" $Red$git_branch$Color_Off"; path=" $Yellow$PathShort$Color_Off$";; 
-		"2" )  git_branch=" $Yellow$git_branch$Color_Off"; path=" $Yellow$PathShort$Color_Off$";;
-		"130" ) git_branch=" $White$git_branch$Color_Off"; path=" $LightBlue$PathShort$Color_Off$"; _dumb_prompt=1 ;; 
+		"0" )  git_branch=" $Green$git_branch$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";; 
+		"1" )  git_branch=" $Red$git_branch$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";; 
+		"2" )  git_branch=" $Yellow$git_branch$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";;
+		"130" ) git_branch=" $White$git_branch$Color_Off"; path=" $LightBlue$PathShort$Color_Off\$"; _dumb_prompt=1 ;; 
 		esac
 	else
-	    git_branch=" $White$git_branch$Color_Off"; path=" $LightBlue$PathShort$Color_Off$"
+	    git_branch=" $White$git_branch$Color_Off"; path=" $LightBlue$PathShort$Color_Off\$"
 	fi
     fi
 }
 
 svn_promt () {
     case `__svn_clean` in
-	"0")	svn_branch=" $Green($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path=" $Yellow$PathShort$Color_Off$";;
-	"1")	svn_branch=" $Red($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path=" $Yellow$PathShort$Color_Off$";;
+	"0")	svn_branch=" $Green($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";;
+	"1")	svn_branch=" $Red($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";;
     esac
 }
 
