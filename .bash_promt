@@ -29,7 +29,7 @@ PathShort="\w"
 PathFull="\W"
 NewLine="\n"
 Jobs="\j"
-sHostname=`hostname`
+sHostname="\h"
 path=" $LightBlue$PathShort$Color_Off\$"
 
 if [ "$UID" = "0" ]; then
