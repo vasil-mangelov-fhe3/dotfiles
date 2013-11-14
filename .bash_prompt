@@ -90,7 +90,7 @@ smart_prompt () {
 }
 
 _update_py_prompt () {
-    export PS1="$( $HOME/.powerline-shell.py --mode compatible $? 2> /dev/null)"
+    export PS1="$( $HOME/.powerline-shell.py $? 2> /dev/null)"
 }
 
 if [ -n "$PS1" ] ; then

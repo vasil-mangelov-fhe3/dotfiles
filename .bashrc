@@ -1,8 +1,6 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-export TERM=xterm-256color
-
 #check if ghar is installed
 if [ -d ~/.ghar ]; then
     export PATH=$PATH:~/.ghar/bin/
