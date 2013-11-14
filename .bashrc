@@ -1,6 +1,8 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+export LANG="en-US.UTF-8"
+
 #check if ghar is installed
 if [ -d ~/.ghar ]; then
     export PATH=$PATH:~/.ghar/bin/
