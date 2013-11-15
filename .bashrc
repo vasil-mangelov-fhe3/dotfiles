@@ -1,3 +1,12 @@
+################################################
+#
+#
+#   For Entries that you want only local or
+#   per user use ~/.bashrc_local
+#
+#
+################################################
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -116,6 +125,11 @@ fi
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
+fi
+
+# For local definitions.
+if [ -f ~/.bashrc_local ]; then
+    . ~/.bashrc_local
 fi
 
 # Prompt
