@@ -103,18 +103,19 @@ esac
 
 # dircolors... make sure that we have a color terminal, dircolors exists, and ls supports it.
 if $TERM_IS_COLOR && ( dircolors --help && ls --color ) &> /dev/null; then
-  # For some reason, the unixs machines need me to use $HOME instead of ~
-  # List files from highest priority to lowest.  As soon as the loop finds one that works, it will exit.
-  for POSSIBLE_DIR_COLORS in "$HOME/.dir_colors" "/etc/DIR_COLORS"; do
-    [[ -f "$POSSIBLE_DIR_COLORS" ]] && [[ -r "$POSSIBLE_DIR_COLORS" ]] && eval `dircolors -b "$POSSIBLE_DIR_COLORS"` && break
-  done
-
-  alias ls="ls --color=auto"
-  alias ll="ls --color=auto -l"
-  alias la="ls --color=auto -lah"
-  alias grep='grep --color=auto'
-  alias fgrep='fgrep --color=auto'
-  alias egrep='egrep --color=auto'
+    # For some reason, the unixs machines need me to use $HOME instead of ~
+    # List files from highest priority to lowest.  As soon as the loop finds one that works, it will exit.
+    for POSSIBLE_DIR_COLORS in "$HOME/.dir_colors" "/etc/DIR_COLORS"; do
+	[[ -f "$POSSIBLE_DIR_COLORS" ]] && [[ -r "$POSSIBLE_DIR_COLORS" ]] && eval `dircolors -b "$POSSIBLE_DIR_COLORS"` && break
+    done
+    
+    alias ls="ls --color"
+    alias ll="ls --color -l"
+    alias la="ls --color -lah"
+    alias grep='grep --color'
+    alias fgrep='fgrep --color'
+    alias egrep='egrep --color'
+    alias tmux="tmux -2"
 else
   # No color, so put a slash at the end of directory names, etc. to differentiate.
   alias ls="ls -F"
