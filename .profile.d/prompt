@@ -41,8 +41,8 @@ fi
 ## Initial prompt
 _prompt="$u@$Green$sHostname$Color_Off";
 
+# Set this in your .bashrc_local
 SVNP_HUGE_REPO_EXCLUDE_PATH=""
-. ~/.svn_helper
 
 ## Color git status if any
 git_branch=`__git_ps1 "(%s)"`
@@ -80,6 +80,58 @@ svn_prompt () {
 	"1")	svn_branch=" $Red($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";;
     esac
 }
+
+
+# SVN Part - Copyright (C) 2008 Eric Leblond
+
+# List of path to exclude from recursive status
+# Explanation of following regexp:
+# Exclude all directories under inl-svn, the nufw-svn directory, and
+# all directories ending by /tags par /branches
+# You can set it as environnement variable
+if [ ! $SVNP_HUGE_REPO_EXCLUDE_PATH ]; then
+    SVNP_HUGE_REPO_EXCLUDE_PATH="/tags$|/branches$"
+fi
+
+# Set SVNP_HAVE_HUGE_REPO if you have huge repository
+# This will disable recursion when searching status
+# and speed things a lot (but feature is less interessant).
+# You can also look at the HUGE_REPO_EXCLUDE_PATH option
+
+__svn_rev ()
+{
+    LANG='C' svn info 2>/dev/null | awk '/Revision:/ {print $2; }'
+}
+
+__svn_last_changed ()
+{
+    LANG='C' svn info 2>/dev/null | awk '/Last Changed Rev:/ { print $4;}'
+}
+
+__svn_repo ()
+{
+    LANG='C' svn info 2>/dev/null | awk '/Repository Root:/ {print $3; }'
+}
+
+__svn_clean ()
+{
+    if [ $SVNP_HAVE_HUGE_REPO ]; then
+	HUGE_REPO=" -N ";
+    else
+	pwd | egrep -q $SVNP_HUGE_REPO_EXCLUDE_PATH && HUGE_REPO=" -N "
+    fi
+    STATE=$(LANG='C' svn $HUGE_REPO status 2>/dev/null | grep "^[MA]" | wc -l)
+    if [ $STATE == 0 ]; then
+	echo "0"
+    else
+	echo "1"
+    fi
+}
+__svn_remote_clean ()
+{
+    if [ $SVNP_HAVE_HUGE_REPO ]; then
+	HUGE_REPO=" -N ";
+    else
 
 dumb_prompt () {
     _dumb_prompt=1

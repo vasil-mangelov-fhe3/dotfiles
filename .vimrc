@@ -40,6 +40,7 @@ set shiftwidth=4
 set softtabstop=4
 set noexpandtab
 set autoindent
+set pastetoggle=<F4>
 
 "folding settings
 set foldmethod=indent   "fold based on indent
