@@ -1,0 +1,9 @@
+#use english on commandline for better compatibility
+export LANGUAGE="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+#osx color terminal
+export CLICOLOR=1
+#set editor to vim
+export EDITOR="vim"
+export GIT_EDITOR="vim"

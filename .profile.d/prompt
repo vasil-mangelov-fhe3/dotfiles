@@ -1,6 +1,94 @@
+# Set $TERM for libvte terminals that set $TERM wrong (like gnome-terminal)
+{
+	[ "_$TERM" = "_xterm" ] && type ldd && type grep && type tput && [ -L "/proc/$PPID/exe" ] && {
+		if ldd /proc/$PPID/exe | grep libvte; then
+			if [ "`tput -Txterm-256color colors`" = "256" ]; then
+				TERM=xterm-256color
+			elif [ "`tput -Txterm-256color colors`" = "256" ]; then
+				TERM=xterm-256color
+			elif tput -T xterm; then
+				TERM=xterm
+			fi
+		fi
+	}
+} >/dev/null 2>/dev/null
+
+# Set up TERM variables.
+# vt100 and xterm have no color in vim (at least on unixs), but if we call them xterm-color, they will.
+# (vt100 for F-Secure SSH.)
+# This may well be the case for some other terms, so I'm putting them here.
+# Also set up a variable to indicate whether to set up the title functions.
+case $TERM in
+
+	screen)
+		TERM_IS_COLOR=true
+		TERM_NOT_RECOGNIZED_AS_COLOR_BY_VIM=false
+		TERM_NOT_RECOGNIZED_BY_SUN_UTILS=false
+		TERM_CAN_TITLE=true
+	;;
+
+	xterm-color|color_xterm|rxvt|Eterm|screen*) # screen.linux|screen-w
+		TERM_IS_COLOR=true
+		TERM_NOT_RECOGNIZED_AS_COLOR_BY_VIM=false
+		TERM_NOT_RECOGNIZED_BY_SUN_UTILS=true
+		TERM_CAN_TITLE=true
+	;;
+
+	linux)
+		TERM_IS_COLOR=true
+		TERM_NOT_RECOGNIZED_AS_COLOR_BY_VIM=false
+		TERM_NOT_RECOGNIZED_BY_SUN_UTILS=true
+		TERM_CAN_TITLE=false
+	;;
+
+	xterm|vt100)
+		TERM_IS_COLOR=true
+		TERM_NOT_RECOGNIZED_AS_COLOR_BY_VIM=true
+		TERM_NOT_RECOGNIZED_BY_SUN_UTILS=false
+		TERM_CAN_TITLE=true
+	;;
+
+	*xterm*|eterm|rxvt*)
+		TERM_IS_COLOR=true
+		TERM_NOT_RECOGNIZED_AS_COLOR_BY_VIM=true
+		TERM_NOT_RECOGNIZED_BY_SUN_UTILS=true
+		TERM_CAN_TITLE=true
+	;;
+
+	*)
+		TERM_IS_COLOR=false
+		TERM_NOT_RECOGNIZED_AS_COLOR_BY_VIM=false
+		TERM_NOT_RECOGNIZED_BY_SUN_UTILS=false
+		TERM_CAN_TITLE=false
+	;;
+
+esac
+
+# dircolors... make sure that we have a color terminal, dircolors exists, and ls supports it.
+if $TERM_IS_COLOR && ( dircolors --help && ls --color ) &> /dev/null; then
+		# For some reason, the unixs machines need me to use $HOME instead of ~
+		# List files from highest priority to lowest.  As soon as the loop finds one that works, it will exit.
+		for POSSIBLE_DIR_COLORS in "$HOME/.dir_colors" "/etc/DIR_COLORS"; do
+	[[ -f "$POSSIBLE_DIR_COLORS" ]] && [[ -r "$POSSIBLE_DIR_COLORS" ]] && eval `dircolors -b "$POSSIBLE_DIR_COLORS"` && break
+		done
+
+		alias ls="ls --color"
+		alias ll="ls --color -l"
+		alias la="ls --color -lah"
+		alias grep='grep --color'
+		alias fgrep='fgrep --color'
+		alias egrep='egrep --color'
+		alias tmux="tmux -2"
+else
+	# No color, so put a slash at the end of directory names, etc. to differentiate.
+	alias ls="ls -F"
+	alias ll="ls -lF"
+	alias la="ls -lahF"
+fi
+
 _update_sh_prompt () {
 ## Save $? early, we'll need it later
-local exit="$?"  
+local exit="$?"
 
 ## define some colors
 Color_Off="\[\033[0m\]"       # Text Reset
@@ -33,9 +121,9 @@ sHostname="\h"
 path=" $LightBlue$PathShort$Color_Off\$"
 
 if [ "$UID" = "0" ]; then
-    u="$Red\u$ColorOff";
+	u="$Red\u$ColorOff";
 else
-    u="$Green\u$ColorOff";
+	u="$Green\u$ColorOff";
 fi
 
 ## Initial prompt
@@ -48,37 +136,37 @@ SVNP_HUGE_REPO_EXCLUDE_PATH=""
 git_branch=`__git_ps1 "(%s)"`
 svn_branch=`__svn_rev`
 if [ -n "$git_branch" ] ; then
-    git_prompt $git_branch
+	git_prompt $git_branch
 fi
 if [ -n "$svn_branch" ] ; then
-    svn_prompt
+	svn_prompt
 fi
 
 export PS1="$_prompt$git_branch$svn_branch$path ";
 }
 
 git_prompt () {
-    git_branch=${1}
-    if [ -n "$git_branch" ] ; then
+	git_branch=${1}
+	if [ -n "$git_branch" ] ; then
 	if [ -z "$_dumb_prompt" ]; then
-	    git status --porcelain | perl -ne 'exit(1) if /^ /; exit(2) if /^[?]/'
-	    case "$?" in
-		"0" )  git_branch=" $Green$git_branch$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";; 
-		"1" )  git_branch=" $Red$git_branch$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";; 
+		git status --porcelain | perl -ne 'exit(1) if /^ /; exit(2) if /^[?]/'
+		case "$?" in
+		"0" )  git_branch=" $Green$git_branch$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";;
+		"1" )  git_branch=" $Red$git_branch$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";;
 		"2" )  git_branch=" $Yellow$git_branch$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";;
-		"130" ) git_branch=" $White$git_branch$Color_Off"; path=" $LightBlue$PathShort$Color_Off\$"; _dumb_prompt=1 ;; 
+		"130" ) git_branch=" $White$git_branch$Color_Off"; path=" $LightBlue$PathShort$Color_Off\$"; _dumb_prompt=1 ;;
 		esac
 	else
-	    git_branch=" $White$git_branch$Color_Off"; path=" $LightBlue$PathShort$Color_Off\$"
+		git_branch=" $White$git_branch$Color_Off"; path=" $LightBlue$PathShort$Color_Off\$"
 	fi
-    fi
+	fi
 }
 
 svn_prompt () {
-    case `__svn_clean` in
+	case `__svn_clean` in
 	"0")	svn_branch=" $Green($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";;
 	"1")	svn_branch=" $Red($(basename $(__svn_repo)):$(__svn_rev))$Color_Off"; path=" $Yellow$PathShort$Color_Off\$";;
-    esac
+	esac
 }
 
 
@@ -90,7 +178,7 @@ svn_prompt () {
 # all directories ending by /tags par /branches
 # You can set it as environnement variable
 if [ ! $SVNP_HUGE_REPO_EXCLUDE_PATH ]; then
-    SVNP_HUGE_REPO_EXCLUDE_PATH="/tags$|/branches$"
+	SVNP_HUGE_REPO_EXCLUDE_PATH="/tags$|/branches$"
 fi
 
 # Set SVNP_HAVE_HUGE_REPO if you have huge repository
@@ -100,56 +188,56 @@ fi
 
 __svn_rev ()
 {
-    LANG='C' svn info 2>/dev/null | awk '/Revision:/ {print $2; }'
+	LANG='C' svn info 2>/dev/null | awk '/Revision:/ {print $2; }'
 }
 
 __svn_last_changed ()
 {
-    LANG='C' svn info 2>/dev/null | awk '/Last Changed Rev:/ { print $4;}'
+	LANG='C' svn info 2>/dev/null | awk '/Last Changed Rev:/ { print $4;}'
 }
 
 __svn_repo ()
 {
-    LANG='C' svn info 2>/dev/null | awk '/Repository Root:/ {print $3; }'
+	LANG='C' svn info 2>/dev/null | awk '/Repository Root:/ {print $3; }'
 }
 
 __svn_clean ()
 {
-    if [ $SVNP_HAVE_HUGE_REPO ]; then
+	if [ $SVNP_HAVE_HUGE_REPO ]; then
 	HUGE_REPO=" -N ";
-    else
+	else
 	pwd | egrep -q $SVNP_HUGE_REPO_EXCLUDE_PATH && HUGE_REPO=" -N "
-    fi
-    STATE=$(LANG='C' svn $HUGE_REPO status 2>/dev/null | grep "^[MA]" | wc -l)
-    if [ $STATE == 0 ]; then
+	fi
+	STATE=$(LANG='C' svn $HUGE_REPO status 2>/dev/null | grep "^[MA]" | wc -l)
+	if [ $STATE == 0 ]; then
 	echo "0"
-    else
+	else
 	echo "1"
-    fi
+	fi
 }
 __svn_remote_clean ()
 {
-    if [ $SVNP_HAVE_HUGE_REPO ]; then
+	if [ $SVNP_HAVE_HUGE_REPO ]; then
 	HUGE_REPO=" -N ";
-    else
+	else
 
 dumb_prompt () {
-    _dumb_prompt=1
+	_dumb_prompt=1
 }
 
 smart_prompt () {
-    unset _dumb_prompt
+	unset _dumb_prompt
 }
 
 _update_py_prompt () {
-    export PS1="$( $HOME/.powerline-shell.py $? 2> /dev/null)"
+	export PS1="$( $HOME/.powerline-shell.py $? 2> /dev/null)"
 }
 
 if [ -n "$PS1" ] ; then
-    if [ -x $HOME/.powerline-shell.py ] && [ -x $(which python) ]; then
-	PROMPT_COMMAND='_update_py_prompt'
-    else
-	PROMPT_COMMAND='_update_sh_prompt'
-    fi
-    export PROMPT_COMMAND
+	if [ -x $HOME/.powerline-shell.py ] && [ -x $(which python) ]; then
+		PROMPT_COMMAND='_update_py_prompt'
+	else
+		PROMPT_COMMAND='_update_sh_prompt'
+	fi
+	export PROMPT_COMMAND
 fi
