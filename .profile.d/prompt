@@ -87,62 +87,62 @@ else
 fi
 
 _update_sh_prompt () {
-## Save $? early, we'll need it later
-local exit="$?"
+	## Save $? early, we'll need it later
+	local exit="$?"
 
-## define some colors
-Color_Off="\[\033[0m\]"       # Text Reset
+	## define some colors
+	Color_Off="\[\033[0m\]"       # Text Reset
 
-Black="\[\033[00;30m\]"
-DarkGrey="\[\033[01;30m\]"
-Red="\[\033[00;31m\]"
-LightRed="\[\033[01;31m\]"
-Green="\[\033[00;32m\]"
-LightGreen="\[\033[01;32m\]"
-Brown="\[\033[00;33m\]"
-Yellow="\[\033[01;33m\]"
-Blue="\[\033[00;34m\]"
-LightBlue="\[\033[01;34m\]"
-Cyan="\[\033[00;36m\]"
-LightCyan="\[\033[01;36m\]"
-Purple="\[\033[00;35m\]"
-LightPurple="\[\033[01;35m\]"
-LightGrey="\[\033[00;37m\]"
-White="\[\033[01;37m\]"
+	Black="\[\033[00;30m\]"
+	DarkGrey="\[\033[01;30m\]"
+	Red="\[\033[00;31m\]"
+	LightRed="\[\033[01;31m\]"
+	Green="\[\033[00;32m\]"
+	LightGreen="\[\033[01;32m\]"
+	Brown="\[\033[00;33m\]"
+	Yellow="\[\033[01;33m\]"
+	Blue="\[\033[00;34m\]"
+	LightBlue="\[\033[01;34m\]"
+	Cyan="\[\033[00;36m\]"
+	LightCyan="\[\033[01;36m\]"
+	Purple="\[\033[00;35m\]"
+	LightPurple="\[\033[01;35m\]"
+	LightGrey="\[\033[00;37m\]"
+	White="\[\033[01;37m\]"
 
-Time12h="\T"
-Time24h="\t"
-Time12a="\@"
-PathShort="\w"
-PathFull="\W"
-NewLine="\n"
-Jobs="\j"
-sHostname="\h"
-path=" $LightBlue$PathShort$Color_Off\$"
+	Time12h="\T"
+	Time24h="\t"
+	Time12a="\@"
+	PathShort="\w"
+	PathFull="\W"
+	NewLine="\n"
+	Jobs="\j"
+	sHostname="\h"
+	path=" $LightBlue$PathShort$Color_Off\$"
 
-if [ "$UID" = "0" ]; then
-	u="$Red\u$ColorOff";
-else
-	u="$Green\u$ColorOff";
-fi
+	if [ "$UID" = "0" ]; then
+		u="$Red\u$ColorOff";
+	else
+		u="$Green\u$ColorOff";
+	fi
 
-## Initial prompt
-_prompt="$u@$Green$sHostname$Color_Off";
+	## Initial prompt
+	_prompt="$u@$Green$sHostname$Color_Off";
 
-# Set this in your .bashrc_local
-SVNP_HUGE_REPO_EXCLUDE_PATH=""
+	# Set this in your .bashrc_local
+	SVNP_HUGE_REPO_EXCLUDE_PATH=""
 
-## Color git status if any
-git_branch=`__git_ps1 "(%s)"`
-svn_branch=`__svn_rev`
-if [ -n "$git_branch" ] ; then
-	git_prompt $git_branch
-fi
-if [ -n "$svn_branch" ] ; then
-	svn_prompt
-fi
+	## Color git status if any
+	git_branch=`__git_ps1 "(%s)"`
+	svn_branch=`__svn_rev`
+	if [ -n "$git_branch" ] ; then
+		git_prompt $git_branch
+	fi
+	if [ -n "$svn_branch" ] ; then
+		svn_prompt
+	fi
 
-export PS1="$_prompt$git_branch$svn_branch$path ";
+	export PS1="$_prompt$git_branch$svn_branch$path ";
 }
 
 git_prompt () {
@@ -220,6 +220,7 @@ __svn_remote_clean ()
 	if [ $SVNP_HAVE_HUGE_REPO ]; then
 	HUGE_REPO=" -N ";
 	else
+}
 
 dumb_prompt () {
 	_dumb_prompt=1
