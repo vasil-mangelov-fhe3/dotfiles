@@ -220,6 +220,14 @@ __svn_remote_clean ()
 	if [ $SVNP_HAVE_HUGE_REPO ]; then
 	HUGE_REPO=" -N ";
 	else
+		pwd | egrep -q $SVNP_HUGE_REPO_EXCLUDE_PATH && HUGE_REPO=" -N "
+	fi
+	STATE=$(LANG='C' svn $HUGE_REPO status -u 2>/dev/null | egrep  " *\*" | wc -l)
+	if [ $STATE != 0 ]; then
+		echo "0"
+	else
+		echo "1"
+	fi
 }
 
 dumb_prompt () {
