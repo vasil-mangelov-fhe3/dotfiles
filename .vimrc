@@ -42,6 +42,8 @@ set noexpandtab
 set autoindent
 set pastetoggle=<F4>
 
+nnoremap <F5> :set invnumber<CR>
+
 "folding settings
 set foldmethod=indent   "fold based on indent
 set foldnestmax=3       "deepest fold is 3 levels
