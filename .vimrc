@@ -10,7 +10,7 @@ set backspace=indent,eol,start
 
 "store lots of :cmdline history
 set history=1000
-let g:yankring_history_dir = '~/.vim/yankhist'
+let g:yankring_history_dir = '${HOME}/.vim/yankhist'
 
 set showcmd     "show incomplete cmds down the bottom
 set showmode    "show current mode down the bottom
@@ -29,7 +29,7 @@ set linebreak   "wrap lines at convenient points
 
 if v:version >= 703
     "undo settings
-    set undodir=~/.vim/undofiles
+    set undodir=${HOME}/.vim/undofiles
     set undofile
 
     set colorcolumn=+1 "mark the ideal max text width

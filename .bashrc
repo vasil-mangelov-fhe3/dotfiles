@@ -2,7 +2,7 @@
 #
 #
 #	For Entries that you want only local or
-#	per user use ~/.bashrc_local
+#	per user use ${HOME}/.bashrc_local
 #
 #
 ################################################
@@ -11,30 +11,30 @@
 [ -z "$PS1" ] && return
 
 #check if ghar is installed
-if [ -d $HOME/.ghar ]; then
-	export PATH=$PATH:$HOME/.ghar/bin/
-	. $HOME/.ghar/ghar-bash-completion.sh
+if [ -d ${HOME}/.ghar ]; then
+	export PATH=$PATH:${HOME}/.ghar/bin/
+	. ${HOME}/.ghar/ghar-bash-completion.sh
 else
 	echo "Please install ghar for full functionality (https://github.com/philips/ghar.git)"
 fi
 
-if [ -f $HOME/.profile.d/exports ]; then
-	. .profile.d/exports
+if [ -f ${HOME}/.profile.d/exports ]; then
+	. ${HOME}/.profile.d/exports
 fi
-if [ -f $HOME/.profile.d/prompt ]; then
-	. .profile.d/prompt
+if [ -f ${HOME}/.profile.d/prompt ]; then
+	. ${HOME}/.profile.d/prompt
 fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 	. /etc/bash_completion
 fi
-if [ -f $HOME/.profile.d/completion ]; then
-	. .profile.d/completion
+if [ -f ${HOME}/.profile.d/completion ]; then
+	. ${HOME}/.profile.d/completion
 fi
-if [ -f $HOME/.profile.d/helper_functions ]; then
-	. .profile.d/helper_functions
+if [ -f ${HOME}/.profile.d/helper_functions ]; then
+	. ${HOME}/.profile.d/helper_functions
 fi
-if [ -f $HOME/.bash_aliases ]; then
-	. $HOME/.bash_aliases
+if [ -f ${HOME}/.bash_aliases ]; then
+	. ${HOME}/.bash_aliases
 fi
 
 # don't put duplicate lines in the history. See bash(1) for more options
@@ -52,6 +52,6 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # For local definitions.
-if [ -f ~/.bashrc_local ]; then
-	. ~/.bashrc_local
+if [ -f ${HOME}/.bashrc_local ]; then
+	. ${HOME}//.bashrc_local
 fi
