@@ -55,3 +55,6 @@ shopt -s checkwinsize
 if [ -f ~/.bashrc_local ]; then
 	. ~/.bashrc_local
 fi
+if [ -f $HOME/.profile.d/startup ]; then
+	. .profile.d/startup
+fi
