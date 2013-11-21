@@ -53,8 +53,8 @@ shopt -s checkwinsize
 
 # For local definitions.
 if [ -f ${HOME}/.bashrc_local ]; then
-	. ${HOME}//.bashrc_local
+	. ${HOME}/.bashrc_local
 fi
-if [ -f $HOME/.profile.d/startup ]; then
-	. .profile.d/startup
+if [ -f ${HOME}/.profile.d/startup ]; then
+	. ${HOME}/.profile.d/startup
 fi
