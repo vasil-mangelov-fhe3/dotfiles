@@ -75,6 +75,7 @@ set ttymouse=xterm2
 
 "tell the term has 256 colors
 set t_Co=256
+set term=screen-256color
 
 "hide buffers when not displayed
 set hidden
@@ -314,4 +315,9 @@ autocmd BufReadPost fugitive://*
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
+let g:airline_theme="powerlineish"
 
+
+let g:solarized_termcolors=256
+set background=dark
+colorscheme solarized
