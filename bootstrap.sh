@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
 # Paste this into ssh
-# curl -sL  | tar -xzO | /bin/bash -ex
+# curl -sL https://repo.nrecom.net/nre-com-net/dotfiles/raw/master/bootstrap.sh | tar -xzO | /bin/bash -ex
 # When forking, you can get the URL from the raw (<>) button.
 
 ### Set some command variables depending on whether we are root or not ###
