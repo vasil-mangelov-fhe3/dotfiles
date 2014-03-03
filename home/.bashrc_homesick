@@ -10,31 +10,29 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-#check if ghar is installed
-if [ -d ${HOME}/.ghar ]; then
-	export PATH=$PATH:${HOME}/.ghar/bin/
-	. ${HOME}/.ghar/ghar-bash-completion.sh
-else
-	echo "Please install ghar for full functionality (https://github.com/philips/ghar.git)"
-fi
+source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
+source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
 
+if [ -f ${HOME}/.profile.d/startup ]; then
+    source ${HOME}/.profile.d/startup
+fi
 if [ -f ${HOME}/.profile.d/exports ]; then
-	. ${HOME}/.profile.d/exports
+    source ${HOME}/.profile.d/exports
 fi
 if [ -f ${HOME}/.profile.d/prompt ]; then
-	. ${HOME}/.profile.d/prompt
+    source ${HOME}/.profile.d/prompt
 fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-	. /etc/bash_completion
+    source /etc/bash_completion
 fi
 if [ -f ${HOME}/.profile.d/completion ]; then
-	. ${HOME}/.profile.d/completion
+    source ${HOME}/.profile.d/completion
 fi
 if [ -f ${HOME}/.profile.d/helper_functions ]; then
-	. ${HOME}/.profile.d/helper_functions
+    source ${HOME}/.profile.d/helper_functions
 fi
 if [ -f ${HOME}/.bash_aliases ]; then
-	. ${HOME}/.bash_aliases
+    source ${HOME}/.bash_aliases
 fi
 
 # don't put duplicate lines in the history. See bash(1) for more options
@@ -51,10 +49,3 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# For local definitions.
-if [ -f ${HOME}/.bashrc_local ]; then
-	. ${HOME}/.bashrc_local
-fi
-if [ -f ${HOME}/.profile.d/startup ]; then
-	. ${HOME}/.profile.d/startup
-fi
