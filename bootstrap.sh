@@ -25,6 +25,8 @@ homeshick --batch clone https://repo.nrecom.net/nre-com-net/vimfiles.git
 ### Link it all to $HOME ###
 homeshick link --force
 
+.bash_it/install.sh defaults
+
 printf '\nsource "$HOME/.bashrc_homesick"' >> $HOME/.bashrc
 
 echo "Log in again to start your proper shell"
