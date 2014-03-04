@@ -57,7 +57,7 @@ if [ -z "$TMUX" ]; then
         #ssh-add 2>/dev/null
 
         # start tmux
-        tmux attach || tmux
+        tmux attach || tmux -2
     fi
 fi
 
