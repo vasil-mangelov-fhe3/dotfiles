@@ -1,6 +1,6 @@
-[submodule "home/.powerline-shell"]
-	path = home/.powerline-shell
-	url = https://github.com/milkbikis/powerline-shell
 [submodule "home/.fonts/powerline-fonts"]
 	path = home/.fonts/powerline-fonts
 	url = https://github.com/Lokaltog/powerline-fonts.git
+[submodule "home/.bash_it"]
+	path = home/.bash_it
+	url = https://repo.nrecom.net/nre-com-net/bash-it.git
