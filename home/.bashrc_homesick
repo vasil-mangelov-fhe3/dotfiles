@@ -83,4 +83,4 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Load Bash It
-source $BASH_IT/bash_it.sh
+[ -d $BASH_IT ] && source $BASH_IT/bash_it.sh
