@@ -69,7 +69,7 @@ fi
 
 
 # Start tmux on connection
-if [ "$PS1" != "" -a "${STARTED_TMUX:-x}" = x -a "${SSH_TTY:-x}" != x -a $(which tmux) ] 
+if [ "$PS1" != "" -a "${STARTED_TMUX:-x}" = x -a "${SSH_TTY:-x}" != x -a "$(which tmux)" != "" ] 
 then
         STARTED_TMUX=1; export STARTED_TMUX
         sleep 1
