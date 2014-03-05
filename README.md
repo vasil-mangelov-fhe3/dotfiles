@@ -3,6 +3,8 @@
 This is our compilation of dotfiles, they are build to be managed by [Anders Ingemann's homeshick](https://github.com/andsens/homeshick)
 All contribution goes to the original developers we only have put the pieces together.
 
+This includes [Lokaltog powerline-fonts](https://github.com/Lokaltog/powerline-fonts) which are installed to "$HOME/.fonts"
+
 ## Install
 
 ### Manual
@@ -16,3 +18,7 @@ This will also install [revans bash-it](https://github.com/revans/bash-it) with 
 and our [Vimfiles](https://repo.nrecom.net/nre-com-net/vimfiles)
 
 1. `curl -sL https://repo.nrecom.net/nre-com-net/dotfiles/raw/master/bootstrap.sh | /bin/bash`
+
+**NOTE:**
+You should restart your terminal application and change the font to a powerline one (the bootstrap script registers them automatically).
+For manual register use `fc-cache -fv` 
