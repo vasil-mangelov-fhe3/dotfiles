@@ -19,6 +19,8 @@ and our [Vimfiles](https://repo.nrecom.net/nre-com-net/vimfiles)
 
 1. `curl -sL https://repo.nrecom.net/nre-com-net/dotfiles/raw/master/bootstrap.sh | /bin/bash`
 
+
+
 **NOTE:**
 You should restart your terminal application and change the font to a powerline one (the bootstrap script registers them automatically).
-For manual register use `fc-cache -fv` 
+For manual register use `fc-cache -fv`
