@@ -13,11 +13,9 @@
 # Load RVM, if you are using it
 [[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
 
+# Load homeshick
 source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
 source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
-
-# Path to the bash it configuration
-export BASH_IT=$HOME/.bash_it
 
 #use english on commandline for better compatibility
 export LANGUAGE="en_US.UTF-8"
@@ -26,10 +24,6 @@ export LANG="en_US.UTF-8"
 #set editor to vim
 export EDITOR="vim"
 export GIT_EDITOR="vim"
-
-# Lock and Load a custom theme file
-# location /.bash_it/themes/
-export BASH_IT_THEME='powerline'
 
 if [ -z "$TMUX" ]; then
     # we're not in a tmux session
@@ -64,9 +58,6 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     source /etc/bash_completion
 fi
-if [ -f ${HOME}/.bash_aliases ]; then
-    source ${HOME}/.bash_aliases
-fi
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # don't overwrite GNU Midnight Commander's setting of `ignorespace'.
@@ -82,5 +73,25 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+
+## Bash-it
+# Path to the bash it configuration
+export BASH_IT=$HOME/.bash_it
+
+# Lock and Load a custom theme file
+# location /.bash_it/themes/
+export BASH_IT_THEME='powerline'
+
 # Load Bash It
 [ -d $BASH_IT ] && source $BASH_IT/bash_it.sh
+
+
+# Load overrides
+if [ -f ${HOME}/.bash_aliases ]; then
+    source ${HOME}/.bash_aliases
+fi
+
+if [ -f ${HOME}/.bashrc_local ]; then
+    source ${HOME}/.bashirc_local
+fi
+
