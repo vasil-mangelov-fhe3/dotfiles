@@ -1,6 +1,9 @@
 # Tab bar
 hardstatus alwayslastline "%{wk}%?%-Lw%?%{bw}%n*%f %t%?(%u)%?%{wk}%?%+Lw %= %{mk}@%H %{ck}%Y-%m-%d %{yk}%D %{gk}%0c %{bk}%l"
 
+# mouse scrolling
+termcapinfo xterm* ti@:te@
+
 # COLORS! and some useful terminfo
 term screen-256color
 attrcolor b ".I"

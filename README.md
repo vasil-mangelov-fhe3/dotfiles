@@ -12,9 +12,7 @@ All contribution goes to the original developers we only have put the pieces tog
 
 ### Bootstraped
 **NOTE:**
-This will also install [revans bash-it](https://github.com/revans/bash-it) with some NRE.Com.Net defaults
+This will also install [revans bash-it](https://github.com/revans/bash-it) with some [NRE.Com.Net defaults](https://repo.nrecom.net/nre-com-net/bash-it/tree/master)
 and our [Vimfiles](https://repo.nrecom.net/nre-com-net/vimfiles)
 
 1. `curl -sL https://repo.nrecom.net/nre-com-net/dotfiles/raw/master/bootstrap.sh | /bin/bash`
-
-
