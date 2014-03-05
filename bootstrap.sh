@@ -24,11 +24,15 @@ homeshick --batch clone https://repo.nrecom.net/nre-com-net/vimfiles.git
 homeshick --batch clone https://repo.nrecom.net/nre-com-net/bash-it.git
 
 ### Link it all to $HOME ###
-homeshick link --force
+homeshick link
 
 ### Install bash-it with NRE.Com.Net defaults ###
 $HOME/.homesick/repos/bash-it/install.sh defaults
 
+# Register powerline fonts
+fc-cache -fv
+
+# Source .bashrc_homesick in .bashrc
 grep -xq 'source "$HOME/.bashrc_homesick"' $HOME/.bashrc || printf '\nsource "$HOME/.bashrc_homesick"' >> $HOME/.bashrc
 
 echo "Relog to start your proper shell"
