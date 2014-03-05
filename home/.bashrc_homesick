@@ -14,8 +14,10 @@
 [[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
 
 # Load homeshick
-source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
+if [ -d ${HOME}/.homesick ]; then
+    source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
+    source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
+fi
 
 #use english on commandline for better compatibility
 export LANGUAGE="en_US.UTF-8"
@@ -62,7 +64,7 @@ if [ -f ${HOME}/.bash_aliases ]; then
 fi
 
 if [ -f ${HOME}/.bashrc_local ]; then
-    source ${HOME}/.bashirc_local
+    source ${HOME}/.bashrc_local
 fi
 
 
