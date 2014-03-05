@@ -25,36 +25,6 @@ export LANG="en_US.UTF-8"
 export EDITOR="vim"
 export GIT_EDITOR="vim"
 
-if [ -z "$TMUX" ]; then
-    # we're not in a tmux session
-
-    if [ ! -z "$SSH_TTY" ]; then
-        # We logged in via SSH
-
-        # if ssh auth variable is missing
-        #if [ -z "$SSH_AUTH_SOCK" ]; then
-        #    export SSH_AUTH_SOCK="$HOME/.ssh/.auth_socket"
-        #fi
-
-        # if socket is available create the new auth session
-        #if [ ! -S "$SSH_AUTH_SOCK" ]; then
-        #    `ssh-agent -a $SSH_AUTH_SOCK` &gt; /dev/null 2&gt;&amp;1
-        #    echo $SSH_AGENT_PID &gt; $HOME/.ssh/.auth_pid
-        #fi
-
-        # if agent isn't defined, recreate it from pid file
-        #if [ -z $SSH_AGENT_PID ]; then
-        #    export SSH_AGENT_PID=`cat $HOME/.ssh/.auth_pid`
-        #fi
-
-        # Add all default keys to ssh auth
-        #ssh-add 2>/dev/null
-
-        # start tmux
-        tmux attach || tmux -2
-    fi
-fi
-
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     source /etc/bash_completion
 fi
@@ -95,3 +65,11 @@ if [ -f ${HOME}/.bashrc_local ]; then
     source ${HOME}/.bashirc_local
 fi
 
+
+# Start tmux on connection
+if [ "$PS1" != "" -a "${STARTED_TMUX:-x}" = x -a "${SSH_TTY:-x}" != x -a $(which tmux) ] 
+then
+        STARTED_TMUX=1; export STARTED_TMUX
+        sleep 1
+        ( (tmux has-session -t remote && tmux attach-session -t remote) || (tmux new-session -s remote) )
+fi
