@@ -20,7 +20,7 @@ and our [Vimfiles](https://repo.nrecom.net/nre-com-net/vimfiles)
 1. `curl -sL https://repo.nrecom.net/nre-com-net/dotfiles/raw/master/bootstrap.sh | /bin/bash`
 
 
-
 **NOTE:**
-You should restart your terminal application and change the font to a powerline one (the bootstrap script registers them automatically).
-For manual register use `fc-cache -fv`
+We sugest to install [Lokaltog powerline-fonts](https://github.com/Lokaltog/powerline-fonts) to "$HOME/.fonts"
+and run `fc-cache -fv` (The bootstrap script includes and installes/registers them automatically.).
+Then you should restart your terminal application and change the font to a powerline one.
