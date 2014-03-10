@@ -57,6 +57,7 @@ export BASH_IT_THEME='powerline'
 # Load Bash It
 [ -d $BASH_IT ] && source $BASH_IT/bash_it.sh
 
+alias reload="source ${HOME}/.bashrc"
 
 # Load overrides
 if [ -f ${HOME}/.bash_aliases ]; then
