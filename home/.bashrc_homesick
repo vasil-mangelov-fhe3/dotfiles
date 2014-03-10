@@ -70,8 +70,8 @@ fi
 
 
 # Start tmux on connection
-if [ "$PS1" != "" -a "$(tmux has-session -t remote &>/dev/null; echo $?)" = 0 -a "${SSH_TTY:-x}" != x -a "$(which tmux)" != "" ]; then
+if [ "$PS1" != "" -a "$(tmux has-session -t remote &>/dev/null; echo $?)" = 0 -a "${SSH_TTY:-x}" != x -a "$(which tmux)" != "" -a "${TMUX}" = "" ]; then
     tmux -2 attach-session -t remote
-elif [ "$PS1" != "" -a "${SSH_TTY:-x}" != x -a "$(which tmux)" != "" ]; then
+elif [ "$PS1" != "" -a "${SSH_TTY:-x}" != x -a "$(which tmux)" != "" -a "${TMUX}" = "" ]; then
     tmux -2 new-session -s remote
 fi
