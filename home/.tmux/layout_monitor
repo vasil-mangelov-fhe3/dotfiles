@@ -1,4 +1,4 @@
-neww -a 'monitor'
+neww -n 'Monitor' -a 'htop'
 selectp -t 0 
 splitw -v -p 70
 selectp -t 1
