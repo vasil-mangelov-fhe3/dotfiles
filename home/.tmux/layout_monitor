@@ -4,6 +4,6 @@ splitw -v -p 70
 selectp -t 1
 splitw -h -p 35 'watch -n1 df -h -t ext3 -t ext4'
 selectp -t 2
-splitw -v -p 60 'export NMON="cd" ; nmon'
+splitw -v -p 60 'export NMON="nd" ; nmon'
 selectp -t 3
 selectp -t 1
