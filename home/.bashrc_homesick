@@ -57,6 +57,11 @@ export BASH_IT_THEME='powerline'
 # Load Bash It
 [ -d $BASH_IT ] && source $BASH_IT/bash_it.sh
 
+# Load npm completion
+if [ -f /usr/lib/node_modules/npm/lib/utils/completion.sh ]; then
+    source /usr/lib/node_modules/npm/lib/utils/completion.sh
+fi
+
 alias reload="source ${HOME}/.bashrc"
 
 # Load overrides
