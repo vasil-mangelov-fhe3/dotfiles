@@ -1,8 +1,22 @@
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
 [push]
 	default = simple
 [color]
 	ui = true
+[color "status"]
+	added = green bold
+	changed = yellow bold
+	untracked = red bold
 [format]
 	pretty = format:%C(blue)%ad%Creset %C(yellow)%h%C(green)%d%Creset %C(blue)%s %C(magenta) [%an]%Creset
+[mergetool "fugitive"]
+	cmd = vim -f -c \"Gdiff\" \"$MERGED\"
+[merge]
+	tool = fugitive
+[alias]
+	subremote = submodule update --init --remote --recursive
 [include]
 	path = .gitconfig.user
