@@ -18,5 +18,6 @@
 	tool = fugitive
 [alias]
 	subremote = submodule update --init --remote --recursive
+	pullall = "!f(){ git pull \"$@\" && git submodule update --init --recursive; }; f"
 [include]
 	path = .gitconfig.user

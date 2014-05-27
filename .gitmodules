@@ -1,3 +1,4 @@
 [submodule "home/.fonts/powerline-fonts"]
 	path = home/.fonts/powerline-fonts
 	url = https://github.com/Lokaltog/powerline-fonts.git
+	branch = master
