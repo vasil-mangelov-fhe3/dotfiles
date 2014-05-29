@@ -2,3 +2,7 @@
 	path = home/.fonts/powerline-fonts
 	url = https://github.com/Lokaltog/powerline-fonts.git
 	branch = master
+[submodule "home/.tmux/themes/solarized"]
+	path = home/.tmux/themes/solarized
+	url = https://github.com/seebi/tmux-colors-solarized.git
+	branch = master
