@@ -42,7 +42,7 @@
 	baa = branch -a
 	pr = pull --rebase
 	cp = cherry-pick
-	aa = add -A .
+	aa = add -A
 	fa = fetch -p --all
 	rc = rebase --continue
 	pullsub = submodule update --init --remote --recursive
@@ -52,7 +52,7 @@
 	lstat = log --stat --relative --abbrev-commit --date=local --pretty=format:'%C(white)%h %C(cyan)%cr %C(green)by %cn %Creset%C(yellow)%n%s%Creset'
 
 [github]
-  user = nemesisre
+	user = NemesisRE
 
 [include]
 	path = .gitconfig.user
