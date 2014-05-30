@@ -76,7 +76,7 @@ if [ -f ${HOME}/.bashrc_local ]; then
     source ${HOME}/.bashrc_local
 fi
 
-eval `dircolors ~/.config/dircolors.256dark`
+eval `dircolors ~/.config/dircolors-solarized/dircolors.256dark`
 
 # Start tmux on connection
 if [ "$PS1" != "" -a "$(tmux has-session -t remote &>/dev/null; echo $?)" = 0 -a "${SSH_TTY:-x}" != x -a "$(which tmux)" != "" -a "${TMUX}" = "" ]; then

@@ -6,3 +6,7 @@
 	path = home/.tmux/themes/solarized
 	url = https://github.com/seebi/tmux-colors-solarized.git
 	branch = master
+[submodule "home/.config/dircolors-solarized"]
+	path = home/.config/dircolors-solarized
+	url = https://github.com/seebi/dircolors-solarized.git
+	branch = master
