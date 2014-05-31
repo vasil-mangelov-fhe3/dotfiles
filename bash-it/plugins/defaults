@@ -1,0 +1,1 @@
+base.plugin.bash extract.plugin.bash hg.plugin.bash java.plugin.bash javascript.plugin.bash node.plugin.bash nvm.plugin.bash python.plugin.bash rbenv.plugin.bash ruby.plugin.bash rvm.plugin.bash ssh.plugin.bash subversion.plugin.bash vagrant.plugin.bash virtualenv.plugin.bash
