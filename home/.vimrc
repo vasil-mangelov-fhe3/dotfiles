@@ -11,7 +11,7 @@
 			call add(g:pathogen_disabled, 'neocomplete')
 		endif
 
-		if v:version >= 703
+		if v:version <= 703
 			call add(g:pathogen_disabled, 'easymotion')
 			call add(g:pathogen_disabled, 'gundo')
 		endif
