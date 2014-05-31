@@ -50,10 +50,6 @@
 	path = home/.vim/bundle/vim-ruby
 	url = https://github.com/vim-ruby/vim-ruby.git
 	branch = master
-[submodule "home/.vim/bundle/a"]
-	path = home/.vim/bundle/a
-	url = https://github.com/vim-scripts/a.vim.git
-	branch = master
 [submodule "home/.vim/bundle/indexed-search"]
 	path = home/.vim/bundle/indexed-search
 	url = https://github.com/vim-scripts/IndexedSearch.git
@@ -114,10 +110,6 @@
 	path = home/.vim/bundle/MatchTag
 	url = https://github.com/gregsexton/MatchTag.git
 	branch = master
-[submodule "home/.vim/bundle/yankring"]
-	path = home/.vim/bundle/yankring
-	url = https://github.com/vim-scripts/YankRing.vim.git
-	branch = master
 [submodule "home/.vim/bundle/vim-powerline"]
 	path = home/.vim/bundle/vim-powerline
 	url = https://github.com/Lokaltog/vim-powerline.git
@@ -129,18 +121,6 @@
 [submodule "home/.vim/bundle/vim-puppet"]
 	path = home/.vim/bundle/vim-puppet
 	url = https://github.com/rodjek/vim-puppet.git
-	branch = master
-[submodule "home/.vim/bundle/bufexplorer"]
-	path = home/.vim/bundle/bufexplorer
-	url = https://github.com/jlanzarotta/bufexplorer.git
-	branch = master
-[submodule "home/.vim/bundle/supertab"]
-	path = home/.vim/bundle/supertab
-	url = https://github.com/ervandew/supertab.git
-	branch = master
-[submodule "home/.vim/bundle/yankstack"]
-	path = home/.vim/bundle/yankstack
-	url = https://github.com/maxbrunsfeld/vim-yankstack.git
 	branch = master
 [submodule "home/.vim/bundle/nerdtree-tabs"]
 	path = home/.vim/bundle/nerdtree-tabs
@@ -162,10 +142,6 @@
 	path = home/.vim/bundle/phpcomplete
 	url = https://github.com/shawncplus/phpcomplete.vim.git
 	branch = master
-[submodule "home/.vim/bundle/minibufexpl"]
-	path = home/.vim/bundle/minibufexpl
-	url = https://github.com/techlivezheng/vim-plugin-minibufexpl.git
-	branch = master
 [submodule "home/.vim/bundle/ctrlp"]
 	path = home/.vim/bundle/ctrlp
 	url = https://github.com/kien/ctrlp.vim.git
@@ -174,21 +150,9 @@
 	path = home/.vim/bundle/vim-gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
 	branch = master
-[submodule "home/.vim/bundle/YouCompleteMe"]
-	path = home/.vim/bundle/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe.git
-	branch = master
 [submodule "home/.vim/bundle/neocomplete"]
 	path = home/.vim/bundle/neocomplete
 	url = https://github.com/Shougo/neocomplete.vim.git
-	branch = master
-[submodule "home/.vim/bundle/tmuxline"]
-	path = home/.vim/bundle/tmuxline
-	url = https://github.com/edkolev/tmuxline.vim.git
-	branch = master
-[submodule "home/.vim/bundle/rainbow_parentheses"]
-	path = home/.vim/bundle/rainbow_parentheses
-	url = https://github.com/mtscout6/rainbow_parentheses.vim.git
 	branch = master
 [submodule "home/.vim/bundle/vim-tagbar-css"]
 	path = home/.vim/bundle/vim-tagbar-css
@@ -213,10 +177,6 @@
 [submodule "home/.vim/bundle/ctrlp-git-log"]
 	path = home/.vim/bundle/ctrlp-git-log
 	url = https://github.com/kaneshin/ctrlp-git-log.git
-	branch = master
-[submodule "home/.vim/bundle/vim-bufferline"]
-	path = home/.vim/bundle/vim-bufferline
-	url = https://github.com/bling/vim-bufferline.git
 	branch = master
 [submodule "home/.vim/bundle/vim-trailing-whitespace"]
 	path = home/.vim/bundle/vim-trailing-whitespace
