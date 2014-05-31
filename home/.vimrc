@@ -42,6 +42,8 @@
 			set colorcolumn=100 "mark the ideal max text width
 		endif
 
+		" make :Q work like :q
+		command! -bang Q quit<bang>
 		"allow backspacing over everything in insert mode
 		set backspace=indent,eol,start
 		"store lots of :cmdline history
