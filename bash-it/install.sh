@@ -14,7 +14,7 @@ function load_defaults() {
 	done
 }
 
-for TYPE in "aliases plugins completion"; do
+for TYPE in aliases plugins completion; do
 	case "${1}" in
 		"defaults")
 			load_defaults ${TYPE}
