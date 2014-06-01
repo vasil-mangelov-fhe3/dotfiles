@@ -8,9 +8,8 @@ function load_defaults() {
 		SRC="${BASH_IT}/${FILETYPE}/available/${FILENAME}"
 		[ ${FILENAME:0:1} = "_" ] && continue
 		DEST="${BASH_IT}/${FILETYPE}/enabled/${FILENAME}"
-		rm ${DEST}
 		if [ -e ${SRC} ]; then
-			ln -s "${SRC}" "${DEST}"
+			ln -sf "${SRC}" "${DEST}"
 		fi
 	done
 }
