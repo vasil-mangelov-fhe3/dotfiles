@@ -1,7 +1,5 @@
 #!/bin/bash
 BASH_IT="${HOME}/.bash_it"
-echo "${PWD}/$(dirname ${0})"
-exit 0
 
 function load_defaults() {
 	FILETYPE=${1}
