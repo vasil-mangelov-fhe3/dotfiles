@@ -11,12 +11,12 @@
 			call add(g:pathogen_disabled, 'neocomplete')
 		endif
 
-		if v:version <= 703
+		if v:version < 703
 			call add(g:pathogen_disabled, 'easymotion')
 			call add(g:pathogen_disabled, 'gundo')
 		endif
 
-		if v:version < '702'
+		if v:version < 702
 			call add(g:pathogen_disabled, 'syntastic')
 			call add(g:pathogen_disabled, 'tagbar')
 		endif
@@ -111,16 +111,10 @@
 		let mapleader = ","
 		let g:mapleader = ","
 		map <F1> <Nop>
-		nnoremap <silent> <F2> :NERDTreeToggle<CR>
-		:imap <F2> <C-o>:NERDTreeToggle<CR>
-		nnoremap <silent> <F3> :TagbarToggle<CR>
-		:imap <F3> <C-o>:TagbarToggle<CR>
-		nnoremap <silent> <F4> :CtrlPBuffer<CR>
-		:imap <F4> <C-o>:CtrlPBuffer<CR>
-		if v:version >= 703
-			nnoremap <silent> <F5> :GundoToggle<CR>
-			:imap <F5> <C-o>:GundoToggle<CR>
-		endif
+		autocmd VimEnter * if exists(":NERDTreeToggle") | execute "nnoremap <silent> <F2> :NERDTreeToggle\<CR>" | execute ":imap <F2> <C-o>:NERDTreeToggle\<CR>" | endif
+		autocmd VimEnter * if exists(":TagbarToggle") | execute "nnoremap <silent> <F3> :TagbarToggle\<CR>" | execute ":imap <F3> <C-o>:TagbarToggle\<CR>" | endif
+		autocmd VimEnter * if exists(":CtrlPBuffer") | execute "nnoremap <silent> <F4> :CtrlPBuffer\<CR>" | execute ":imap <F4> <C-o>:CtrlPBuffer\<CR>" | endif
+		autocmd VimEnter * if exists(":GundoToggle") | execute "nnoremap <silent> <F5> :GundoToggle\<CR>" | execute ":imap <F5> <C-o>:GundoToggle\<CR>" | endif
 		nnoremap <silent> <F6> :set invnumber invlist<CR>
 		:imap <F6> <C-o>:set invnumber invlist<CR>
 		set pastetoggle=<F7>
