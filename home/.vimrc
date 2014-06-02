@@ -189,6 +189,7 @@
 			let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 			let g:neocomplete#enable_insert_char_pre = 1
 			let g:neocomplete#enable_auto_select = 1
+			let g:neocomplete#data_directory = $HOME.'/.vim/cache/neocomplete'
 
 			" Enable omni completion.
 			autocmd Filetype css setlocal omnifunc=csscomplete#CompleteCSS
