@@ -112,6 +112,7 @@
 		let g:mapleader = ","
 		map <F1> <Nop>
 		autocmd VimEnter * if exists(":NERDTreeToggle") | execute "nnoremap <silent> <F2> :NERDTreeToggle\<CR>" | execute ":imap <F2> <C-o>:NERDTreeToggle\<CR>" | endif
+		autocmd VimEnter * if exists(":NERDTreeFindToggle") | execute "nnoremap <silent> <C-F2> :NERDTreeFind\<CR>" | execute ":imap <C-F2> <C-o>:NERDTreeFind\<CR>" | endif
 		autocmd VimEnter * if exists(":TagbarToggle") | execute "nnoremap <silent> <F3> :TagbarToggle\<CR>" | execute ":imap <F3> <C-o>:TagbarToggle\<CR>" | endif
 		autocmd VimEnter * if exists(":CtrlPBuffer") | execute "nnoremap <silent> <F4> :CtrlPBuffer\<CR>" | execute ":imap <F4> <C-o>:CtrlPBuffer\<CR>" | endif
 		autocmd VimEnter * if exists(":GundoToggle") | execute "nnoremap <silent> <F5> :GundoToggle\<CR>" | execute ":imap <F5> <C-o>:GundoToggle\<CR>" | endif
