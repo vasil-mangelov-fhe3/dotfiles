@@ -8,15 +8,15 @@
 ################################################
 
 # If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+[ -z "${PS1}" ] && return
 
 # Load RVM, if you are using it
-[[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
+[[ -s ${HOME}/.rvm/scripts/rvm ]] && source ${HOME}/.rvm/scripts/rvm
 
 # Load homeshick
 if [ -d ${HOME}/.homesick ]; then
-    source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-    source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
+	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
+	source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
 fi
 
 #use english on commandline for better compatibility
@@ -28,12 +28,12 @@ export EDITOR="vim"
 export GIT_EDITOR="vim"
 
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-    source /etc/bash_completion
+	source /etc/bash_completion
 fi
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # don't overwrite GNU Midnight Commander's setting of `ignorespace'.
-HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
+HISTCONTROL=${HISTCONTROL}${HISTCONTROL+,}ignoredups
 HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -45,21 +45,20 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-
 ## Bash-it
 # Path to the bash it configuration
-export BASH_IT=$HOME/.bash_it
+export BASH_IT=${HOME}/.bash_it
 
 # Lock and Load a custom theme file
 # location /.bash_it/themes/
 export BASH_IT_THEME='powerline'
 
 # Load Bash It
-[ -d $BASH_IT ] && source $BASH_IT/bash_it.sh
+[ -d ${BASH_IT} ] && source ${BASH_IT}/bash_it.sh
 
 # Load npm completion
 if [ -f /usr/lib/node_modules/npm/lib/utils/completion.sh ]; then
-    source /usr/lib/node_modules/npm/lib/utils/completion.sh
+	source /usr/lib/node_modules/npm/lib/utils/completion.sh
 fi
 
 # Some special Aliases
@@ -69,27 +68,49 @@ alias root="sudo -E bash"
 
 # Load overrides
 if [ -f ${HOME}/.bash_aliases ]; then
-    source ${HOME}/.bash_aliases
+	source ${HOME}/.bash_aliases
 fi
 
 if [ -f ${HOME}/.bashrc_local ]; then
-    source ${HOME}/.bashrc_local
+	source ${HOME}/.bashrc_local
 fi
 
-if [ -z "$TMUX" ]; then
-  if [ ! -z "$SSH_TTY" ]; then
-      if [ ! -z "SSH_AUTH_SOCK" ]; then
-          ln -sf "$SSH_AUTH_SOCK" "$HOME/.ssh/auth_sock"
-      fi
-      export SSH_AUTH_SOCK="$HOME/.ssh/auth_sock"
-  fi
+function unsudo() {
+	if [[ ${EUID} -eq 0 && -n ${SUDO_USER} && ${HOME} = $(eval echo ~${SUDO_USER}) ]]; then
+		chown -R ${SUDO_USER}:${SUDO_UID} ${HOME}
+		exit
+	fi
+}
+
+function git_remove_submodule() {
+	SUBMODULE_NAME=$(echo "${1}" | sed 's/\/$//'); shift
+	
+	if git submodule status "${SUBMODULE_NAME}" >/dev/null 2>&1; then
+		git submodule deinit -f "${SUBMODULE_NAME}"
+		git rm --cached "${SUBMODULE_NAME}"
+		rm -rf .git/modules/${SUBMODULE_NAME}
+		rm -rf ${SUBMODULE_NAME}
+		git config -f .gitmodules --remove-section "submodule.${SUBMODULE_NAME}"
+	else
+		[ $# -gt 0 ] && echo "fatal: Submodule '${SUBMODULE_NAME}' not found" 1>&2
+		exit 1
+	fi
+}
+
+if [ -z "${TMUX}" ]; then
+	if [ ! -z "${SSH_TTY}" ]; then
+		if [ ! -z "SSH_AUTH_SOCK" ]; then
+			ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
+		fi
+		export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
+	fi
 fi
 
 [ -e ~/.config/dircolors-solarized/dircolors.256dark ] && eval `dircolors ~/.config/dircolors-solarized/dircolors.256dark`
 
 # Start tmux on connection
-if [ "$PS1" != "" -a "$(tmux has-session -t remote &>/dev/null; echo $?)" = 0 -a "${SSH_TTY:-x}" != x -a "$(which tmux)" != "" -a "${TMUX}" = "" ]; then
-    tmux -2 attach-session -t remote
-elif [ "$PS1" != "" -a "${SSH_TTY:-x}" != x -a "$(which tmux)" != "" -a "${TMUX}" = "" ]; then
-    tmux -2 new-session -s remote
+if [ "${PS1}" != "" -a "$(tmux has-session -t remote &>/dev/null; echo $?)" = 0 -a "${SSH_TTY:-x}" != x -a "$(which tmux)" != "" -a "${TMUX}" = "" ]; then
+	tmux -2 attach-session -t remote
+elif [ "${PS1}" != "" -a "${SSH_TTY:-x}" != x -a "$(which tmux)" != "" -a "${TMUX}" = "" ]; then
+	tmux -2 new-session -s remote
 fi
