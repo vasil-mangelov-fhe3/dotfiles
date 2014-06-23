@@ -116,10 +116,6 @@ NeoBundle 'Shougo/javacomplete', {
 NeoBundle 'kana/vim-operator-user', {
 			\  'functions' : 'operator#user#define',
 			\}
-NeoBundleLazy 'Shougo/vim-vcs', {
-			\ 'depends' : 'thinca/vim-openbuf',
-			\ 'autoload' : {'commands' : 'Vcs'},
-			\ }
 NeoBundle 'tejr/vim-tmux'
 NeoBundle 'xolox/vim-easytags', {
 			\ 'depends' : 'xolox/vim-misc'
