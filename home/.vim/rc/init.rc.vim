@@ -2,6 +2,9 @@
 " Initialize:
 "
 
+" Enable 256 color terminal.
+set t_Co=256
+
 if exists('&regexpengine')
 	" Use old regexp engine.
 	" set regexpengine=1

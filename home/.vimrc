@@ -1,4 +1,3 @@
-"--------------------------------------------------------------------------------------------------
 " NemesisRE's .vimrc (shameless taken from https://github.com/Shougo/shougo-s-github)
 "--------------------------------------------------------------------------------------------------
 
@@ -141,11 +140,17 @@ endif
 "
 
 function! DiffWithSaved()
-	let filetype=&ft
-	diffthis
-	vnew | r # | normal! 1Gdd
-	diffthis
-	execute "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+" WIP
+"	if &diff
+"		execute "normal \<c-w>h<c-w>c"
+"		diffoff
+"	else
+		let filetype=&ft
+		diffthis
+		vnew | r # | normal! 1Gdd
+		diffthis
+		execute "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+"	endif
 endfunction
 
 "jump to last cursor position when opening a file, dont do it when writing a commit log entry
