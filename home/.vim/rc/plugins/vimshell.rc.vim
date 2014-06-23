@@ -15,10 +15,10 @@ let g:vimshell_environment_term = 'xterm-256'
 let g:vimshell_split_command = ''
 let g:vimshell_enable_transient_user_prompt = 1
 let g:vimshell_force_overwrite_statusline = 1
-
-" let g:vimshell_prompt_expr =
-"     \ 'escape($USER . ":". fnamemodify(getcwd(), ":~")."%", "\\[]()?! ")." "'
-" let g:vimshell_prompt_pattern = '^\f\+:\%(\f\|\\.\)\+% '
+let g:vimshell_vimshrc_path = expand('~/.vimshrc')
+ let g:vimshell_prompt_expr =
+     \ 'escape($USER . ":". fnamemodify(getcwd(), ":~")."%", "\\[]()?! ")." "'
+ let g:vimshell_prompt_pattern = '^\f\+:\%(\f\|\\.\)\+% '
 
 autocmd MyAutoCmd FileType vimshell call s:vimshell_settings()
 function! s:vimshell_settings()
@@ -81,11 +81,10 @@ function! s:vimshell_settings()
 	call vimshell#set_alias('up', 'cdup')
 
 	call vimshell#hook#add('chpwd', 'my_chpwd', s:vimshell_hooks.chpwd)
-	" call vimshell#hook#add('emptycmd', 'my_emptycmd', s:vimshell_hooks.emptycmd)
+	call vimshell#hook#add('emptycmd', 'my_emptycmd', s:vimshell_hooks.emptycmd)
 	call vimshell#hook#add('notfound', 'my_notfound', s:vimshell_hooks.notfound)
 	call vimshell#hook#add('preprompt', 'my_preprompt', s:vimshell_hooks.preprompt)
 	call vimshell#hook#add('preexec', 'my_preexec', s:vimshell_hooks.preexec)
-	" call vimshell#hook#set('preexec', [s:SID_PREFIX() . 'vimshell_hooks_preexec'])
 endfunction
 
 autocmd MyAutoCmd FileType int-* call s:interactive_settings()

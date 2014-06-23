@@ -1,9 +1,5 @@
 NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'gregsexton/MatchTag'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'tacahiroy/ctrlp-funky'
-NeoBundle 'kaneshin/ctrlp-git-log'
-NeoBundle 'jasoncodes/ctrlp-modified.vim'
 NeoBundle 'vim-scripts/delimitMate.vim'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'tpope/vim-fugitive'
@@ -24,7 +20,6 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'majutsushi/tagbar'
-NeoBundle 'SirVer/ultisnips'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'Lokaltog/vim-easymotion'
@@ -32,7 +27,6 @@ NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'jrhorn424/vim-multiple-cursors'
 NeoBundle 'sheerun/vim-polyglot'
 NeoBundle 'tpope/vim-rails'
-NeoBundle 'honza/vim-snippets'
 NeoBundle 'mtscout6/vim-tagbar-css'
 NeoBundle 'bronson/vim-trailing-whitespace'
 NeoBundle 'Shougo/unite.vim', {
@@ -52,7 +46,7 @@ NeoBundle 'Shougo/neocomplete.vim', {
 			\ }
 NeoBundle 'Shougo/neocomplcache-rsense'
 NeoBundle 'Shougo/neosnippet.vim', {
-			\ 'depends' : ['Shougo/neosnippet-snippets', 'Shougo/context_filetype.vim'],
+			\ 'depends' : ['Shougo/neosnippet-snippets', 'Shougo/context_filetype.vim', 'honza/vim-snippets'],
 			\ 'insert' : 1,
 			\ 'filetypes' : 'snippet',
 			\ 'unite_sources' : [
@@ -95,13 +89,11 @@ NeoBundle 'Shougo/unite-help'
 NeoBundle 'tsukkee/unite-tag', {
 			\ 'unite_sources' : ['tag', 'tag/include', 'tag/file']
 			\ }
+NeoBundle 'Shougo/unite-session'
 NeoBundle 'ujihisa/neco-look'
 NeoBundle 'osyo-manga/unite-filetype'
 NeoBundle 'kana/vim-tabpagecd', {
 			\ 'unite_sources' : 'tab'
-			\ }
-NeoBundle 'rhysd/accelerated-jk', {
-			\ 'mappings' : '<Plug>(accelerated_jk_',
 			\ }
 NeoBundle 'supermomonga/unite-kawaii-calc'
 NeoBundleLazy 'godlygeek/csapprox', { 'terminal' : 1 }
@@ -129,3 +121,8 @@ NeoBundleLazy 'Shougo/vim-vcs', {
 			\ 'autoload' : {'commands' : 'Vcs'},
 			\ }
 NeoBundle 'tejr/vim-tmux'
+NeoBundle 'xolox/vim-easytags', {
+			\ 'depends' : 'xolox/vim-misc'
+			\ }
+NeoBundle 'pbrisbin/vim-mkdir'
+NeoBundle 'rhysd/auto-neobundle'

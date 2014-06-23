@@ -20,11 +20,8 @@ set nowrap
 set whichwrap+=h,l,<,>,[,],b,s,~
 " Always display statusline.
 set laststatus=2
-" Height of command line.
-"set cmdheight=2
 " Not show command on statusline.
 set showcmd
-" Show title.
 " Turn down a long line appointed in 'breakat'
 set linebreak
 set showbreak=>\
@@ -32,6 +29,21 @@ set breakat=\ \	;:,!?
 
 " Do not display greetings message at the time of Vim start.
 set shortmess=aTI
+
+" TMUX fix {{{
+" tell vim that the term has 256 colors
+if &term =~ '256color'
+	set t_ut=
+endif
+" allows cursor change in tmux mode 
+if exists('$TMUX')
+	let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+	let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+	let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+	let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+"}}}
 
 " Disable bell.
 set t_vb=
@@ -156,8 +168,7 @@ function! s:_wcwidth(ucs)
 				\  && (ucs <= 0x115f
 				\  || ucs == 0x2329
 				\  || ucs == 0x232a
-				\  || (ucs >= 0x2e80 && ucs <= 0xa4cf
-				\	   && ucs != 0x303f)
+				\  || (ucs >= 0x2e80 && ucs <= 0xa4cf && ucs != 0x303f)
 				\  || (ucs >= 0xac00 && ucs <= 0xd7a3)
 				\  || (ucs >= 0xf900 && ucs <= 0xfaff)
 				\  || (ucs >= 0xfe30 && ucs <= 0xfe6f)

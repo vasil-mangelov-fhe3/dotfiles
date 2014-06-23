@@ -6,7 +6,7 @@ let g:vimfiler_execute_file_list['_'] = 'vim'
 let g:vimfiler_enable_clipboard = 0
 let g:vimfiler_safe_mode_by_default = 0
 
-let g:vimfiler_as_default_explorer = 1
+"let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_detect_drives = IsWindows() ? [
 			\ 'C:/', 'D:/', 'E:/', 'F:/', 'G:/', 'H:/', 'I:/',
 			\ 'J:/', 'K:/', 'L:/', 'M:/', 'N:/'] :

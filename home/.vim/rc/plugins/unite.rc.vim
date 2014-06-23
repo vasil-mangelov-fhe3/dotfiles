@@ -1,6 +1,7 @@
 "---------------------------------------------------------------------------
 " unite.vim
 "
+
 let g:unite_kind_file_vertical_preview = 1
 let g:unite_source_menu_menus = {}
 let g:unite_source_menu_menus.ff = {
@@ -12,10 +13,10 @@ let g:unite_source_menu_menus.ff.command_candidates = {
 			\       'mac'    : 'WMac',
 			\     }
 
-let g:unite_enable_start_insert = 1
+"let g:unite_enable_start_insert = 1
 let g:unite_split_rule = "botright"
-let g:unite_force_overwrite_statusline = 0
-let g:unite_winheight = 10
+let g:unite_force_overwrite_statusline = 1
+"let g:unite_winheight = 10
 let g:unite_source_menu_menus.unite = {
 			\     'description' : 'Start unite sources',
 			\ }
@@ -64,9 +65,9 @@ call unite#custom#profile('action', 'context', {
 			\ })
 
 " Set "-no-quit" automatically in grep unite source.
-call unite#custom#profile('source/grep', 'context', {
-			\ 'no_quit' : 1
-			\ })
+"call unite#custom#profile('source/grep', 'context', {
+"\ 'no_quit' : 1
+"\ })
 
 " migemo.
 call unite#custom#source('line_migemo', 'matchers', 'matcher_migemo')
@@ -84,6 +85,7 @@ call unite#custom#source(
 call unite#custom#source(
 			\ 'file_rec,file_rec/async,file_rec/git,file_mru', 'converters',
 			\ ['converter_file_directory'])
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
 "}}}
 
@@ -114,7 +116,13 @@ function! s:unite_my_settings() "{{{
 	"}}}
 
 	" Overwrite settings.
-	imap <buffer>  <BS>      <Plug>(unite_delete_backward_path)
+	imap <silent><buffer><expr> <C-x> unite#do_action('split')
+	nmap <silent><buffer><expr> <C-x> unite#do_action('split')
+	imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+	nmap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+	imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+	nmap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+	nmap <buffer> <ESC> <Plug>(unite_exit)
 	imap <buffer>  jj        <Plug>(unite_insert_leave)
 	imap <buffer>  <Tab>     <Plug>(unite_complete)
 	imap <buffer> <C-w>      <Plug>(unite_delete_backward_path)
@@ -203,19 +211,38 @@ call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
 			\ '\.git/',
 			\ ], '\|'))
 
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
+let g:unite_source_menu_menus.git = {
+			\ 'description' : '            gestionar repositorios git
+			\                            ⌘ [espacio]g',
+			\}
+let g:unite_source_menu_menus.git.command_candidates = [
+			\['▷ tig                                                        ⌘ ,gt',
+			\'normal ,gt'],
+			\['▷ git status       (Fugitive)                                ⌘ ,gs',
+			\'Gstatus'],
+			\['▷ git diff         (Fugitive)                                ⌘ ,gd',
+			\'Gdiff'],
+			\['▷ git commit       (Fugitive)                                ⌘ ,gc',
+			\'Gcommit'],
+			\['▷ git log          (Fugitive)                                ⌘ ,gl',
+			\'exe "silent Glog | Unite quickfix"'],
+			\['▷ git blame        (Fugitive)                                ⌘ ,gb',
+			\'Gblame'],
+			\['▷ git stage        (Fugitive)                                ⌘ ,gw',
+			\'Gwrite'],
+			\['▷ git checkout     (Fugitive)                                ⌘ ,go',
+			\'Gread'],
+			\['▷ git rm           (Fugitive)                                ⌘ ,gr',
+			\'Gremove'],
+			\['▷ git mv           (Fugitive)                                ⌘ ,gm',
+			\'exe "Gmove " input("destino: ")'],
+			\['▷ git push         (Fugitive, salida por buffer)             ⌘ ,gp',
+			\'Git! push'],
+			\['▷ git pull         (Fugitive, salida por buffer)             ⌘ ,gP',
+			\'Git! pull'],
+			\['▷ git prompt       (Fugitive, salida por buffer)             ⌘ ,gi',
+			\'exe "Git! " input("comando git: ")'],
+			\['▷ git cd           (Fugitive)',
+			\'Gcd'],
+			\]
 
-nnoremap <silent> <F4> :Unite buffer -immediately<CR>
-imap <F4> <C-o>:Unite buffer -immediately<CR>
-
-nnoremap <C-P> :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/async:!<cr>
-
-autocmd FileType unite call s:unite_settings()
-
-function! s:unite_settings()
-	imap <silent><buffer><expr> <C-x> unite#do_action('split')
-	imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
-	imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-	nmap <buffer> <ESC> <Plug>(unite_exit)
-endfunction

@@ -21,10 +21,6 @@ xnoremap < <gv
 " make :Q work like :q
 command! -bang Q quit<bang>
 map <F1> <Nop>
-autocmd VimEnter * if exists(":NERDTreeToggle") | execute "nnoremap <silent> <F2> :NERDTreeToggle\<CR>" | execute ":imap <F2> <C-o>:NERDTreeToggle\<CR>" | endif
-autocmd VimEnter * if exists(":NERDTreeFindToggle") | execute "nnoremap <silent> <C-F2> :NERDTreeFind\<CR>" | execute ":imap <C-F2> <C-o>:NERDTreeFind\<CR>" | endif
-autocmd VimEnter * if exists(":TagbarToggle") | execute "nnoremap <silent> <F3> :TagbarToggle\<CR>" | execute ":imap <F3> <C-o>:TagbarToggle\<CR>" | endif
-autocmd VimEnter * if exists(":GundoToggle") | execute "nnoremap <silent> <F5> :GundoToggle\<CR>" | execute ":imap <F5> <C-o>:GundoToggle\<CR>" | endif
 nnoremap <silent> <F6> :set invnumber invlist<CR>
 :imap <F6> <C-o>:set invnumber invlist<CR>
 set pastetoggle=<F7>
@@ -35,15 +31,9 @@ nnoremap <silent> <F12> :call DiffWithSaved()<CR>
 nnoremap <silent> <C-Right> :tabnext<CR>
 " Previous Tab
 nnoremap <silent> <C-Left> :tabprevious<CR>
-" New Tab
-nnoremap <silent> <C-t> :tabnew<CR>
 "make <c-l> clear the highlight as well as redraw
 nnoremap <C-L> :nohls<CR><C-L>
 inoremap <C-L> <C-O>:nohls<CR>
-"map Q to something useful
-nnoremap Q gq
-"make Y consistent with C and D
-nnoremap Y y$
 
 if has('clipboard')
 	xnoremap <silent> y "*y:let [@+,@"]=[@*,@*]<CR>
@@ -71,7 +61,7 @@ cnoremap <C-n>          <Down>
 cnoremap <C-p>          <Up>
 " <C-k>, K: delete to end.
 cnoremap <C-k> <C-\>e getcmdpos() == 1 ?
-      \ '' : getcmdline()[:getcmdpos()-2]<CR>
+			\ '' : getcmdline()[:getcmdpos()-2]<CR>
 " <C-y>: paste.
 cnoremap <C-y>          <C-r>*
 
@@ -90,24 +80,24 @@ autocmd MyAutoCmd CmdwinEnter * call s:init_cmdwin()
 autocmd MyAutoCmd CmdwinLeave * let g:neocomplcache_enable_auto_select = 1
 
 function! s:init_cmdwin()
-  let g:neocomplcache_enable_auto_select = 0
-  let b:neocomplcache_sources_list = ['vim_complete']
+	let g:neocomplcache_enable_auto_select = 0
+	let b:neocomplcache_sources_list = ['vim_complete']
 
-  nnoremap <buffer><silent> q :<C-u>quit<CR>
-  nnoremap <buffer><silent> <TAB> :<C-u>quit<CR>
-  inoremap <buffer><expr><CR> neocomplete#close_popup()."\<CR>"
-  inoremap <buffer><expr><C-h> col('.') == 1 ?
-        \ "\<ESC>:quit\<CR>" : neocomplete#cancel_popup()."\<C-h>"
-  inoremap <buffer><expr><BS> col('.') == 1 ?
-        \ "\<ESC>:quit\<CR>" : neocomplete#cancel_popup()."\<C-h>"
+	nnoremap <buffer><silent> q :<C-u>quit<CR>
+	nnoremap <buffer><silent> <TAB> :<C-u>quit<CR>
+	inoremap <buffer><expr><CR> neocomplete#close_popup()."\<CR>"
+	inoremap <buffer><expr><C-h> col('.') == 1 ?
+				\ "\<ESC>:quit\<CR>" : neocomplete#cancel_popup()."\<C-h>"
+	inoremap <buffer><expr><BS> col('.') == 1 ?
+				\ "\<ESC>:quit\<CR>" : neocomplete#cancel_popup()."\<C-h>"
 
-  " Completion.
-  inoremap <buffer><expr><TAB>  pumvisible() ?
-        \ "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : "\<C-x>\<C-u>\<C-p>"
+	" Completion.
+	inoremap <buffer><expr><TAB>  pumvisible() ?
+				\ "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : "\<C-x>\<C-u>\<C-p>"
 
-  " Remove history lines.
-  silent execute printf("1,%ddelete _", min([&history - 20, line("$") - 20]))
-  call cursor(line('$'), 0)
+	" Remove history lines.
+	silent execute printf("1,%ddelete _", min([&history - 20, line("$") - 20]))
+	call cursor(line('$'), 0)
 
-  startinsert!
+	startinsert!
 endfunction"}}}

@@ -60,7 +60,7 @@ set infercase
 " set cdpath+=~
 
 " Enable folding.
-set foldenable
+set nofoldenable
 " set foldmethod=expr
 set foldmethod=marker
 " Show folding level.
@@ -95,7 +95,7 @@ set updatetime=1000
 set directory=~/.vim/swapfiles
 
 if v:version >= 703
-	"Set undofile
+	set undofile
 	set undodir=~/.vim/undofiles
 	set undolevels=1000
 	set undoreload=10000
@@ -125,20 +125,6 @@ autocmd MyAutoCmd InsertLeave *
 
 " Update diff.
 autocmd MyAutoCmd InsertLeave * if &l:diff | diffupdate | endif
-
-" Make directory automatically.
-" --------------------------------------
-" http://vim-users.jp/2011/02/hack202/
-
-autocmd MyAutoCmd BufWritePre *
-			\ call s:mkdir_as_necessary(expand('<afile>:p:h'), v:cmdbang)
-function! s:mkdir_as_necessary(dir, force)
-	if !isdirectory(a:dir) && &l:buftype == '' &&
-				\ (a:force || input(printf('"%s" does not exist. Create? [y/N]',
-				\              a:dir)) =~? '^y\%[es]$')
-		call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
-	endif
-endfunction
 
 " Use autofmt.
 set formatexpr=autofmt#compat#formatexpr()
