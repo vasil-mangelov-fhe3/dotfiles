@@ -44,15 +44,15 @@ if neobundle#tap('unite.vim') "{{{
 				\ :<C-u>Unite outline -start-insert -resume<CR>
 	nnoremap <silent> ;t
 				\ :<C-u>UniteWithCursorWord -buffer-name=tag tag tag/include<CR>
-	xnoremap <silent> ;r
-				\ d:<C-u>Unite -buffer-name=register register history/yank<CR>
 	nnoremap <silent> <C-k>
 				\ :<C-u>Unite change jump<CR>
 	nnoremap <silent><expr> <C-f>
 				\ ":\<C-u>Unite grep -buffer-name=grep%".tabpagenr()." -auto-preview -no-split -no-empty\<CR>"
-	nnoremap <silent> ;r
-				\ :<C-u>Unite -buffer-name=register register history/yank<CR>
-	" <C-t>: Tab pages
+	inoremap <silent> <F10>
+				\ d:<C-u>Unite -buffer-name=register -toggle register history/yank<CR>
+	nnoremap <silent> <F10>
+				\ :<C-u>Unite -buffer-name=register -toggle register history/yank<CR>
+	" <C-t>: Tab pages>
 	nnoremap <silent><expr> <C-t>
 				\ ":\<C-u>Unite -auto-resize -select=".(tabpagenr()-1)." tab\<CR>"
 	nnoremap <silent> [Window]s

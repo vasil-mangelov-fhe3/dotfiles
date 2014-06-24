@@ -4,6 +4,9 @@ hardstatus alwayslastline "%{wk}%?%-Lw%?%{bw}%n*%f %t%?(%u)%?%{wk}%?%+Lw %= %{mk
 # mouse scrolling
 termcapinfo xterm* ti@:te@
 
+# mouse tracking allows to switch region focus by clicking
+mousetrack on
+
 # COLORS! and some useful terminfo
 term screen-256color
 attrcolor b ".I"
