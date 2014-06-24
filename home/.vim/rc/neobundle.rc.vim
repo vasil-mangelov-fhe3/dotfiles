@@ -14,8 +14,10 @@ NeoBundle 'jistr/vim-nerdtree-tabs'
 NeoBundle 'shawncplus/phpcomplete.vim'
 NeoBundle 'spf13/PIV'
 NeoBundle 'tpope/vim-ragtag'
-NeoBundle 'medihack/sh.vim'
-NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'hail2u/vim-css3-syntax', { 'autoload' : { 'filetypes' : 'syntax'}}
+NeoBundle 'medihack/sh.vim', { 'autoload' : { 'filetypes' : 'syntax'}}
+NeoBundle 'altercation/vim-colors-solarized', { 'autoload' :
+        \ { 'unite_sources' : 'colorscheme', }}
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'godlygeek/tabular'
@@ -29,17 +31,9 @@ NeoBundle 'sheerun/vim-polyglot'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'mtscout6/vim-tagbar-css'
 NeoBundle 'bronson/vim-trailing-whitespace'
-NeoBundle 'Shougo/unite.vim', {
-			\ 'commands' : [{ 'name' : 'Unite',
-			\ 'complete' : 'customlist,unite#complete_source'},
-			\ 'UniteWithCursorWord', 'UniteWithInput']
-			\ }
-NeoBundle 'Shougo/unite-build'
-NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'ujihisa/vimshell-ssh', {
 			\ 'filetypes' : 'vimshell',
 			\ }
-NeoBundle 'Shougo/unite-sudo'
 NeoBundle 'Shougo/neocomplete.vim', {
 			\ 'depends' : 'Shougo/context_filetype.vim',
 			\ 'insert' : 1
@@ -71,13 +65,22 @@ NeoBundle 'Shougo/vimshell.vim', {
 NeoBundle 'yomi322/vim-gitcomplete', {
 			\ 'filetype' : 'vimshell'
 			\ }
-NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'thinca/vim-quickrun', {
 			\ 'commands' : 'QuickRun',
 			\ 'mappings' : [
 			\   ['nxo', '<Plug>(quickrun)']],
 			\ }
+NeoBundle 'Shougo/unite.vim', {
+			\ 'commands' : [{ 'name' : 'Unite',
+			\ 'complete' : 'customlist,unite#complete_source'},
+			\ 'UniteWithCursorWord', 'UniteWithInput']
+			\ }
+NeoBundle 'Shougo/neomru.vim', {'autoload':{'unite_sources':
+            \ ['file_mru', 'directory_mru']}}
+NeoBundle 'Shougo/unite-build'
+NeoBundle 'majkinetor/unite-cmdmatch'
+NeoBundle 'Shougo/unite-sudo'
 NeoBundle 'thinca/vim-ref', {
 			\ 'commands' : 'Ref',
 			\ 'unite_sources' : 'ref',
@@ -85,18 +88,21 @@ NeoBundle 'thinca/vim-ref', {
 NeoBundle 'thinca/vim-unite-history', {
 			\ 'unite_sources' : ['history/command', 'history/search']
 			\ }
-NeoBundle 'Shougo/unite-help'
+NeoBundle 'Shougo/unite-outline', {'autoload':{'unite_sources':'outline'}}
+NeoBundle 'Shougo/unite-help', {'autoload':{'unite_sources':'help'}}
+NeoBundle 'ujihisa/unite-locate', {'autoload':{'unite_sources':'locate'}}
 NeoBundle 'tsukkee/unite-tag', {
 			\ 'unite_sources' : ['tag', 'tag/include', 'tag/file']
 			\ }
 NeoBundle 'Shougo/unite-session'
-NeoBundle 'ujihisa/neco-look'
+NeoBundle 'kopischke/unite-spell-suggest'
 NeoBundle 'osyo-manga/unite-filetype'
 NeoBundle 'kana/vim-tabpagecd', {
 			\ 'unite_sources' : 'tab'
 			\ }
 NeoBundle 'supermomonga/unite-kawaii-calc'
 NeoBundleLazy 'godlygeek/csapprox', { 'terminal' : 1 }
+NeoBundle 'ujihisa/neco-look'
 NeoBundle 'tpope/vim-repeat', {
 			\ 'mappings' : '.',
 			\ }
@@ -116,7 +122,7 @@ NeoBundle 'Shougo/javacomplete', {
 NeoBundle 'kana/vim-operator-user', {
 			\  'functions' : 'operator#user#define',
 			\}
-NeoBundle 'tejr/vim-tmux'
+NeoBundle 'tejr/vim-tmux', { 'autoload' : { 'filetypes' : 'conf'}}
 NeoBundle 'xolox/vim-easytags', {
 			\ 'depends' : 'xolox/vim-misc'
 			\ }
