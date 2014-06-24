@@ -4,6 +4,7 @@
 
 if has('lua') && (v:version > 703 || (v:version == 703 && has('patch885')))
 	if neobundle#tap('neocomplete.vim') "{{{
+		NeoBundleSource neocomplete.vim
 		let g:neocomplete#enable_at_startup = 1
 		let neobundle#hooks.on_source =
 					\ '~/.vim/rc/plugins/neocomplete.rc.vim'
@@ -11,11 +12,11 @@ if has('lua') && (v:version > 703 || (v:version == 703 && has('patch885')))
 	endif "}}}
 else
 	if neobundle#tap('neocomplcache.vim') "{{{
-	let g:neocomplcache_enable_at_startup = 1
-	let neobundle#hooks.on_source =
+		NeoBundleSource neocomplcache.vim
+		let g:neocomplcache_enable_at_startup = 1
+		let neobundle#hooks.on_source =
 			\ '~/.vim/rc/plugins/neocomplcache.rc.vim'
-
-	call neobundle#untap()
+		call neobundle#untap()
 	endif "}}}
 endif
 
