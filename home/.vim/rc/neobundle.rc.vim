@@ -60,7 +60,6 @@ NeoBundle 'Shougo/neosnippet.vim', {
 			\						'neosnippet', 'neosnippet/user', 'neosnippet/runtime'],
 			\ }
 NeoBundle 'Shougo/vimproc.vim', {
-			\ 'external_commands' : 'make',
 			\ 'build' : {
 			\				'windows' : 'make -f make_mingw32.mak',
 			\				'cygwin' : 'make -f make_cygwin.mak',
