@@ -100,7 +100,7 @@ inoremap <expr><C-y>  pumvisible() ? neocomplete#close_popup() :  "\<C-r>\""
 inoremap <expr><C-e>  pumvisible() ? neocomplete#cancel_popup() : "\<End>"
 " <C-k>: unite completion.
 imap <C-k>  <Plug>(neocomplete_start_unite_complete)
-inoremap <expr> O  &filetype == 'vim' ? "\<C-x>\<C-v>" : "\<C-x>\<C-o>"
+"inoremap <expr> O  &filetype == 'vim' ? "\<C-x>\<C-v>" : "\<C-x>\<C-o>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
