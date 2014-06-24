@@ -14,17 +14,25 @@ NeoBundle 'jistr/vim-nerdtree-tabs'
 NeoBundle 'shawncplus/phpcomplete.vim'
 NeoBundle 'spf13/PIV'
 NeoBundle 'tpope/vim-ragtag'
-NeoBundle 'hail2u/vim-css3-syntax', { 'autoload' : { 'filetypes' : 'syntax'}}
-NeoBundle 'medihack/sh.vim', { 'autoload' : { 'filetypes' : 'syntax'}}
-NeoBundle 'altercation/vim-colors-solarized', { 'autoload' :
-        \ { 'unite_sources' : 'colorscheme', }}
+NeoBundle 'hail2u/vim-css3-syntax', {
+			\ 'autoload' : { 'filetypes' : 'syntax'}
+			\ }
+NeoBundle 'medihack/sh.vim', {
+			\ 'autoload' : { 'filetypes' : 'syntax'}
+			\ }
+NeoBundle 'altercation/vim-colors-solarized', {
+			\ 'autoload' : { 'unite_sources' : 'colorscheme', }
+			\ }
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'bling/vim-airline'
-NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'Lokaltog/vim-easymotion', {
+			\ 'insert' : 1,
+			\ 'vim_version' : '7.3'
+			\ }
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'jrhorn424/vim-multiple-cursors'
 NeoBundle 'sheerun/vim-polyglot'
@@ -35,31 +43,39 @@ NeoBundle 'ujihisa/vimshell-ssh', {
 			\ 'filetypes' : 'vimshell',
 			\ }
 NeoBundle 'Shougo/neocomplete.vim', {
+			\ 'insert' : 1,
 			\ 'depends' : 'Shougo/context_filetype.vim',
-			\ 'insert' : 1
+			\ 'disabled' : !has('lua'),
+			\ 'vim_version' : '7.3.885'
 			\ }
-NeoBundle 'Shougo/neocomplcache-rsense'
+NeoBundle 'Shougo/neocomplcache-rsense', {
+			\ 'depends' : 'Shougo/neocomplete.vim'
+			\ }
 NeoBundle 'Shougo/neosnippet.vim', {
 			\ 'depends' : ['Shougo/neosnippet-snippets', 'Shougo/context_filetype.vim', 'honza/vim-snippets'],
 			\ 'insert' : 1,
 			\ 'filetypes' : 'snippet',
 			\ 'unite_sources' : [
-			\    'neosnippet', 'neosnippet/user', 'neosnippet/runtime'],
+			\						'neosnippet', 'neosnippet/user', 'neosnippet/runtime'],
 			\ }
 NeoBundle 'Shougo/vimproc.vim', {
+			\ 'external_commands' : 'make',
 			\ 'build' : {
-			\     'windows' : 'make -f make_mingw32.mak',
-			\     'cygwin' : 'make -f make_cygwin.mak',
-			\     'mac' : 'make -f make_mac.mak',
-			\     'unix' : 'make -f make_unix.mak',
-			\    }
+			\				'windows' : 'make -f make_mingw32.mak',
+			\				'cygwin' : 'make -f make_cygwin.mak',
+			\				'mac' : 'make -f make_mac.mak',
+			\				'unix' : 'make -f make_unix.mak',
+			\			}
 			\ }
 NeoBundle 'Shougo/vimshell.vim', {
-			\ 'commands' : [{ 'name' : 'VimShell',
-			\                 'complete' : 'customlist,vimshell#complete'},
-			\               'VimShellExecute', 'VimShellInteractive',
-			\               'VimShellCreate',
-			\               'VimShellTerminal', 'VimShellPop'],
+			\ 'commands' : [	{
+			\						'name' : 'VimShell',
+			\						'complete' : 'customlist,vimshell#complete'
+			\					},
+			\					'VimShellExecute', 'VimShellInteractive',
+			\					'VimShellCreate',
+			\					'VimShellTerminal', 'VimShellPop'
+			\				],
 			\ 'mappings' : '<Plug>(vimshell_'
 			\ }
 NeoBundle 'yomi322/vim-gitcomplete', {
@@ -77,7 +93,7 @@ NeoBundle 'Shougo/unite.vim', {
 			\ 'UniteWithCursorWord', 'UniteWithInput']
 			\ }
 NeoBundle 'Shougo/neomru.vim', {'autoload':{'unite_sources':
-            \ ['file_mru', 'directory_mru']}}
+			\ ['file_mru', 'directory_mru']}}
 NeoBundle 'Shougo/unite-build'
 NeoBundle 'majkinetor/unite-cmdmatch'
 NeoBundle 'Shougo/unite-sudo'
@@ -110,6 +126,7 @@ NeoBundle 'matchit.zip', {
 			\ 'mappings' : [['nxo', '%', 'g%']]
 			\ }
 NeoBundle 'Shougo/javacomplete', {
+			\ 'external_commands' : 'javac',
 			\ 'build': {
 			\       'cygwin': 'javac autoload/Reflection.java',
 			\       'mac': 'javac autoload/Reflection.java',
@@ -122,7 +139,9 @@ NeoBundle 'Shougo/javacomplete', {
 NeoBundle 'kana/vim-operator-user', {
 			\  'functions' : 'operator#user#define',
 			\}
-NeoBundle 'tejr/vim-tmux', { 'autoload' : { 'filetypes' : 'conf'}}
+NeoBundle 'tejr/vim-tmux', {
+			\ 'autoload' : {
+			\ 'filetypes' : 'conf'}}
 NeoBundle 'xolox/vim-easytags', {
 			\ 'depends' : 'xolox/vim-misc'
 			\ }

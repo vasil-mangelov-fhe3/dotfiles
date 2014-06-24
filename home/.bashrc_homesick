@@ -84,7 +84,7 @@ function unsudo() {
 
 function git_remove_submodule() {
 	SUBMODULE_NAME=$(echo "${1}" | sed 's/\/$//'); shift
-	
+
 	if git submodule status "${SUBMODULE_NAME}" >/dev/null 2>&1; then
 		git submodule deinit -f "${SUBMODULE_NAME}"
 		git rm --cached "${SUBMODULE_NAME}"
@@ -109,8 +109,8 @@ fi
 [ -e ~/.config/dircolors-solarized/dircolors.256dark ] && eval `dircolors ~/.config/dircolors-solarized/dircolors.256dark`
 
 # Start tmux on connection
-if [ "${PS1}" != "" -a "$(tmux has-session -t remote &>/dev/null; echo $?)" = 0 -a "${SSH_TTY:-x}" != x -a "$(which tmux)" != "" -a "${TMUX}" = "" ]; then
+if [ "${PS1}" != "" -a "$(tmux has-session -t remote &>/dev/null; echo $?)" = 0 -a "${SSH_TTY:-x}" != x -a "$(which tmux 2>/dev/null)" != "" -a "${TMUX}" = "" ]; then
 	tmux -2 attach-session -t remote
-elif [ "${PS1}" != "" -a "${SSH_TTY:-x}" != x -a "$(which tmux)" != "" -a "${TMUX}" = "" ]; then
+elif [ "${PS1}" != "" -a "${SSH_TTY:-x}" != x -a "$(which tmux 2>/dev/null)" != "" -a "${TMUX}" = "" ]; then
 	tmux -2 new-session -s remote
 fi
