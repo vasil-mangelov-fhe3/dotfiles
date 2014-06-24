@@ -23,10 +23,8 @@ command! -bang Q quit<bang>
 map <F1> <Nop>
 nnoremap <silent> <F6> :set invnumber invlist<CR>
 :imap <F6> <C-o>:set invnumber invlist<CR>
-set pastetoggle=<F7>
 nnoremap <silent> <F11> :setlocal spell! spell?<CR>
 :imap <F11> <C-o>:setlocal spell! spell?<CR>
-nnoremap <silent> <F12> :call DiffWithSaved()<CR>
 " Next Tab
 nnoremap <silent> <C-Right> :tabnext<CR>
 " Previous Tab

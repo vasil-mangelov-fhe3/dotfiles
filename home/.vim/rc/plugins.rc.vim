@@ -247,3 +247,8 @@ if neobundle#tap('auto-neobundle') "{{{
 	augroup END
 	call neobundle#untap()
 endif "}}}
+
+if neobundle#tap('vim-diffchanges') "{{{
+	nnoremap <silent> <F12> :DiffChangesDiffToggle<CR>
+	call neobundle#untap()
+endif "}}}

@@ -121,5 +121,6 @@ NeoBundle 'xolox/vim-easytags', {
 			\ 'depends' : 'xolox/vim-misc'
 			\ }
 NeoBundle 'pbrisbin/vim-mkdir'
+NeoBundle 'jmcantrell/vim-diffchanges'
 " Disabled set timestamp doesn't work
 "NeoBundle 'rhysd/auto-neobundle'
