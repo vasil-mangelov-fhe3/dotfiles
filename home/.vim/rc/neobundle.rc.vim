@@ -143,6 +143,7 @@ NeoBundle 'tejr/vim-tmux', {
 			\ 'autoload' : {
 			\ 'filetypes' : 'conf'}}
 NeoBundle 'xolox/vim-easytags', {
+			\ 'external_commands' : 'ctags-exuberant',
 			\ 'depends' : 'xolox/vim-misc'
 			\ }
 NeoBundle 'pbrisbin/vim-mkdir'
