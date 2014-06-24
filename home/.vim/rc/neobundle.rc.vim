@@ -29,10 +29,6 @@ NeoBundle 'godlygeek/tabular'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'bling/vim-airline'
-NeoBundle 'Lokaltog/vim-easymotion', {
-			\ 'insert' : 1,
-			\ 'vim_version' : '7.3'
-			\ }
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'jrhorn424/vim-multiple-cursors'
 NeoBundle 'sheerun/vim-polyglot'
