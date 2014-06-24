@@ -2,17 +2,19 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'gregsexton/MatchTag'
 NeoBundle 'vim-scripts/delimitMate.vim'
 NeoBundle 'tpope/vim-endwise'
-NeoBundle 'tpope/vim-fugitive'
+NeoBundleFetch 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-git'
-NeoBundle 'sjl/gundo.vim'
+NeoBundleFetch 'sjl/gundo.vim'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'vim-scripts/IndexedSearch'
 NeoBundle 'tpope/vim-markdown'
 NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'jistr/vim-nerdtree-tabs'
+NeoBundleFetch 'scrooloose/nerdtree'
+NeoBundle 'jistr/vim-nerdtree-tabs', {
+			\ 'depends' : 'scrooloose/nerdtree'
+			\ }
 NeoBundle 'shawncplus/phpcomplete.vim'
-NeoBundle 'spf13/PIV'
+NeoBundleFetch 'spf13/PIV'
 NeoBundle 'tpope/vim-ragtag'
 NeoBundle 'hail2u/vim-css3-syntax', {
 			\ 'autoload' : { 'filetypes' : 'syntax'}
@@ -20,15 +22,15 @@ NeoBundle 'hail2u/vim-css3-syntax', {
 NeoBundle 'medihack/sh.vim', {
 			\ 'autoload' : { 'filetypes' : 'syntax'}
 			\ }
-NeoBundle 'altercation/vim-colors-solarized', {
+NeoBundleFetch 'altercation/vim-colors-solarized', {
 			\ 'autoload' : { 'unite_sources' : 'colorscheme', }
 			\ }
-NeoBundle 'tpope/vim-surround'
+NeoBundleFetch 'tpope/vim-surround'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'godlygeek/tabular'
-NeoBundle 'majutsushi/tagbar'
+NeoBundleFetch 'majutsushi/tagbar'
 NeoBundle 'tpope/vim-unimpaired'
-NeoBundle 'bling/vim-airline'
+NeoBundleFetch 'bling/vim-airline'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'jrhorn424/vim-multiple-cursors'
 NeoBundle 'sheerun/vim-polyglot'
@@ -38,16 +40,19 @@ NeoBundle 'bronson/vim-trailing-whitespace'
 NeoBundle 'ujihisa/vimshell-ssh', {
 			\ 'filetypes' : 'vimshell',
 			\ }
-NeoBundle 'Shougo/neocomplete.vim', {
+NeoBundleFetch 'Shougo/neocomplcache.vim', {
+			\ 'insert' : 1
+			\ }
+NeoBundleFetch 'Shougo/neocomplete.vim', {
 			\ 'insert' : 1,
 			\ 'depends' : 'Shougo/context_filetype.vim',
 			\ 'disabled' : !has('lua'),
 			\ 'vim_version' : '7.3.885'
 			\ }
-NeoBundle 'Shougo/neocomplcache-rsense', {
+NeoBundleLazy 'Shougo/neocomplcache-rsense', {
 			\ 'depends' : 'Shougo/neocomplete.vim'
 			\ }
-NeoBundle 'Shougo/neosnippet.vim', {
+NeoBundleLazy 'Shougo/neosnippet.vim', {
 			\ 'depends' : ['Shougo/neosnippet-snippets', 'Shougo/context_filetype.vim', 'honza/vim-snippets'],
 			\ 'insert' : 1,
 			\ 'filetypes' : 'snippet',
@@ -63,7 +68,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 			\				'unix' : 'make -f make_unix.mak',
 			\			}
 			\ }
-NeoBundle 'Shougo/vimshell.vim', {
+NeoBundleFetch 'Shougo/vimshell.vim', {
 			\ 'commands' : [	{
 			\						'name' : 'VimShell',
 			\						'complete' : 'customlist,vimshell#complete'
@@ -77,13 +82,13 @@ NeoBundle 'Shougo/vimshell.vim', {
 NeoBundle 'yomi322/vim-gitcomplete', {
 			\ 'filetype' : 'vimshell'
 			\ }
-NeoBundle 'kana/vim-niceblock'
+NeoBundleFetch 'kana/vim-niceblock'
 NeoBundle 'thinca/vim-quickrun', {
 			\ 'commands' : 'QuickRun',
 			\ 'mappings' : [
 			\   ['nxo', '<Plug>(quickrun)']],
 			\ }
-NeoBundle 'Shougo/unite.vim', {
+NeoBundleFetch 'Shougo/unite.vim', {
 			\ 'commands' : [{ 'name' : 'Unite',
 			\ 'complete' : 'customlist,unite#complete_source'},
 			\ 'UniteWithCursorWord', 'UniteWithInput']
@@ -93,7 +98,7 @@ NeoBundle 'Shougo/neomru.vim', {'autoload':{'unite_sources':
 NeoBundle 'Shougo/unite-build'
 NeoBundle 'majkinetor/unite-cmdmatch'
 NeoBundle 'Shougo/unite-sudo'
-NeoBundle 'thinca/vim-ref', {
+NeoBundleFetch 'thinca/vim-ref', {
 			\ 'commands' : 'Ref',
 			\ 'unite_sources' : 'ref',
 			\ }
@@ -118,7 +123,7 @@ NeoBundle 'ujihisa/neco-look'
 NeoBundle 'tpope/vim-repeat', {
 			\ 'mappings' : '.',
 			\ }
-NeoBundle 'matchit.zip', {
+NeoBundleFetch 'matchit.zip', {
 			\ 'mappings' : [['nxo', '%', 'g%']]
 			\ }
 NeoBundle 'Shougo/javacomplete', {
@@ -138,11 +143,11 @@ NeoBundle 'kana/vim-operator-user', {
 NeoBundle 'tejr/vim-tmux', {
 			\ 'autoload' : {
 			\ 'filetypes' : 'conf'}}
-NeoBundle 'xolox/vim-easytags', {
+NeoBundleFetch 'xolox/vim-easytags', {
 			\ 'external_commands' : 'ctags-exuberant',
 			\ 'depends' : 'xolox/vim-misc'
 			\ }
 NeoBundle 'pbrisbin/vim-mkdir'
-NeoBundle 'jmcantrell/vim-diffchanges'
+NeoBundleFetch 'jmcantrell/vim-diffchanges'
 " Disabled set timestamp doesn't work
 "NeoBundle 'rhysd/auto-neobundle'

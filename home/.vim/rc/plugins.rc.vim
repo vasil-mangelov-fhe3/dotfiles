@@ -2,12 +2,22 @@
 " Plugin:
 "
 
-if neobundle#tap('neocomplete.vim') "{{{
-	let g:neocomplete#enable_at_startup = 1
+if has('lua') && (v:version > 703 || (v:version == 703 && has('patch885')))
+	if neobundle#tap('neocomplete.vim') "{{{
+		let g:neocomplete#enable_at_startup = 1
+		let neobundle#hooks.on_source =
+					\ '~/.vim/rc/plugins/neocomplete.rc.vim'
+		call neobundle#untap()
+	endif "}}}
+else
+	if neobundle#tap('neocomplcache.vim') "{{{
+	let g:neocomplcache_enable_at_startup = 1
 	let neobundle#hooks.on_source =
-				\ '~/.vim/rc/plugins/neocomplete.rc.vim'
+			\ '~/.vim/rc/plugins/neocomplcache.rc.vim'
+
 	call neobundle#untap()
-endif "}}}
+	endif "}}}
+endif
 
 if neobundle#tap('neosnippet.vim') "{{{
 	let neobundle#hooks.on_source =
@@ -182,17 +192,6 @@ endif "}}}
 if neobundle#tap('vim-niceblock') "{{{
 	xmap I <Plug>(niceblock-I)
 	xmap A <Plug>(niceblock-A)
-	call neobundle#untap()
-endif "}}}
-
-if neobundle#tap('vim-smalls') "{{{
-	nmap S <Plug>(smalls)
-	call neobundle#untap()
-endif "}}}
-
-if neobundle#tap('vim-vcs') "{{{
-	nnoremap <silent> [Space]gs  :<C-u>Vcs status<CR>
-	nnoremap <silent> [Space]gc  :<C-u>Vcs commit<CR>
 	call neobundle#untap()
 endif "}}}
 
