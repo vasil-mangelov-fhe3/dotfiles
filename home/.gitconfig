@@ -47,6 +47,7 @@
 	rc = rebase --continue
 	pullsub = submodule update --init --remote --recursive
 	pullall = "!f(){ git pull \"$@\" && git submodule update --init --remote --recursive; }; f"
+	mergeup = !"git fetch origin -v; git fetch upstream -v; git merge upstream/master"
 	# Log aliases
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)- %an%Creset' --abbrev-commit --date=relative
 	lstat = log --stat --relative --abbrev-commit --date=local --pretty=format:'%C(white)%h %C(cyan)%cr %C(green)by %cn %Creset%C(yellow)%n%s%Creset'
