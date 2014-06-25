@@ -2,34 +2,12 @@
 " unite.vim
 "
 
-let g:unite_kind_file_vertical_preview = 1
-let g:unite_source_menu_menus = {}
-let g:unite_source_menu_menus.ff = {
-			\     'description' : 'Change file format option.',
-			\ }
-let g:unite_source_menu_menus.ff.command_candidates = {
-			\       'unix'   : 'WUnix',
-			\       'dos'    : 'WDos',
-			\       'mac'    : 'WMac',
-			\     }
+call g:source_rc('plugins/unite.menu.vim')
 
-"let g:unite_enable_start_insert = 1
+let g:unite_kind_file_vertical_preview = 1
+
 let g:unite_split_rule = "botright"
-let g:unite_force_overwrite_statusline = 1
-"let g:unite_winheight = 10
-let g:unite_source_menu_menus.unite = {
-			\     'description' : 'Start unite sources',
-			\ }
-let g:unite_source_menu_menus.unite.command_candidates = {
-			\       'history'    : 'Unite history/command',
-			\       'quickfix'   : 'Unite qflist -no-quit',
-			\       'resume'     : 'Unite -buffer-name=resume resume',
-			\       'directory'  : 'Unite -buffer-name=files '.
-			\             '-default-action=lcd directory_mru',
-			\       'mapping'    : 'Unite mapping',
-			\       'message'    : 'Unite output:message',
-			\       'scriptnames': 'Unite output:scriptnames',
-			\     }
+let g:unite_force_overwrite_statusline = 0
 
 let g:unite_source_history_yank_enable = 1
 
@@ -210,39 +188,4 @@ call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
 			\ 'ignore_pattern', join([
 			\ '\.git/',
 			\ ], '\|'))
-
-let g:unite_source_menu_menus.git = {
-			\ 'description' : '            gestionar repositorios git
-			\                            ⌘ [espacio]g',
-			\}
-let g:unite_source_menu_menus.git.command_candidates = [
-			\['▷ tig                                                        ⌘ ,gt',
-			\'normal ,gt'],
-			\['▷ git status       (Fugitive)                                ⌘ ,gs',
-			\'Gstatus'],
-			\['▷ git diff         (Fugitive)                                ⌘ ,gd',
-			\'Gdiff'],
-			\['▷ git commit       (Fugitive)                                ⌘ ,gc',
-			\'Gcommit'],
-			\['▷ git log          (Fugitive)                                ⌘ ,gl',
-			\'exe "silent Glog | Unite quickfix"'],
-			\['▷ git blame        (Fugitive)                                ⌘ ,gb',
-			\'Gblame'],
-			\['▷ git stage        (Fugitive)                                ⌘ ,gw',
-			\'Gwrite'],
-			\['▷ git checkout     (Fugitive)                                ⌘ ,go',
-			\'Gread'],
-			\['▷ git rm           (Fugitive)                                ⌘ ,gr',
-			\'Gremove'],
-			\['▷ git mv           (Fugitive)                                ⌘ ,gm',
-			\'exe "Gmove " input("destino: ")'],
-			\['▷ git push         (Fugitive, salida por buffer)             ⌘ ,gp',
-			\'Git! push'],
-			\['▷ git pull         (Fugitive, salida por buffer)             ⌘ ,gP',
-			\'Git! pull'],
-			\['▷ git prompt       (Fugitive, salida por buffer)             ⌘ ,gi',
-			\'exe "Git! " input("comando git: ")'],
-			\['▷ git cd           (Fugitive)',
-			\'Gcd'],
-			\]
 

@@ -43,10 +43,12 @@ if neobundle#tap('unite.vim') "{{{
 	xnoremap	  [unite]	<Nop>
 	nmap	  ;u [unite]
 	xmap	  ;u [unite]
-	nnoremap <silent> <F4> :Unite buffer -toggle -immediately<CR>
+	nnoremap <silent> <F1> :Unite -profile-name=menu menu:Main<CR>
+	inoremap <silent> <F1> :Unite -profile-name=menu menu:Main<CR>
+	nnoremap <silent> <F4> :Unite buffer tab -toggle -immediately<CR>
 	imap <F4> <C-o>:Unite buffer -toggle -immediately<CR>
-	nnoremap <C-P> :<C-u>Unite -buffer-name=files -start-insert buffer file_rec/async:!<cr>
-	imap <C-p> <C-o>:<C-u>Unite -buffer-name=files -start-insert buffer file_rec/async:!<cr>
+	nnoremap <C-P> :<C-u>Unite -buffer-name=files -start-insert buffer neomru/file file_rec/async:!<cr>
+	imap <C-p> <C-o>:<C-u>Unite -buffer-name=files -start-insert buffer neomru/file file_rec/async:!<cr>
 	nnoremap <expr><silent> ;b  <SID>unite_build()
 	function! s:unite_build()
 		return ":\<C-u>Unite -buffer-name=build". tabpagenr() ." -no-quit build\<CR>"
@@ -113,7 +115,7 @@ if neobundle#tap('unite.vim') "{{{
 	nnoremap <silent><expr> n
 				\ ":\<C-u>UniteResume search%".bufnr('%')." -no-start-insert\<CR>"
 	nnoremap <silent> <C-w>  :<C-u>Unite -auto-resize window/gui<CR>
-	let neobundle#hooks.on_source =
+	let neobundle#hooks.on_source = 
 				\ '~/.vim/rc/plugins/unite.rc.vim'
 	call neobundle#untap()
 endif "}}}

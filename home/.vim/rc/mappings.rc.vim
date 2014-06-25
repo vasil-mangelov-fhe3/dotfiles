@@ -20,7 +20,6 @@ xnoremap < <gv
 
 " make :Q work like :q
 command! -bang Q quit<bang>
-map <F1> <Nop>
 nnoremap <silent> <F6> :set invnumber invlist<CR>
 :imap <F6> <C-o>:set invnumber invlist<CR>
 nnoremap <silent> <F11> :setlocal spell! spell?<CR>

@@ -8,7 +8,7 @@
 " Note: Skip initialization for vim-tiny or vim-small.
 if !1 | finish | endif
 
-function! s:source_rc(path)
+function! g:source_rc(path)
 	execute 'source' fnameescape(expand('~/.vim/rc/' . a:path))
 endfunction
 
@@ -29,14 +29,14 @@ function! IsMac()
 				\     system('uname') =~? '^darwin'))
 endfunction
 
-call s:source_rc('init.rc.vim')
+call g:source_rc('init.rc.vim')
 
 call neobundle#begin(expand('~/.vim/bundle/'))
 
 if neobundle#has_cache()
 	NeoBundleLoadCache
 else
-	call s:source_rc('neobundle.rc.vim')
+	call g:source_rc('neobundle.rc.vim')
 	NeoBundleSaveCache
 endif
 
@@ -81,40 +81,40 @@ set wrapscan
 " Edit:
 "
 
-call s:source_rc('edit.rc.vim')
+call g:source_rc('edit.rc.vim')
 
 "--------------------------------------------------------------------------------------------------
 " View:
 "
 
-call s:source_rc('view.rc.vim')
+call g:source_rc('view.rc.vim')
 
 "--------------------------------------------------------------------------------------------------
 " FileType:
 "
 
-call s:source_rc('filetype.rc.vim')
+call g:source_rc('filetype.rc.vim')
 
 "--------------------------------------------------------------------------------------------------
 " Plugin:
 "
 
-call s:source_rc('plugins.rc.vim')
+call g:source_rc('plugins.rc.vim')
 
 "--------------------------------------------------------------------------------------------------
 " Mappings:
 "
 
-call s:source_rc('mappings.rc.vim')
+call g:source_rc('mappings.rc.vim')
 
 "--------------------------------------------------------------------------------------------------
 " Platform:
 "
 
 if s:is_windows
-	call s:source_rc('windows.rc.vim')
+	call g:source_rc('windows.rc.vim')
 else
-	call s:source_rc('unix.rc.vim')
+	call g:source_rc('unix.rc.vim')
 endif
 
 " Using the mouse on a terminal.
@@ -169,7 +169,7 @@ autocmd BufReadPost * call SetCursorPosition()
 "
 
 if has('gui_running')
-  call s:source_rc('gui.rc.vim')
+  call g:source_rc('gui.rc.vim')
 endif
 
 "--------------------------------------------------------------------------------------------------
