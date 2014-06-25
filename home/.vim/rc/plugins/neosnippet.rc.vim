@@ -1,14 +1,17 @@
 "---------------------------------------------------------------------------
 " neosnippet.vim
 "
-imap <silent><C-CR>     <Plug>(neosnippet_expand)
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-			\ "\<Plug>(neosnippet_expand_or_jump)"
-			\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-			\ "\<Plug>(neosnippet_expand_or_jump)"
-			\: "\<TAB>"
+
+" Plugin key-mappings.
+imap <silent><C-e>     <Plug>(neosnippet_jump_or_expand)
+smap <silent><C-e>     <Plug>(neosnippet_jump_or_expand)
+xmap <silent><C-e>     <Plug>(neosnippet_start_unite_snippet_target)
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
 let g:neosnippet#enable_snipmate_compatibility = 1
 
 let g:snippets_dir = '~/.vim/snippets/,~/.vim/bundle/snipmate/snippets/'
