@@ -2,7 +2,6 @@ call unite#custom#profile('menu', 'context', {
 			\ 'buffer-name': 'menu',
 			\ 'start_insert': 0,
 			\ 'prompt-direction': 'top',
-			\ 'toggle': 1,
 			\ 'auto-resize': 0,
 			\ 'winwidth': 10,
 			\ 'vertical': 1,

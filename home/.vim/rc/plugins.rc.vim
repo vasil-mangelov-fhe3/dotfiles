@@ -43,8 +43,8 @@ if neobundle#tap('unite.vim') "{{{
 	xnoremap	  [unite]	<Nop>
 	nmap	  ;u [unite]
 	xmap	  ;u [unite]
-	nnoremap <silent> <F1> :Unite -profile-name=menu menu:Main<CR>
-	inoremap <silent> <F1> :Unite -profile-name=menu menu:Main<CR>
+	nnoremap <silent> <F1> :Unite -profile-name=menu -toggle menu:Main<CR>
+	inoremap <silent> <F1> :Unite -profile-name=menu -toggle menu:Main<CR>
 	nnoremap <silent> <F4> :Unite buffer tab -toggle -immediately<CR>
 	imap <F4> <C-o>:Unite buffer -toggle -immediately<CR>
 	nnoremap <C-P> :<C-u>Unite -buffer-name=files -start-insert buffer neomru/file file_rec/async:!<cr>
