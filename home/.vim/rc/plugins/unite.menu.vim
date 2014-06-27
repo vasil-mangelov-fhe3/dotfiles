@@ -3,17 +3,18 @@ call unite#custom#profile('menu', 'context', {
 			\ 'start_insert': 0,
 			\ 'prompt-direction': 'top',
 			\ 'auto-resize': 0,
-			\ 'winwidth': 10,
+			\ 'winwidth': 35,
 			\ 'vertical': 1,
 			\ 'direction': 'topleft'
 			\ })
 
+let s:unite_call_menu = 'Unite -profile-name=menu menu:'
+
 let g:unite_source_menu_menus = {}
-let g:unite_source_menu_menus.Main = {} 
+let g:unite_source_menu_menus.Main = {}
 let g:unite_source_menu_menus.Main.command_candidates = {
-			\       'File'   : 'Unite -profile-name=menu menu:File',
-			\       'test'   : 'Unite menu:unite',
-			\       'mac'    : 'WMa}',
+			\       'File'   : s:unite_call_menu . 'File',
+			\       'Git'    : s:unite_call_menu . 'Git',
 			\     }
 let g:unite_source_menu_menus.File = {
 			\     'description' : 'Change file format option.',
@@ -38,37 +39,23 @@ let g:unite_source_menu_menus.unite.command_candidates = {
 			\       'scriptnames': 'Unite output:scriptnames',
 			\     }
 
-let g:unite_source_menu_menus.git = {
+let g:unite_source_menu_menus.Git = {
 			\ 'description' : 'gestionar repositorios git  ⌘ [espacio]g',
 			\}
-let g:unite_source_menu_menus.git.command_candidates = [
-			\['▷ tig                                                        ⌘ ,gt',
-			\'normal ,gt'],
-			\['▷ git status       (Fugitive)                                ⌘ ,gs',
-			\'Gstatus'],
-			\['▷ git diff         (Fugitive)                                ⌘ ,gd',
-			\'Gdiff'],
-			\['▷ git commit       (Fugitive)                                ⌘ ,gc',
-			\'Gcommit'],
-			\['▷ git log          (Fugitive)                                ⌘ ,gl',
-			\'exe "silent Glog | Unite quickfix"'],
-			\['▷ git blame        (Fugitive)                                ⌘ ,gb',
-			\'Gblame'],
-			\['▷ git stage        (Fugitive)                                ⌘ ,gw',
-			\'Gwrite'],
-			\['▷ git checkout     (Fugitive)                                ⌘ ,go',
-			\'Gread'],
-			\['▷ git rm           (Fugitive)                                ⌘ ,gr',
-			\'Gremove'],
-			\['▷ git mv           (Fugitive)                                ⌘ ,gm',
-			\'exe "Gmove " input("destino: ")'],
-			\['▷ git push         (Fugitive, salida por buffer)             ⌘ ,gp',
-			\'Git! push'],
-			\['▷ git pull         (Fugitive, salida por buffer)             ⌘ ,gP',
-			\'Git! pull'],
-			\['▷ git prompt       (Fugitive, salida por buffer)             ⌘ ,gi',
-			\'exe "Git! " input("comando git: ")'],
-			\['▷ git cd           (Fugitive)',
-			\'Gcd'],
+let g:unite_source_menu_menus.Git.command_candidates = [
+			\['ᐊᐊ Back','Unite -profile-name=menu menu:Main'],
+			\[' ᐅ git status	[LEADER]gs','Gstatus'],
+			\[' ᐅ git diff		[LEADER]gd','Gdiff'],
+			\[' ᐅ git commit	[LEADER]gc','Gcommit'],
+			\[' ᐅ git log		[LEADER]⌘ ,gl','exe "silent Glog | Unite quickfix"'],
+			\[' ᐅ git blame		[LEADER]⌘ ,gb','Gblame'],
+			\[' ᐅ git stage		[LEADER]⌘ ,gw','Gwrite'],
+			\[' ᐅ git checkout	[LEADER]⌘ ,go','Gread'],
+			\[' ᐅ git rm		[LEADER]⌘ ,gr','Gremove'],
+			\[' ᐅ git mv		[LEADER]⌘ ,gm','exe "Gmove " input("Destination: ")'],
+			\[' ᐅ git push		[LEADER]⌘ ,gp','Git! push'],
+			\[' ᐅ git pull		[LEADER]⌘ ,gP','Git! pull'],
+			\[' ᐅ git prompt	<leader>gi','exe "Git! " input("Git command: ")'],
+			\[' ᐅ git cd','Gcd'],
 			\]
 

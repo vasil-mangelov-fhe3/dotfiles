@@ -4,7 +4,10 @@ NeoBundle 'vim-scripts/delimitMate.vim'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-git'
-NeoBundle 'sjl/gundo.vim'
+NeoBundle 'sjl/gundo.vim', {
+			\ 'disabled' : !has('python'),
+			\ 'vim_version' : '7.3'
+			\ }
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'vim-scripts/IndexedSearch'
 NeoBundle 'tpope/vim-markdown'
@@ -148,5 +151,4 @@ NeoBundle 'xolox/vim-easytags', {
 			\ }
 NeoBundle 'pbrisbin/vim-mkdir'
 NeoBundle 'jmcantrell/vim-diffchanges'
-" Disabled set timestamp doesn't work
-"NeoBundle 'rhysd/auto-neobundle'
+NeoBundle 'cynix/auto-neobundle'

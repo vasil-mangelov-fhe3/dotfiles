@@ -26,7 +26,7 @@ if neobundle#tap('neosnippet.vim') "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('vimshell.vim') "{{{
+if neobundle#tap('vimshell.vim') && neobundle#is_installed('vimshell.vim') "{{{
 	" <C-Space>: switch to vimshell.
 	nmap <C-@>  <Plug>(vimshell_switch)
 	nnoremap !  q:VimShellExecute<Space>
@@ -37,7 +37,7 @@ if neobundle#tap('vimshell.vim') "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('unite.vim') "{{{
+if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
 	" The prefix key.
 	nnoremap	  [unite]	<Nop>
 	xnoremap	  [unite]	<Nop>
@@ -115,7 +115,7 @@ if neobundle#tap('unite.vim') "{{{
 	nnoremap <silent><expr> n
 				\ ":\<C-u>UniteResume search%".bufnr('%')." -no-start-insert\<CR>"
 	nnoremap <silent> <C-w>  :<C-u>Unite -auto-resize window/gui<CR>
-	let neobundle#hooks.on_source = 
+	let neobundle#hooks.on_source =
 				\ '~/.vim/rc/plugins/unite.rc.vim'
 	call neobundle#untap()
 endif "}}}
@@ -165,7 +165,7 @@ nmap R <Plug>(operator-replace)
 xmap R <Plug>(operator-replace)
 xmap p <Plug>(operator-replace)
 
-if neobundle#tap('nerdtree') "{{{
+if neobundle#tap('nerdtree') && neobundle#is_installed('nerdtree') "{{{
 	let g:NERDTreeMouseMode = 2
 	let g:NERDTreeWinSize = 40
 	let g:NERDTreeShowHidden=1
@@ -178,7 +178,7 @@ if neobundle#tap('nerdtree') "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('tagbar') "{{{
+if neobundle#tap('tagbar') && neobundle#is_installed('tagbar') "{{{
 	let g:tagbar_singleclick = 1
 	let g:tagbar_sort = 0
 	nnoremap <silent> <F3> :TagbarToggle<CR>
@@ -186,7 +186,7 @@ if neobundle#tap('tagbar') "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('gundo.vim') "{{{
+if neobundle#tap('gundo.vim') && neobundle#is_installed('gundo.vim') "{{{
 	nnoremap <silent> <F5> :GundoToggle<CR>
 	:imap <F5> <C-o>:GundoToggle<CR>
 	call neobundle#untap()
@@ -241,8 +241,8 @@ if neobundle#tap('vim-easytags') "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('auto-neobundle') "{{{
-	let g:auto_neobundle_timestamp_dir = "~/.vim/cache"
+if neobundle#tap('auto-neobundle') && neobundle#is_installed('auto-neobundle') "{{{
+	"let g:auto_neobundle_timestamp_dir = "~/.vim/cache"
 	augroup AutoNeoBundle
 		autocmd!
 		autocmd VimEnter * call auto_neobundle#update_daily()
@@ -250,7 +250,7 @@ if neobundle#tap('auto-neobundle') "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('vim-diffchanges') "{{{
+if neobundle#tap('vim-diffchanges') && neobundle#is_installed('vim-diffchanges') "{{{
 	nnoremap <silent> <F12> :DiffChangesDiffToggle<CR>
 	call neobundle#untap()
 endif "}}}

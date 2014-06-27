@@ -42,13 +42,6 @@ augroup MyAutoCmd
 	autocmd FileType python setlocal foldmethod=indent
 	autocmd FileType vim setlocal foldmethod=syntax
 
-	" Update filetype.
-	autocmd BufWritePost *
-				\ if &l:filetype ==# '' || exists('b:ftdetect')
-				\     unlet! b:ftdetect
-				\     filetype detect
-				\ endif
-
 	" Improved include pattern.
 	autocmd FileType html
 				\ setlocal includeexpr=substitute(v:fname,'^\\/','','') |
