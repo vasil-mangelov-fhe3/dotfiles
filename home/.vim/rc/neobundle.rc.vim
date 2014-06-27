@@ -151,4 +151,4 @@ NeoBundle 'xolox/vim-easytags', {
 			\ }
 NeoBundle 'pbrisbin/vim-mkdir'
 NeoBundle 'jmcantrell/vim-diffchanges'
-NeoBundle 'cynix/auto-neobundle'
+NeoBundle 'NemesisRE/auto-neobundle'
