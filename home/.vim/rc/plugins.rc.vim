@@ -241,8 +241,8 @@ if neobundle#tap('vim-easytags') "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('auto-neobundle') && neobundle#is_installed('auto-neobundle') "{{{
-	"let g:auto_neobundle_timestamp_dir = "~/.vim/cache"
+if neobundle#tap('auto-neobundle') && neobundle#is_installed('auto-neobundle') && system("ping -q -c 2 -W 1 google.com 2>&1 >/dev/null; echo ${?}") "{{{
+	NeoBundleSource auto_neobundle
 	augroup AutoNeoBundle
 		autocmd!
 		autocmd VimEnter * call auto_neobundle#update_daily()
