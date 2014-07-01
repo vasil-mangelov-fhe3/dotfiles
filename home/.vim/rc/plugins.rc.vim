@@ -2,6 +2,8 @@
 " Plugin:
 "
 
+let g:inet_connection = system("ping -q -c 2 -W 1 google.com 2>&1 >/dev/null; echo ${?}")
+
 if has('lua') && (v:version > 703 || (v:version == 703 && has('patch885')))
 	if neobundle#tap('neocomplete.vim') "{{{
 		NeoBundleSource neocomplete.vim
@@ -224,6 +226,7 @@ endif "}}}
 
 if neobundle#tap('vim-colors-solarized') "{{{
 	let g:solarized_termcolors=256
+	let g:solarized_termtrans=0
 	set background=dark
 	colorscheme solarized
 	call neobundle#untap()
@@ -241,7 +244,7 @@ if neobundle#tap('vim-easytags') "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('auto-neobundle') && neobundle#is_installed('auto-neobundle') && system("ping -q -c 2 -W 1 google.com 2>&1 >/dev/null; echo ${?}") "{{{
+if neobundle#tap('auto-neobundle') && g:inet_connection == 0 "{{{
 	NeoBundleSource auto_neobundle
 	augroup AutoNeoBundle
 		autocmd!
