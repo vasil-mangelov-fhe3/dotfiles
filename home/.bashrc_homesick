@@ -88,7 +88,7 @@ function _unsudo() {
 	fi
 }
 
-trap _unsudo
+trap _unsudo exit
 
 function git_remove_submodule() {
 	SUBMODULE_NAME=$(echo "${1}" | sed 's/\/$//'); shift
