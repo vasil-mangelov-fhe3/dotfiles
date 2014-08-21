@@ -2,7 +2,7 @@ neww -n 'Monitor' -a 'TERM=screen-256color htop'
 selectp -t 1
 splitw -v -p 70
 selectp -t 2
-splitw -h -p 35 'watch -n1 df -h -t ext3 -t ext4'
+splitw -h -p 35 'watch -n1 df -h -t ext3 -t ext4 -t btrfs'
 selectp -t 3
 splitw -v -p 60 'export NMON="nd" ; nmon'
 selectp -t 4
