@@ -36,7 +36,7 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 "if neobundle#has_cache()
 "	NeoBundleLoadCache
 "else
-	call g:source_rc('neobundle.rc.vim')
+call g:source_rc('neobundle.rc.vim')
 "	NeoBundleSaveCache
 "endif
 
@@ -150,12 +150,24 @@ function! SetCursorPosition()
 endfunction
 autocmd BufReadPost * call SetCursorPosition()
 
+function! CopyModeToggle()
+	if &foldcolumn
+		setlocal invlist
+		setlocal invnumber
+		setlocal foldcolumn=0
+	else
+		setlocal foldcolumn=1
+		setlocal invlist
+		setlocal invnumber
+	endif
+endfunction
+
 "--------------------------------------------------------------------------------------------------
 " GUI:
 "
 
 if has('gui_running')
-  call g:source_rc('gui.rc.vim')
+	call g:source_rc('gui.rc.vim')
 endif
 
 "--------------------------------------------------------------------------------------------------

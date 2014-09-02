@@ -20,10 +20,10 @@ xnoremap < <gv
 
 " make :Q work like :q
 command! -bang Q quit<bang>
-nnoremap <silent> <F6> :set invnumber invlist<CR>
-:imap <F6> <C-o>:set invnumber invlist<CR>
+nnoremap <silent> <F6> :call CopyModeToggle()<CR>
+:imap <F6> <C-o> :call CopyModeToggle()<CR>
 nnoremap <silent> <F11> :setlocal spell! spell?<CR>
-:imap <F11> <C-o>:setlocal spell! spell?<CR>
+:imap <F11> <C-o> :setlocal spell! spell?<CR>
 " Next Tab
 nnoremap <silent> <C-Right> :tabnext<CR>
 " Previous Tab
