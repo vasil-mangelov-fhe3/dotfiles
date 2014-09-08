@@ -71,6 +71,7 @@ fi
 alias reload="source ${HOME}/.bashrc"
 alias htop="TERM=screen-256color htop"
 alias root="sudo -E bash"
+alias tmux="tmux -2"
 
 # Load overrides
 if [ -f ${HOME}/.bash_aliases ]; then
@@ -89,6 +90,14 @@ function _unsudo() {
 }
 
 trap _unsudo exit
+
+function grep-invalid-utf8 () {
+	perl -l -ne '/^([\000-\177]|[\300-\337][\200-\277]|[\340-\357][\200-\277]{2}|[\360-\367][\200-\277]{3}|[\370-\373][\200-\277]{4}|[\374-\375][\200-\277]{5})*$/ or print'
+}
+
+function fix-invalid-utf8 () {
+	find | grep-invalid-utf8 | rename 'BEGIN {binmode STDIN, ":encoding(latin1)"; use Encode;}$_=encode("utf8", $_)'
+}
 
 function git_remove_submodule() {
 	SUBMODULE_NAME=$(echo "${1}" | sed 's/\/$//'); shift
@@ -118,7 +127,7 @@ fi
 
 # Start tmux on connection
 if [ "${PS1}" != "" -a "$(tmux has-session -t remote &>/dev/null; echo $?)" = 0 -a "${SSH_TTY:-x}" != x -a "$(which tmux 2>/dev/null)" != "" -a "${TMUX}" = "" ]; then
-	tmux -2 attach-session -t remote
+	tmux attach-session -t remote
 elif [ "${PS1}" != "" -a "${SSH_TTY:-x}" != x -a "$(which tmux 2>/dev/null)" != "" -a "${TMUX}" = "" ]; then
-	tmux -2 new-session -s remote
+	tmux new-session -s remote
 fi
