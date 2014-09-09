@@ -17,7 +17,7 @@ else
 		NeoBundleSource neocomplcache.vim
 		let g:neocomplcache_enable_at_startup = 1
 		let neobundle#hooks.on_source =
-			\ '~/.vim/rc/plugins/neocomplcache.rc.vim'
+					\ '~/.vim/rc/plugins/neocomplcache.rc.vim'
 		call neobundle#untap()
 	endif "}}}
 endif
@@ -120,6 +120,34 @@ if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
 	let neobundle#hooks.on_source =
 				\ '~/.vim/rc/plugins/unite.rc.vim'
 	call neobundle#untap()
+endif "}}}
+
+if neobundle#tap('vimfiler.vim') && neobundle#is_installed('vimfiler.vim') "{{{
+	autocmd FileType vimfiler setlocal nonumber
+	autocmd FileType vimfiler nmap <buffer><silent> <2-LeftMouse> :call <SID>vimfiler_on_double_click()<CR>
+	function! s:vimfiler_on_double_click() "{{{
+		let context = vimfiler#get_context()
+
+		if context.explorer
+			let mapping = vimfiler#mappings#smart_cursor_map(
+						\ "\<Plug>(vimfiler_expand_tree)",
+						\ "\<Plug>(vimfiler_edit_file)"
+						\ )
+		else
+			let mapping = vimfiler#mappings#smart_cursor_map(
+						\ "\<Plug>(vimfiler_cd_file)",
+						\ "\<Plug>(vimfiler_edit_file)"
+						\ )
+		endif
+
+		execute "normal " . mapping
+	endfunction"}}}
+	" Like Textmate icons.
+	let g:vimfiler_tree_leaf_icon = ' '
+	let g:vimfiler_tree_opened_icon = '▾'
+	let g:vimfiler_tree_closed_icon = '▸'
+	let g:vimfiler_file_icon = '-'
+	let g:vimfiler_marked_file_icon = '*'
 endif "}}}
 
 " quickrun.vim"{{{
@@ -256,4 +284,8 @@ endif "}}}
 if neobundle#tap('vim-diffchanges') && neobundle#is_installed('vim-diffchanges') "{{{
 	nnoremap <silent> <F12> :DiffChangesDiffToggle<CR>
 	call neobundle#untap()
+endif "}}}
+
+if neobundle#tap('vim-trailing-whitespace') && neobundle#is_installed('vim-trailing-whitespace') "{{{
+	let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd', 'vimfiler']
 endif "}}}

@@ -81,6 +81,17 @@ NeoBundle 'Shougo/vimshell.vim', {
 			\				],
 			\ 'mappings' : '<Plug>(vimshell_'
 			\ }
+NeoBundle 'Shougo/vimfiler.vim', {
+			\ 'depends' : 'Shougo/unite.vim',
+			\ 'commands' : [	{
+			\						'name' : ['VimFiler', 'Edit', 'Write'],
+			\						'complete' : 'customlist,vimfiler#complete'
+			\					},
+			\					'Read', 'Source'
+			\				],
+			\ 'mappings' : '<Plug>',
+			\ 'explorer' : 1,
+			\ }
 NeoBundle 'yomi322/vim-gitcomplete', {
 			\ 'filetype' : 'vimshell'
 			\ }
@@ -128,7 +139,7 @@ NeoBundle 'tpope/vim-repeat', {
 NeoBundle 'matchit.zip', {
 			\ 'mappings' : [['nxo', '%', 'g%']]
 			\ }
-NeoBundle 'Shougo/javacomplete', {
+NeoBundleLazy 'Shougo/javacomplete', {
 			\ 'external_commands' : 'javac',
 			\ 'build': {
 			\       'cygwin': 'javac autoload/Reflection.java',
