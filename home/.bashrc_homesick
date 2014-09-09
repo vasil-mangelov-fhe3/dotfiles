@@ -91,11 +91,16 @@ if [ -z "${TMUX}" ]; then
 	fi
 fi
 
-[ -e ~/.config/dircolors-solarized/dircolors.256dark ] && eval `dircolors ~/.config/dircolors-solarized/dircolors.256dark`
+if [[ -e /etc/redhat-release ]] && [[ $(cat /etc/redhat-release | awk '{print $7}' | awk -F '.' '{print $1}') -lt 6 ]] && [[ -e ~/.config/dircolors-solarized/dircolors.rhel5.256dark ]]; then
+    eval `dircolors ~/.config/dircolors-solarized/dircolors.rhel5.256dark`
+elif [[ -e ~/.config/dircolors-solarized/dircolors.256dark ]]; then
+    eval `dircolors ~/.config/dircolors-solarized/dircolors.256dark`
+fi
+
 PS1="${PS1}"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
 # Start tmux on connection
 if [ "${PS1}" != "" -a "$(tmux has-session -t remote &>/dev/null; echo $?)" = 0 -a "${SSH_TTY:-x}" != x -a "$(which tmux 2>/dev/null)" != "" -a "${TMUX}" = "" ]; then
 	tmux attach-session -t remote
 elif [ "${PS1}" != "" -a "${SSH_TTY:-x}" != x -a "$(which tmux 2>/dev/null)" != "" -a "${TMUX}" = "" ]; then
-	tmux new-session -s remote 
+	tmux new-session -s remote
 fi

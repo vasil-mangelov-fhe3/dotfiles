@@ -152,13 +152,15 @@ autocmd BufReadPost * call SetCursorPosition()
 
 function! CopyModeToggle()
 	if &foldcolumn
-		setlocal invlist
-		setlocal invnumber
+		setlocal nolist
+		setlocal nonumber
 		setlocal foldcolumn=0
+		GitGutterSignsDisable
 	else
 		setlocal foldcolumn=1
-		setlocal invlist
-		setlocal invnumber
+		setlocal list
+		setlocal number
+		GitGutterSignsEnable
 	endif
 endfunction
 
