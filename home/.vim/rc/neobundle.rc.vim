@@ -139,17 +139,19 @@ NeoBundle 'tpope/vim-repeat', {
 NeoBundle 'matchit.zip', {
 			\ 'mappings' : [['nxo', '%', 'g%']]
 			\ }
-NeoBundleLazy 'Shougo/javacomplete', {
-			\ 'external_commands' : 'javac',
-			\ 'build': {
-			\       'cygwin': 'javac autoload/Reflection.java',
-			\       'mac': 'javac autoload/Reflection.java',
-			\       'unix': 'javac autoload/Reflection.java',
-			\   },
-			\ 'autoload' : {
-			\   'filetypes' : 'java',
-			\ }
-			\}
+if system('which javac')!~'is not found'
+	NeoBundle 'Shougo/javacomplete', {
+				\ 'external_commands' : 'javac',
+				\ 'build': {
+				\       'cygwin': 'javac autoload/Reflection.java',
+				\       'mac': 'javac autoload/Reflection.java',
+				\       'unix': 'javac autoload/Reflection.java',
+				\   },
+				\ 'autoload' : {
+				\   'filetypes' : 'java',
+				\ }
+				\}
+endif
 NeoBundle 'kana/vim-operator-user', {
 			\  'functions' : 'operator#user#define',
 			\}
