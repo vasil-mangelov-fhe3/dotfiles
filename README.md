@@ -14,7 +14,7 @@ This includes [Lokaltog powerline-fonts](https://github.com/Lokaltog/powerline-f
 
 ### Bootstraped
 **NOTE:**
-This will also install [revans bash-it](https://github.com/revans/bash-it) with some [NRE.Com.Net defaults](https://github.com/NemesisRE/dotfiles/tree/master/bash-it)
+This will also install [revans bash-it](https://github.com/revans/bash-it) Powerline Theme
 
 1. `curl -sL https://raw.githubusercontent.com/NemesisRE/dinner/master/bootstrap.sh | /bin/bash`
 

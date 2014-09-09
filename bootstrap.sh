@@ -25,9 +25,6 @@ homeshick --batch clone https://github.com/NemesisRE/dotfiles.git
 ### Link it all to $HOME ###
 homeshick link
 
-### Install bash-it with NRE.Com.Net defaults ###
-${HOME}/.homesick/repos/dotfiles/bash-it/install.sh defaults
-
 # Register powerline fonts
 fc-cache -fv
 
