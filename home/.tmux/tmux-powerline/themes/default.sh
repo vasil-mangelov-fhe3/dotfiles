@@ -35,12 +35,12 @@ if [ -z $TMUX_POWERLINE_LEFT_STATUS_SEGMENTS ]; then
 		"vcs_modified 9 255" \
 		"vcs_others 245 0" \
 	)
-fi
+	fi
 
 if [ -z $TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS ]; then
 	TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=(
 		#"earthquake 3 0" \
-		"pwd 89 211" \
+		#"pwd 89 211" \
 		#"mailcount 9 255" \
 		#"now_playing 234 37" \
 		#"cpu 240 136" \
