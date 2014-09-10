@@ -135,7 +135,7 @@ NeoBundle 'tpope/vim-repeat', {
 NeoBundle 'matchit.zip', {
 			\ 'mappings' : [['nxo', '%', 'g%']]
 			\ }
-if system('which javac')!~'is not found'
+if executable('javac')
 	NeoBundle 'Shougo/javacomplete', {
 				\ 'external_commands' : 'javac',
 				\ 'build': {
