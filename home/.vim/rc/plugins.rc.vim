@@ -62,7 +62,7 @@ if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
 	nnoremap <silent> <C-k>
 				\ :<C-u>Unite change jump<CR>
 	nnoremap <silent><expr> <C-f>
-				\ ":\<C-u>Unite grep -buffer-name=grep%".tabpagenr()." -auto-preview -no-split -no-empty\<CR>"
+				\ :<C-u>Unite grep:. -buffer-name=grep%".tabpagenr()." -auto-preview -no-split -no-empty\<CR>
 	inoremap <silent> <F10>
 				\ d:<C-u>Unite -buffer-name=register -toggle register history/yank<CR>
 	nnoremap <silent> <F10>
@@ -99,10 +99,9 @@ if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
 	" Execute help by cursor keyword.
 	nnoremap <silent> g<C-h>	:<C-u>UniteWithCursorWord help<CR>
 	" Search.
-	nnoremap <silent><expr> /
-				\ ":\<C-u>Unite -buffer-name=search%".bufnr('%')." -start-insert line:forward:wrap\<CR>"
+	nnoremap <silent> /  :<C-u>Unite -buffer-name=search line:all -start-insert -no-quit<CR>
 	nnoremap <expr> g/  <SID>smart_search_expr('g/',
-				\ ":\<C-u>Unite -buffer-name=search -start-insert line_migemo\<CR>")
+				\ :<C-u>Unite -buffer-name=search -start-insert line_migemo<CR>)
 	nnoremap <silent><expr> ?
 				\ ":\<C-u>Unite -buffer-name=search%".bufnr('%')." -start-insert line:backward\<CR>"
 	nnoremap <silent><expr> *

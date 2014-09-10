@@ -105,6 +105,7 @@ NeoBundle 'Shougo/unite.vim', {
 NeoBundle 'Shougo/neomru.vim', {'autoload':{'unite_sources':
 			\ ['file_mru', 'directory_mru']}}
 NeoBundle 'Shougo/unite-build'
+NeoBundle 'Shougo/vinarise.vim'
 NeoBundle 'majkinetor/unite-cmdmatch'
 NeoBundle 'Shougo/unite-sudo'
 NeoBundle 'thinca/vim-ref', {
