@@ -123,8 +123,8 @@ if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
 endif "}}}
 
 if neobundle#tap('vimfiler.vim') && neobundle#is_installed('vimfiler.vim') "{{{
-	nnoremap <silent> <F2> :VimFilerExplorer -explorer-columns=type:size:time -toggle -no-safe -no-simple -winwidth=50<CR>
-	:imap <F2> <C-o>:VimFilerExplorer -explorer-columns=type:size:time -toggle -no-safe -no-simple -winwidth=50<CR>
+	nnoremap <silent> <F2> :VimFilerExplorer -parent -explorer-columns=type:size:time -toggle -no-safe -no-simple -winwidth=50<CR>
+	:imap <F2> <C-o>:VimFilerExplorer -parent -explorer-columns=type:size:time -toggle -no-safe -no-simple -winwidth=50<CR>
 	autocmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
 	autocmd FileType vimfiler setlocal nonumber
 	autocmd FileType vimfiler nmap <buffer><silent> <2-LeftMouse> :call <SID>vimfiler_on_double_left()<CR>
