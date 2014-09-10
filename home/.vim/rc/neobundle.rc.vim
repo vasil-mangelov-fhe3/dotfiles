@@ -12,10 +12,6 @@ NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'vim-scripts/IndexedSearch'
 NeoBundle 'tpope/vim-markdown'
 NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'jistr/vim-nerdtree-tabs', {
-			\ 'depends' : 'scrooloose/nerdtree'
-			\ }
 NeoBundle 'shawncplus/phpcomplete.vim'
 NeoBundle 'spf13/PIV'
 NeoBundle 'tpope/vim-ragtag'

@@ -123,25 +123,29 @@ if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
 endif "}}}
 
 if neobundle#tap('vimfiler.vim') && neobundle#is_installed('vimfiler.vim') "{{{
+	nnoremap <silent> <F2> :VimFilerExplorer -explorer-columns=type:size:time -toggle -no-safe -no-simple -winwidth=50<CR>
+	:imap <F2> <C-o>:VimFilerExplorer -explorer-columns=type:size:time -toggle -no-safe -no-simple -winwidth=50<CR>
+	autocmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
 	autocmd FileType vimfiler setlocal nonumber
-	autocmd FileType vimfiler nmap <buffer><silent> <2-LeftMouse> :call <SID>vimfiler_on_double_click()<CR>
-	function! s:vimfiler_on_double_click() "{{{
+	autocmd FileType vimfiler nmap <buffer><silent> <2-LeftMouse> :call <SID>vimfiler_on_double_left()<CR>
+	function! s:vimfiler_on_double_left() "{{{
 		let context = vimfiler#get_context()
-
-		if context.explorer
-			let mapping = vimfiler#mappings#smart_cursor_map(
-						\ "\<Plug>(vimfiler_expand_tree)",
-						\ "\<Plug>(vimfiler_edit_file)"
-						\ )
-		else
-			let mapping = vimfiler#mappings#smart_cursor_map(
-						\ "\<Plug>(vimfiler_cd_file)",
-						\ "\<Plug>(vimfiler_edit_file)"
-						\ )
-		endif
-
+		let mapping = vimfiler#mappings#smart_cursor_map(
+					\ "\<Plug>(vimfiler_expand_tree)",
+					\ "\<Plug>(vimfiler_edit_file)"
+					\ )
 		execute "normal " . mapping
 	endfunction"}}}
+	autocmd FileType vimfiler nmap <buffer><silent> <2-MiddleMouse> :call <SID>vimfiler_on_double_middle()<CR>
+	function! s:vimfiler_on_double_middle() "{{{
+		let context = vimfiler#get_context()
+		let mapping = vimfiler#mappings#smart_cursor_map(
+					\ "\<Plug>(vimfiler_cd_file)",
+					\ "\<Plug>(vimfiler_edit_file)"
+					\ )
+		execute "normal " . mapping
+	endfunction"}}}
+	let g:vimfiler_ignore_pattern = '^\%(.git\|.DS_Store\)$'
 	" Like Textmate icons.
 	let g:vimfiler_tree_leaf_icon = ' '
 	let g:vimfiler_tree_opened_icon = '▾'
@@ -194,19 +198,6 @@ endif "}}}
 nmap R <Plug>(operator-replace)
 xmap R <Plug>(operator-replace)
 xmap p <Plug>(operator-replace)
-
-if neobundle#tap('nerdtree') && neobundle#is_installed('nerdtree') "{{{
-	let g:NERDTreeMouseMode = 2
-	let g:NERDTreeWinSize = 40
-	let g:NERDTreeShowHidden=1
-	let g:NERDTreeKeepTreeInNewTab=1
-	let g:NERDTreeShowBookmarks=1
-	nnoremap <silent> <F2> :NERDTreeToggle<CR>
-	:imap <F2> <C-o>:NERDTreeToggle<CR>
-	nnoremap <silent> <C-F2> :NERDTreeFind<CR>
-	:imap <C-F2> <C-o>:NERDTreeFind<CR>
-	call neobundle#untap()
-endif "}}}
 
 if neobundle#tap('tagbar') && neobundle#is_installed('tagbar') "{{{
 	let g:tagbar_singleclick = 1
@@ -287,5 +278,5 @@ if neobundle#tap('vim-diffchanges') && neobundle#is_installed('vim-diffchanges')
 endif "}}}
 
 if neobundle#tap('vim-trailing-whitespace') && neobundle#is_installed('vim-trailing-whitespace') "{{{
-	let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd', 'vimfiler']
+	let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd', 'vimfiler', 'vimfiler:explorer']
 endif "}}}
