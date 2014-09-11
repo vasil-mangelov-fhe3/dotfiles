@@ -14,7 +14,7 @@ fi
 
 ### Install git and some other tools we'd like to use ###
 ${APT} update
-${APT} install -y tmux vim git screen htop
+${APT} install -y tmux vim git screen htop exuberant-ctags
 
 ### Install homeshick ###
 git clone git://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
