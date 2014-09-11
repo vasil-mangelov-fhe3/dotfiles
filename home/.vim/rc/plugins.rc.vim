@@ -16,15 +16,13 @@ else
 	if neobundle#tap('neocomplcache.vim') "{{{
 		NeoBundleSource neocomplcache.vim
 		let g:neocomplcache_enable_at_startup = 1
-		let neobundle#hooks.on_source =
-					\ '~/.vim/rc/plugins/neocomplcache.rc.vim'
+		let neobundle#hooks.on_source = '~/.vim/rc/plugins/neocomplcache.rc.vim'
 		call neobundle#untap()
 	endif "}}}
 endif
 
 if neobundle#tap('neosnippet.vim') "{{{
-	let neobundle#hooks.on_source =
-				\ '~/.vim/rc/plugins/neosnippet.rc.vim'
+	let neobundle#hooks.on_source = '~/.vim/rc/plugins/neosnippet.rc.vim'
 	call neobundle#untap()
 endif "}}}
 
@@ -34,59 +32,46 @@ if neobundle#tap('vimshell.vim') && neobundle#is_installed('vimshell.vim') "{{{
 	nnoremap !  q:VimShellExecute<Space>
 	nnoremap [Space]i  q:VimShellInteractive<Space>
 	nnoremap [Space]t  q:VimShellTerminal<Space>
-	let neobundle#hooks.on_source =
-				\ '~/.vim/rc/plugins/vimshell.rc.vim'
+	let neobundle#hooks.on_source = '~/.vim/rc/plugins/vimshell.rc.vim'
 	call neobundle#untap()
 endif "}}}
 
 if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
 	" The prefix key.
-	nnoremap	  [unite]	<Nop>
-	xnoremap	  [unite]	<Nop>
-	nmap	  ;u [unite]
-	xmap	  ;u [unite]
-	nnoremap <silent> <F1> :Unite -profile-name=menu -toggle menu:Main<CR>
-	inoremap <silent> <F1> :Unite -profile-name=menu -toggle menu:Main<CR>
-	nnoremap <silent> <F4> :Unite buffer tab -toggle -immediately<CR>
-	imap <F4> <C-o>:Unite buffer -toggle -immediately<CR>
-	nnoremap <C-P> :<C-u>Unite -buffer-name=files -start-insert buffer neomru/file file_rec/async:!<cr>
-	imap <C-p> <C-o>:<C-u>Unite -buffer-name=files -start-insert buffer neomru/file file_rec/async:!<cr>
+	nnoremap	[unite] <Nop>
+	xnoremap	[unite] <Nop>
+	nmap	;u [unite]
+	xmap	;u [unite]
+	nnoremap <silent> <F1> :<C-u>Unite -profile-name=menu -toggle menu:Main<CR>
+	inoremap <silent> <F1> <C-o>:<C-u>Unite -profile-name=menu -toggle menu:Main<CR>
+	nnoremap <silent> <F4> :<C-u>Unite buffer_tab -toggle -start-insert -immediately<CR>
+	inoremap <silent> <F4> <C-o>:<C-u>Unite buffer_tab -toggle -start-insert -immediately<CR>
+	nnoremap <silent> <C-P> :<C-u>Unite -buffer-name=files -toggle -start-insert neomru/file file_rec/async:!<CR>
 	nnoremap <expr><silent> ;b  <SID>unite_build()
 	function! s:unite_build()
 		return ":\<C-u>Unite -buffer-name=build". tabpagenr() ." -no-quit build\<CR>"
 	endfunction
-	nnoremap <silent> ;o
-				\ :<C-u>Unite outline -start-insert -resume<CR>
-	nnoremap <silent> ;t
-				\ :<C-u>UniteWithCursorWord -buffer-name=tag tag tag/include<CR>
-	nnoremap <silent> <C-k>
-				\ :<C-u>Unite change jump<CR>
-	nnoremap <silent><expr> <C-f>
-				\ :<C-u>Unite grep:. -buffer-name=grep%".tabpagenr()." -auto-preview -no-split -no-empty\<CR>
-	inoremap <silent> <F10>
-				\ d:<C-u>Unite -buffer-name=register -toggle register history/yank<CR>
-	nnoremap <silent> <F10>
-				\ :<C-u>Unite -buffer-name=register -toggle register history/yank<CR>
+	nnoremap <silent> ;o :<C-u>Unite outline -start-insert -resume<CR>
+	nnoremap <silent> ;t :<C-u>UniteWithCursorWord -buffer-name=tag tag tag/include<CR>
+	nnoremap <silent> <C-k> :<C-u>Unite change jump<CR>
+	nnoremap <silent> <C-f> :<C-u>Unite grep:. -buffer-name=grep%".tabpagenr()." -toggle -auto-preview -no-split -no-empty<CR>
+	inoremap <silent> <F10> <C-o>:<C-u>Unite -buffer-name=register -toggle register history/yank<CR>
+	nnoremap <silent> <F10> :<C-u>Unite -buffer-name=register -toggle register history/yank<CR>
 	" <C-t>: Tab pages>
-	nnoremap <silent><expr> <C-t>
-				\ ":\<C-u>Unite -auto-resize -select=".(tabpagenr()-1)." tab\<CR>"
-	nnoremap <silent> [Window]s
-				\ :<C-u>Unite -buffer-name=files -no-split -multi-line -unique -silent
+	nnoremap <silent><expr> <C-t> :<C-u>Unite -auto-resize -select=".(tabpagenr()-1)." tab<CR>
+	nnoremap <silent> [Window]s :<C-u>Unite -buffer-name=files -no-split -multi-line -unique -silent
 				\ jump_point file_point buffer_tab:- file_mru
 				\ file_rec/git file file/new<CR>
-	nnoremap <expr><silent> [Window]r  ":\<C-u>Unite -start-insert ref/".ref#detect()."\<CR>"
-	nnoremap <silent> [Window]<Space>  :<C-u>Unite -buffer-name=files file_rec:~/.vim/rc<CR>
-	nnoremap <silent> [Window]n  :<C-u>Unite -default-action=lcd neobundle:!<CR>
-	nnoremap <silent> [Window]f
-				\ :<C-u>Unite <CR>
-	nnoremap <silent> [Window]w
-				\ :<C-u>Unite window<CR>
-	nnoremap <silent> [Space]b
-				\ :<C-u>UniteBookmarkAdd<CR>
+	nnoremap <expr><silent> [Window]r :\<C-u>Unite -start-insert ref/".ref#detect()."<CR>
+	nnoremap <silent> [Window]<Space> :<C-u>Unite -buffer-name=files file_rec:~/.vim/rc<CR>
+	nnoremap <silent> [Window]n :<C-u>Unite -default-action=lcd neobundle:!<CR>
+	nnoremap <silent> [Window]f :<C-u>Unite <CR>
+	nnoremap <silent> [Window]w :<C-u>Unite window<CR>
+	nnoremap <silent> [Space]b :<C-u>UniteBookmarkAdd<CR>
 	" t: tags-and-searches "{{{
 	" The prefix key.
-	nnoremap	  [Tag]   <Nop>
-	nmap	  t [Tag]
+	nnoremap	[Tag] <Nop>
+	nmap	t [Tag]
 	" Jump.
 	" nnoremap [Tag]t  g<C-]>
 	nnoremap <silent><expr> [Tag]t  &filetype == 'help' ?  "g\<C-]>" :
@@ -99,7 +84,7 @@ if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
 	" Execute help by cursor keyword.
 	nnoremap <silent> g<C-h>	:<C-u>UniteWithCursorWord help<CR>
 	" Search.
-	nnoremap <silent> /  :<C-u>Unite -buffer-name=search line:all -start-insert -no-quit<CR>
+	nnoremap <silent><expr> / :<C-u>Unite -buffer-name=search line:all -start-insert -no-quit<CR>
 	nnoremap <expr> g/  <SID>smart_search_expr('g/',
 				\ :<C-u>Unite -buffer-name=search -start-insert line_migemo<CR>)
 	nnoremap <silent><expr> ?
@@ -116,8 +101,7 @@ if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
 	nnoremap <silent><expr> n
 				\ ":\<C-u>UniteResume search%".bufnr('%')." -no-start-insert\<CR>"
 	nnoremap <silent> <C-w>  :<C-u>Unite -auto-resize window/gui<CR>
-	let neobundle#hooks.on_source =
-				\ '~/.vim/rc/plugins/unite.rc.vim'
+	let neobundle#hooks.on_source = '~/.vim/rc/plugins/unite.rc.vim'
 	call neobundle#untap()
 endif "}}}
 
@@ -278,4 +262,8 @@ endif "}}}
 
 if neobundle#tap('vim-trailing-whitespace') && neobundle#is_installed('vim-trailing-whitespace') "{{{
 	let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd', 'vimfiler', 'vimfiler:explorer']
+endif "}}}
+
+if neobundle#tap('vinarise.vim') && neobundle#is_installed('vinarise.vim') "{{{
+	let g:vinarise_enable_auto_detect = 1
 endif "}}}

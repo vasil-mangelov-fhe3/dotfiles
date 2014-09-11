@@ -136,9 +136,9 @@ NeoBundle 'tpope/vim-repeat', {
 NeoBundle 'matchit.zip', {
 			\ 'mappings' : [['nxo', '%', 'g%']]
 			\ }
-if executable('javac')
-	NeoBundle 'Shougo/javacomplete', {
+NeoBundle 'Shougo/javacomplete', {
 				\ 'external_commands' : 'javac',
+				\ 'disabled' : !executable('javac'),
 				\ 'build': {
 				\       'cygwin': 'javac autoload/Reflection.java',
 				\       'mac': 'javac autoload/Reflection.java',
@@ -148,7 +148,6 @@ if executable('javac')
 				\   'filetypes' : 'java',
 				\ }
 				\}
-endif
 NeoBundle 'kana/vim-operator-user', {
 			\  'functions' : 'operator#user#define',
 			\}
