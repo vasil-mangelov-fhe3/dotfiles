@@ -138,7 +138,6 @@ NeoBundle 'matchit.zip', {
 			\ }
 NeoBundle 'Shougo/javacomplete', {
 				\ 'external_commands' : 'javac',
-				\ 'disabled' : !executable('javac'),
 				\ 'build': {
 				\       'cygwin': 'javac autoload/Reflection.java',
 				\       'mac': 'javac autoload/Reflection.java',
