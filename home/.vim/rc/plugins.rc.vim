@@ -106,8 +106,8 @@ if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
 endif "}}}
 
 if neobundle#tap('vimfiler.vim') && neobundle#is_installed('vimfiler.vim') "{{{
-	nnoremap <silent> <F2> :VimFilerExplorer -parent -explorer-columns=type:size:time -toggle -no-safe -winwidth=50<CR>
-	:imap <F2> <C-o>:VimFilerExplorer -parent -explorer-columns=type:size:time -toggle -no-safe -winwidth=50<CR>
+	nnoremap <silent> <F2> :<C-u>VimFilerExplorer -parent -explorer-columns=type:size:time -toggle -no-safe -winwidth=50<CR>
+	:imap <silent> <F2> <C-o>:<C-u>VimFilerExplorer -parent -explorer-columns=type:size:time -toggle -no-safe -winwidth=50<CR>
 	autocmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
 	autocmd FileType vimfiler setlocal nonumber
 	autocmd FileType vimfiler nmap <buffer><silent> <2-LeftMouse> :call <SID>vimfiler_on_double_left()<CR>
@@ -180,8 +180,8 @@ xmap p <Plug>(operator-replace)
 if neobundle#tap('tagbar') && neobundle#is_installed('tagbar') "{{{
 	let g:tagbar_singleclick = 1
 	let g:tagbar_sort = 0
-	nnoremap <silent> <F3> :TagbarToggle<CR>
-	:imap <F3> <C-o>:TagbarToggle<CR>
+	nnoremap <silent> <F3> :<C-u>TagbarToggle<CR>
+	:imap <silent> <F3> <C-o>:<C-u>TagbarToggle<CR>
 	call neobundle#untap()
 endif "}}}
 
