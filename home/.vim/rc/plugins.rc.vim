@@ -129,12 +129,7 @@ if neobundle#tap('vimfiler.vim') && neobundle#is_installed('vimfiler.vim') "{{{
 		execute "normal " . mapping
 	endfunction"}}}
 	let g:vimfiler_ignore_pattern = '^\%(.git\|.DS_Store\)$'
-	" Like Textmate icons.
-	let g:vimfiler_tree_leaf_icon = ' '
-	let g:vimfiler_tree_opened_icon = '▾'
-	let g:vimfiler_tree_closed_icon = '▸'
-	let g:vimfiler_file_icon = '-'
-	let g:vimfiler_marked_file_icon = '*'
+	let neobundle#hooks.on_source = '~/.vim/rc/plugins/vimfiler.rc.vim'
 endif "}}}
 
 " quickrun.vim"{{{
