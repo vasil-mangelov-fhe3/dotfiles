@@ -20,6 +20,9 @@ xnoremap < <gv
 
 " make :Q work like :q
 command! -bang Q quit<bang>
+command! -bang W write<bang>
+command! -bang Wq wq<bang>
+command! -bang WQ wq<bang>
 nnoremap <silent> <F6> :call CopyModeToggle()<CR>
 :imap <F6> <C-o> :call CopyModeToggle()<CR>
 nnoremap <silent> <F11> :setlocal spell! spell?<CR>
