@@ -3,21 +3,16 @@ NeoBundle 'gregsexton/MatchTag'
 NeoBundle 'vim-scripts/delimitMate.vim'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'tpope/vim-git'
 NeoBundle 'sjl/gundo.vim', {
 			\ 'disabled' : !has('python'),
 			\ 'vim_version' : '7.3'
 			\ }
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'vim-scripts/IndexedSearch'
-NeoBundle 'tpope/vim-markdown'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'shawncplus/phpcomplete.vim'
 NeoBundle 'spf13/PIV'
 NeoBundle 'tpope/vim-ragtag'
-NeoBundle 'hail2u/vim-css3-syntax', {
-			\ 'autoload' : { 'filetypes' : 'syntax'}
-			\ }
 NeoBundle 'medihack/sh.vim', {
 			\ 'autoload' : { 'filetypes' : 'syntax'}
 			\ }
