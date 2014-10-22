@@ -122,11 +122,9 @@ function svn_prompt_vars {
 
 	local svn_wcroot=$(echo "${svn_info}" | sed -ne 's#^Working Copy Root Path: ##p')
 	local svn_st=$(cd "${svn_wcroot}"; svn st)
-	local modified=$(echo "${svn_st}" | egrep '^M' | wc -l)
-	local conflicted=$(echo "${svn_st}" | egrep '^!?\s*C' | wc -l)
+	local modified=$(echo "${svn_st}" | egrep '^M|!|?' | wc -l)
 
-	#print
-	if [[ $modified -gt 0 ]] || [[ $conflicted -gt 0 ]]; then
+	if [[ $modified -gt 0 ]]; then
 		SCM_DIRTY=1
 		SCM_STATE=${SVN_THEME_PROMPT_DIRTY:-$SCM_THEME_PROMPT_DIRTY}
 	else
@@ -135,7 +133,7 @@ function svn_prompt_vars {
 	fi
 	SCM_PREFIX=${SVN_THEME_PROMPT_PREFIX:-$SCM_THEME_PROMPT_PREFIX}
 	SCM_SUFFIX=${SVN_THEME_PROMPT_SUFFIX:-$SCM_THEME_PROMPT_SUFFIX}
-	SCM_BRANCH=$(svn info 2> /dev/null | sed -ne 's#^URL: ##p' | egrep -o '[^/]+$')
+	SCM_BRANCH=$(echo "$svn_wcroot" | egrep -o '[^/]+$')
 	SCM_CHANGE=$(svn info 2> /dev/null | sed -ne 's#^Revision: ##p')
 }
 
