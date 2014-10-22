@@ -122,11 +122,13 @@ function svn_prompt_vars {
 
 	local svn_wcroot=$(echo "${svn_info}" | sed -ne 's#^Working Copy Root Path: ##p')
 	local svn_st=$(cd "${svn_wcroot}"; svn st)
-	local modified=$(echo "${svn_st}" | egrep '^M|!|?' | wc -l)
+	SVN_MODIFIED=$(echo "${svn_st}" | egrep '^M' | wc -l)
+	SVN_DELETED=$(echo "${svn_st}" | egrep '^!' | wc -l)
+	SVN_UNTRACKT=$(echo "${svn_st}" | egrep '^?' | wc -l)
 
-	if [[ $modified -gt 0 ]]; then
+	if [[ $SVN_MODIFIED -gt 0 ]] || [[ $SVN_DELETED -gt 0 ]] || [[ $SVN_UNTRACKT -gt 0 ]]; then
 		SCM_DIRTY=1
-		SCM_STATE="${SCM_THEME_PROMPT_DIRTY} (${modified})"
+		SCM_STATE="${SCM_THEME_PROMPT_DIRTY}"
 	else
 		SCM_DIRTY=0
 		SCM_STATE=${SCM_THEME_PROMPT_CLEAN}

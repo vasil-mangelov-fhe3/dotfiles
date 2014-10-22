@@ -76,11 +76,11 @@ function powerline_scm_prompt {
 
 	if [[ "${SCM_NONE_CHAR}" != "${SCM_CHAR}" ]]; then
 		if [[ "${SCM_DIRTY}" -eq 1 ]]; then
-			if [ -n "$(echo $git_status_output | grep 'Changes not staged')" ]; then
+			if [ -n "$(echo $git_status_output | grep 'Changes not staged')" ] || [ $SVN_DELETED -gt 0 ]; then
 				SCM_PROMPT="$(set_rgb_color ${SCM_THEME_PROMPT_DIRTY_COLOR} ${SCM_THEME_PROMPT_COLOR})"
-			elif [ -n "$(echo $git_status_output | grep 'Changes to be committed')" ]; then
+			elif [ -n "$(echo $git_status_output | grep 'Changes to be committed')"] || [ $SVN_MODIFIED -gt 0 ]; then
 				SCM_PROMPT="$(set_rgb_color ${SCM_THEME_PROMPT_STAGED_COLOR} ${SCM_THEME_PROMPT_COLOR})"
-			elif [ -n "$(echo $git_status_output | grep 'Untracked files')" ]; then
+			elif [ -n "$(echo $git_status_output | grep 'Untracked files')" ] || [ $SVN_UNTRACKT -gt 0 ]; then
 				SCM_PROMPT="$(set_rgb_color ${SCM_THEME_PROMPT_UNTRACKED_COLOR} ${SCM_THEME_PROMPT_COLOR})"
 			else
 				SCM_PROMPT="$(set_rgb_color ${SCM_THEME_PROMPT_DIRTY_COLOR} ${SCM_THEME_PROMPT_COLOR})"
