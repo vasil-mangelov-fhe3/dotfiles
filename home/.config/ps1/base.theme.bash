@@ -109,17 +109,33 @@ function git_prompt_vars {
 }
 
 function svn_prompt_vars {
-  if [[ -n $(svn status 2> /dev/null) ]]; then
-    SCM_DIRTY=1
-      SCM_STATE=${SVN_THEME_PROMPT_DIRTY:-$SCM_THEME_PROMPT_DIRTY}
-  else
-    SCM_DIRTY=0
-      SCM_STATE=${SVN_THEME_PROMPT_CLEAN:-$SCM_THEME_PROMPT_CLEAN}
-  fi
+	type svn >/dev/null 2>&1
+	if [ "$?" -ne 0 ]; then
+		return
+	fi
+
+	local svn_info=$(svn info 2>/dev/null)
+	if [ -z "${svn_info}" ]; then
+		return
+	fi
+
+	local svn_wcroot=$(echo "${svn_info}" | sed -ne 's#^Working Copy Root Path: ##p')
+	local svn_st=$(cd "${svn_wcroot}"; svn st)
+	local modified=$(echo "${svn_st}" | egrep '^M' | wc -l)
+	local conflicted=$(echo "${svn_st}" | egrep '^!?\s*C' | wc -l)
+
+	#print
+	if [[ $modified -gt 0 ]] || [[ $conflicted -gt 0 ]]; then
+		SCM_DIRTY=1
+		SCM_STATE=${SVN_THEME_PROMPT_DIRTY:-$SCM_THEME_PROMPT_DIRTY}
+	else
+		SCM_DIRTY=0
+		SCM_STATE=${SVN_THEME_PROMPT_CLEAN:-$SCM_THEME_PROMPT_CLEAN}
+	fi
   SCM_PREFIX=${SVN_THEME_PROMPT_PREFIX:-$SCM_THEME_PROMPT_PREFIX}
   SCM_SUFFIX=${SVN_THEME_PROMPT_SUFFIX:-$SCM_THEME_PROMPT_SUFFIX}
-  SCM_BRANCH=$(svn info 2> /dev/null | awk -F/ '/^URL:/ { for (i=0; i<=NF; i++) { if ($i == "branches" || $i == "tags" ) { print $(i+1); break }; if ($i == "trunk") { print $i; break } } }') || echo "Rev: $(svn info 2> /dev/null | sed -ne 's#^Revision: ##p' )"
-  SCM_CHANGE=$(svn info 2> /dev/null | sed -ne 's#^Revision: ##p' )
+  SCM_BRANCH=$(svn info 2> /dev/null | sed -ne 's#^URL: ##p' | egrep -o '[^/]+$')
+  SCM_CHANGE=$(svn info 2> /dev/null | sed -ne 's#^Revision: ##p')
 }
 
 function hg_prompt_vars {
