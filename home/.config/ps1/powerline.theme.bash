@@ -73,7 +73,6 @@ function powerline_scm_prompt {
 	scm_prompt_vars
 	local git_status_output
 	git_status_output=$(git status 2> /dev/null )
-	set -x
 	if [[ "${SCM_NONE_CHAR}" != "${SCM_CHAR}" ]]; then
 		if [[ "${SCM_DIRTY}" -eq 1 ]]; then
 			if [ -n "$(echo $git_status_output | grep 'Changes not staged')" ] || [ ${SVN_DELETED} -gt 0 ]; then
@@ -88,7 +87,6 @@ function powerline_scm_prompt {
 		else
 			SCM_PROMPT="$(set_rgb_color ${SCM_THEME_PROMPT_CLEAN_COLOR} ${SCM_THEME_PROMPT_COLOR})"
 		fi
-		set +x
 		if [[ "${SCM_GIT_CHAR}" == "${SCM_CHAR}" ]]; then
 			local tag=""
 			if [[ $SCM_IS_TAG -eq "1" ]]; then
