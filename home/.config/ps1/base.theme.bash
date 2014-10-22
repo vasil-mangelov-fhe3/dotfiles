@@ -124,9 +124,9 @@ function svn_prompt_vars {
 	local svn_st=$(cd "${svn_wcroot}"; svn st)
 	SVN_MODIFIED=$(echo "${svn_st}" | egrep '^M' | wc -l)
 	SVN_DELETED=$(echo "${svn_st}" | egrep '^!' | wc -l)
-	SVN_UNTRACKT=$(echo "${svn_st}" | egrep '^?' | wc -l)
+	SVN_UNTRACKED=$(echo "${svn_st}" | egrep '^?' | wc -l)
 
-	if [[ $SVN_MODIFIED -gt 0 ]] || [[ $SVN_DELETED -gt 0 ]] || [[ $SVN_UNTRACKT -gt 0 ]]; then
+	if [[ $SVN_MODIFIED -gt 0 ]] || [[ $SVN_DELETED -gt 0 ]] || [[ $SVN_UNTRACKED -gt 0 ]]; then
 		SCM_DIRTY=1
 		SCM_STATE="${SCM_THEME_PROMPT_DIRTY}"
 	else
