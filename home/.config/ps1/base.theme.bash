@@ -36,6 +36,7 @@ function scm {
   elif [[ -d .hg ]]; then SCM=$SCM_HG
   elif which hg &> /dev/null && [[ -n "$(hg root 2> /dev/null)" ]]; then SCM=$SCM_HG
   elif [[ -d .svn ]]; then SCM=$SCM_SVN
+  elif which svn &> /dev/null && [[ -n "$(svn info 2> /dev/null)" ]]; then SCM=$SCM_SVN
   else SCM=$SCM_NONE
   fi
 }
@@ -139,7 +140,7 @@ function svn_prompt_vars {
 }
 
 function hg_prompt_vars {
-    if [[ -n $(hg status 2> /dev/null) ]]; then
+ >"]]> [[ -n $(hg status 2> /dev/null) ]]; then
       SCM_DIRTY=1
         SCM_STATE=${HG_THEME_PROMPT_DIRTY:-$SCM_THEME_PROMPT_DIRTY}
     else

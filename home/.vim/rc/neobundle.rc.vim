@@ -83,6 +83,7 @@ NeoBundle 'Shougo/vimfiler.vim', {
 			\ 'mappings' : '<Plug>',
 			\ 'explorer' : 1,
 			\ }
+NeoBundle 'Shougo/tabpagebuffer.vim'
 NeoBundle 'yomi322/vim-gitcomplete', {
 			\ 'filetype' : 'vimshell'
 			\ }
