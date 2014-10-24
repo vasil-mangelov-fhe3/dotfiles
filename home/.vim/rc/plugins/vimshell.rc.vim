@@ -5,7 +5,7 @@ let g:vimshell_interactive_update_time = 10
 let g:vimshell_smart_case = 1
 autocmd MyAutoCmd FileType vimshell imap <buffer> <C-d> <Plug>(vimshell_exit)
 autocmd MyAutoCmd FileType vimshell call vimshell#hook#add('chpwd', 'my_chpwd', 'g:my_chpwd')
-function! g:my_chpwd(args, context)
+function! g:My_chpwd(args, context)
 	call vimshell#execute('ls -aF')
 endfunction
 let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'

@@ -2,7 +2,7 @@
 " unite.vim
 "
 
-call g:source_rc('plugins/unite.menu.vim')
+call g:Source_rc('plugins/unite.menu.vim')
 
 let g:unite_kind_file_vertical_preview = 1
 
@@ -36,16 +36,11 @@ let g:unite_source_alias_aliases.scriptnames = {
 
 autocmd MyAutoCmd FileType unite call s:unite_my_settings()
 
-let g:unite_ignore_source_files = ['function.vim', 'command.vim']
+let g:unite_ignore_source_files = []
 
 call unite#custom#profile('action', 'context', {
 			\ 'start_insert' : 1
 			\ })
-
-" Set "-no-quit" automatically in grep unite source.
-"call unite#custom#profile('source/grep', 'context', {
-"\ 'no_quit' : 1
-"\ })
 
 " migemo.
 call unite#custom#source('line_migemo', 'matchers', 'matcher_migemo')
@@ -53,7 +48,8 @@ call unite#custom#source('line_migemo', 'matchers', 'matcher_migemo')
 " Custom filters."{{{
 call unite#custom#source(
 			\ 'buffer,file_rec,file_rec/async,file_rec/git', 'matchers',
-			\ ['converter_relative_word', 'matcher_fuzzy'])
+			\ ['converter_relative_word', 'matcher_fuzzy',
+			\  'matcher_project_ignore_files'])
 call unite#custom#source(
 			\ 'file_mru', 'matchers',
 			\ ['matcher_project_files', 'matcher_fuzzy'])
@@ -77,22 +73,6 @@ function! s:unite_my_settings() "{{{
 
 	" call unite#custom#default_action('directory', 'cd')
 
-	" Custom actions."{{{
-	let my_tabopen = {
-				\ 'description' : 'my tabopen items',
-				\ 'is_selectable' : 1,
-				\ }
-	function! my_tabopen.func(candidates) "{{{
-		call unite#take_action('tabopen', a:candidates)
-
-		let dir = isdirectory(a:candidates[0].word) ?
-					\ a:candidates[0].word : fnamemodify(a:candidates[0].word, ':p:h')
-		execute g:unite_kind_openable_lcd_command '`=dir`'
-	endfunction"}}}
-	call unite#custom#action('file,buffer', 'tabopen', my_tabopen)
-	unlet my_tabopen
-	"}}}
-
 	" Overwrite settings.
 	imap <silent><buffer><expr> <C-x> unite#do_action('split')
 	nmap <silent><buffer><expr> <C-x> unite#do_action('split')
@@ -109,6 +89,7 @@ function! s:unite_my_settings() "{{{
 	nmap <buffer> cd         <Plug>(unite_quick_match_default_action)
 	nmap <buffer> <C-z>      <Plug>(unite_toggle_transpose_window)
 	imap <buffer> <C-z>      <Plug>(unite_toggle_transpose_window)
+	imap <buffer> <C-w>      <Plug>(unite_delete_backward_path)
 	nmap <buffer> <C-j>      <Plug>(unite_toggle_auto_preview)
 	nnoremap <silent><buffer> <Tab>     <C-w>w
 	nnoremap <silent><buffer><expr> l
@@ -127,11 +108,6 @@ function! s:unite_my_settings() "{{{
 	nnoremap <silent><buffer><expr> x     unite#do_action('start')
 	nnoremap <buffer><expr> S      unite#mappings#set_current_filters(
 				\ empty(unite#mappings#get_current_filters()) ? ['sorter_reverse'] : [])
-
-	nnoremap <silent><buffer><expr> p
-				\ empty(filter(range(1, winnr('$')),
-				\ 'getwinvar(v:val, "&previewwindow") != 0')) ?
-				\ unite#do_action('preview') : ":\<C-u>pclose!\<CR>"
 endfunction"}}}
 
 " Default configuration.

@@ -8,7 +8,7 @@
 " Note: Skip initialization for vim-tiny or vim-small.
 if !1 | finish | endif
 
-function! g:source_rc(path)
+function! g:Source_rc(path)
 	execute 'source' fnameescape(expand('~/.vim/rc/' . a:path))
 endfunction
 
@@ -29,11 +29,11 @@ function! IsMac()
 				\     system('uname') =~? '^darwin'))
 endfunction
 
-call g:source_rc('init.rc.vim')
+call g:Source_rc('init.rc.vim')
 
 call neobundle#begin(expand('~/.vim/bundle/'))
 
-call g:source_rc('neobundle.rc.vim')
+call g:Source_rc('neobundle.rc.vim')
 
 NeoBundleLocal ~/.vim/bundle
 
@@ -76,40 +76,40 @@ set wrapscan
 " Edit:
 "
 
-call g:source_rc('edit.rc.vim')
+call g:Source_rc('edit.rc.vim')
 
 "--------------------------------------------------------------------------------------------------
 " View:
 "
 
-call g:source_rc('view.rc.vim')
+call g:Source_rc('view.rc.vim')
 
 "--------------------------------------------------------------------------------------------------
 " FileType:
 "
 
-call g:source_rc('filetype.rc.vim')
+call g:Source_rc('filetype.rc.vim')
 
 "--------------------------------------------------------------------------------------------------
 " Plugin:
 "
 
-call g:source_rc('plugins.rc.vim')
+call g:Source_rc('plugins.rc.vim')
 
 "--------------------------------------------------------------------------------------------------
 " Mappings:
 "
 
-call g:source_rc('mappings.rc.vim')
+call g:Source_rc('mappings.rc.vim')
 
 "--------------------------------------------------------------------------------------------------
 " Platform:
 "
 
 if s:is_windows
-	call g:source_rc('windows.rc.vim')
+	call g:Source_rc('windows.rc.vim')
 else
-	call g:source_rc('unix.rc.vim')
+	call g:Source_rc('unix.rc.vim')
 endif
 
 " Using the mouse on a terminal.
@@ -164,7 +164,7 @@ endfunction
 "
 
 if has('gui_running')
-	call g:source_rc('gui.rc.vim')
+	call g:Source_rc('gui.rc.vim')
 endif
 
 "--------------------------------------------------------------------------------------------------
