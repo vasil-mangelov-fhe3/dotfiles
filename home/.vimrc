@@ -33,7 +33,12 @@ call g:Source_rc('init.rc.vim')
 
 call neobundle#begin(expand('~/.vim/bundle/'))
 
-call g:Source_rc('neobundle.rc.vim')
+if neobundle#has_cache()
+	NeoBundleLoadCache
+else
+	call g:Source_rc('neobundle.rc.vim')
+	NeoBundleSaveCache
+endif
 
 NeoBundleLocal ~/.vim/bundle
 

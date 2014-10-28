@@ -4,7 +4,7 @@
 
 " Smart insert tab setting.
 set smarttab
-" Exchange tab to spaces.
+" Don't exchange tab to spaces.
 set noexpandtab
 " Substitute <Tab> with blanks.
 set tabstop=4
@@ -17,7 +17,7 @@ set shiftround
 
 set autoindent
 "wrapping
-set wrap		"dont wrap lines
+set wrap		"wrap lines
 set linebreak	"wrap lines at convenient points
 " Enable modeline.
 set modeline
@@ -82,8 +82,8 @@ set grepprg=grep\ -inH
 set isfname-==
 
 " Reload .vimrc automatically.
-autocmd MyAutoCmd BufWritePost .vimrc,vimrc,*.rc.vim
-			\ NeoBundleClearCache | silent source $MYVIMRC
+"autocmd MyAutoCmd BufWritePost .vimrc,vimrc,*.rc.vim
+"			\ NeoBundleClearCache | silent source $MYVIMRC
 
 " Keymapping timeout.
 set timeout timeoutlen=3000 ttimeoutlen=100

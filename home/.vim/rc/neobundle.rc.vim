@@ -153,7 +153,6 @@ NeoBundle 'yomi322/vim-gitcomplete', {
 			\ }
 NeoBundle 'kopischke/unite-spell-suggest'
 NeoBundle 'osyo-manga/unite-filetype'
-NeoBundle 'majkinetor/unite-cmdmatch'
 NeoBundle 'supermomonga/unite-kawaii-calc'
 NeoBundle 'gregsexton/MatchTag'
 NeoBundle 'vim-scripts/delimitMate.vim'
