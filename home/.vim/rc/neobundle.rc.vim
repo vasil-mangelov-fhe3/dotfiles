@@ -1,39 +1,4 @@
 NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'gregsexton/MatchTag'
-NeoBundle 'vim-scripts/delimitMate.vim'
-NeoBundle 'tpope/vim-endwise'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'sjl/gundo.vim', {
-			\ 'disabled' : !has('python'),
-			\ 'vim_version' : '7.3'
-			\ }
-NeoBundle 'Yggdroot/indentLine'
-NeoBundle 'vim-scripts/IndexedSearch'
-NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'shawncplus/phpcomplete.vim'
-NeoBundle 'spf13/PIV'
-NeoBundle 'tpope/vim-ragtag'
-NeoBundle 'medihack/sh.vim', {
-			\ 'autoload' : { 'filetypes' : 'syntax'}
-			\ }
-NeoBundle 'altercation/vim-colors-solarized', {
-			\ 'autoload' : { 'unite_sources' : 'colorscheme', }
-			\ }
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'godlygeek/tabular'
-NeoBundle 'majutsushi/tagbar'
-NeoBundle 'tpope/vim-unimpaired'
-NeoBundle 'bling/vim-airline'
-NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'jrhorn424/vim-multiple-cursors'
-NeoBundle 'prurigro/vim-polyglot-darkcloud'
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'mtscout6/vim-tagbar-css'
-NeoBundle 'bronson/vim-trailing-whitespace'
-NeoBundle 'ujihisa/vimshell-ssh', {
-			\ 'filetypes' : 'vimshell',
-			\ }
 NeoBundleLazy 'Shougo/neocomplcache.vim', {
 			\ 'insert' : 1
 			\ }
@@ -84,15 +49,6 @@ NeoBundle 'Shougo/vimfiler.vim', {
 			\ 'explorer' : 1,
 			\ }
 NeoBundle 'Shougo/tabpagebuffer.vim'
-NeoBundle 'yomi322/vim-gitcomplete', {
-			\ 'filetype' : 'vimshell'
-			\ }
-NeoBundle 'kana/vim-niceblock'
-NeoBundle 'thinca/vim-quickrun', {
-			\ 'commands' : 'QuickRun',
-			\ 'mappings' : [
-			\   ['nxo', '<Plug>(quickrun)']],
-			\ }
 NeoBundle 'Shougo/unite.vim', {
 			\ 'commands' : [{ 'name' : 'Unite',
 			\ 'complete' : 'customlist,unite#complete_source'},
@@ -102,36 +58,10 @@ NeoBundle 'Shougo/neomru.vim', {'autoload':{'unite_sources':
 			\ ['file_mru', 'directory_mru']}}
 NeoBundle 'Shougo/unite-build'
 NeoBundle 'Shougo/vinarise.vim'
-NeoBundle 'majkinetor/unite-cmdmatch'
 NeoBundle 'Shougo/unite-sudo'
-NeoBundle 'thinca/vim-ref', {
-			\ 'commands' : 'Ref',
-			\ 'unite_sources' : 'ref',
-			\ }
-NeoBundle 'thinca/vim-unite-history', {
-			\ 'unite_sources' : ['history/command', 'history/search']
-			\ }
 NeoBundle 'Shougo/unite-outline', {'autoload':{'unite_sources':'outline'}}
 NeoBundle 'Shougo/unite-help', {'autoload':{'unite_sources':'help'}}
-NeoBundle 'ujihisa/unite-locate', {'autoload':{'unite_sources':'locate'}}
-NeoBundle 'tsukkee/unite-tag', {
-			\ 'unite_sources' : ['tag', 'tag/include', 'tag/file']
-			\ }
 NeoBundle 'Shougo/unite-session'
-NeoBundle 'kopischke/unite-spell-suggest'
-NeoBundle 'osyo-manga/unite-filetype'
-NeoBundle 'kana/vim-tabpagecd', {
-			\ 'unite_sources' : 'tab'
-			\ }
-NeoBundle 'supermomonga/unite-kawaii-calc'
-NeoBundle 'godlygeek/csapprox', { 'terminal' : 1 }
-NeoBundle 'ujihisa/neco-look'
-NeoBundle 'tpope/vim-repeat', {
-			\ 'mappings' : '.',
-			\ }
-NeoBundle 'matchit.zip', {
-			\ 'mappings' : [['nxo', '%', 'g%']]
-			\ }
 NeoBundle 'Shougo/javacomplete', {
 				\ 'external_commands' : 'javac',
 				\ 'build': {
@@ -143,12 +73,94 @@ NeoBundle 'Shougo/javacomplete', {
 				\   'filetypes' : 'java',
 				\ }
 				\}
+NeoBundle 'thinca/vim-ref', {
+			\ 'commands' : 'Ref',
+			\ 'unite_sources' : 'ref',
+			\ }
+NeoBundle 'thinca/vim-unite-history', {
+			\ 'unite_sources' : ['history/command', 'history/search']
+			\ }
+NeoBundle 'thinca/vim-quickrun', {
+			\ 'commands' : 'QuickRun',
+			\ 'mappings' : [
+			\   ['nxo', '<Plug>(quickrun)']],
+			\ }
+NeoBundle 'kana/vim-niceblock'
+NeoBundle 'kana/vim-tabpagecd', {
+			\ 'unite_sources' : 'tab'
+			\ }
 NeoBundle 'kana/vim-operator-user', {
 			\  'functions' : 'operator#user#define',
 			\}
-NeoBundle 'tejr/vim-tmux', {
-			\ 'autoload' : {
-			\ 'filetypes' : 'conf'}}
+NeoBundle 'ujihisa/vimshell-ssh', {
+			\ 'filetypes' : 'vimshell',
+			\ }
+NeoBundle 'ujihisa/unite-locate', {'autoload':{'unite_sources':'locate'}}
+NeoBundle 'ujihisa/neco-look'
+NeoBundle 'tpope/vim-endwise'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-git'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'tpope/vim-ragtag'
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-repeat', {
+			\ 'mappings' : '.',
+			\ }
+NeoBundle 'chrisbra/csv.vim'
+NeoBundle 'rodjek/vim-puppet'
+NeoBundle 'JulesWang/css.vim'
+NeoBundle 'othree/html5.vim'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'phongnh/vim-jquery'
+NeoBundle 'elzr/vim-json'
+NeoBundle 'vim-perl/vim-perl'
+NeoBundle 'evanmiller/nginx-vim-syntax'
+NeoBundle 'StanAngeloff/php.vim'
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'tejr/vim-tmux'
+NeoBundle 'plasticboy/vim-markdown'
+NeoBundle 'ap/vim-css-color'
+NeoBundle 'klen/python-mode'
+NeoBundle 'sjl/gundo.vim', {
+			\ 'disabled' : !has('python'),
+			\ 'vim_version' : '7.3'
+			\ }
+NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'vim-scripts/IndexedSearch'
+NeoBundle 'scrooloose/nerdcommenter'
+NeoBundle 'shawncplus/phpcomplete.vim'
+NeoBundle 'spf13/PIV'
+NeoBundle 'medihack/sh.vim', {
+			\ 'autoload' : { 'filetypes' : 'syntax'}
+			\ }
+NeoBundle 'altercation/vim-colors-solarized', {
+			\ 'autoload' : { 'unite_sources' : 'colorscheme', }
+			\ }
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'godlygeek/tabular'
+NeoBundle 'majutsushi/tagbar'
+NeoBundle 'bling/vim-airline'
+NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'jrhorn424/vim-multiple-cursors'
+NeoBundle 'mtscout6/vim-tagbar-css'
+NeoBundle 'bronson/vim-trailing-whitespace'
+NeoBundle 'tsukkee/unite-tag', {
+			\ 'unite_sources' : ['tag', 'tag/include', 'tag/file']
+			\ }
+NeoBundle 'yomi322/vim-gitcomplete', {
+			\ 'filetype' : 'vimshell'
+			\ }
+NeoBundle 'kopischke/unite-spell-suggest'
+NeoBundle 'osyo-manga/unite-filetype'
+NeoBundle 'majkinetor/unite-cmdmatch'
+NeoBundle 'supermomonga/unite-kawaii-calc'
+NeoBundle 'gregsexton/MatchTag'
+NeoBundle 'vim-scripts/delimitMate.vim'
+NeoBundle 'godlygeek/csapprox', { 'terminal' : 1 }
+NeoBundle 'matchit.zip', {
+			\ 'mappings' : [['nxo', '%', 'g%']]
+			\ }
 NeoBundle 'xolox/vim-easytags', {
 			\ 'external_commands' : 'ctags-exuberant',
 			\ 'depends' : 'xolox/vim-misc'
