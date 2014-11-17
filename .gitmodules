@@ -10,3 +10,7 @@
 	path = home/.tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm.git
 	branch = master
+[submodule "home/.config/dircolors-solarized"]
+	path = home/.config/dircolors-solarized
+	url = https://github.com/NemesisRE/dircolors-solarized.git
+	branch = master
