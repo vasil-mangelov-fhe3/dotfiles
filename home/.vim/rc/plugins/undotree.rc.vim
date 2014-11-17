@@ -56,12 +56,12 @@ endif
 
 " undotree window width
 if !exists('g:undotree_SplitWidth')
-	let g:undotree_SplitWidth = 40
+	let g:undotree_SplitWidth = 60
 endif
 
 " diff window height
 if !exists('g:undotree_DiffpanelHeight')
-	let g:undotree_DiffpanelHeight = 10
+	let g:undotree_DiffpanelHeight = 20
 endif
 
 " auto open diff window
@@ -113,32 +113,8 @@ endif
 "endfunction
 
 "=================================================
-" Help text
-let s:helpmore = ['"    ===== Marks ===== ',
-			\'" >num< : current change',
-			\'" {num} : change to redo',
-			\'" [num] : the last change',
-			\'"   s   : saved changes',
-			\'"   S   : last saved change',
-			\'"   ===== Hotkeys =====']
-let s:helpless = ['" Press ? for help.']
-
-" Keymap
-let s:keymap = []
-" action, key, help.
-let s:keymap += [['Help','?','Toggle quick help']]
-let s:keymap += [['Close','q','Close this panel']]
-let s:keymap += [['FocusTarget','<tab>','Set Focus to editor']]
-let s:keymap += [['ClearHistory','C','Clear undo history']]
-let s:keymap += [['TimestampToggle','T','Toggle relative timestamp']]
-let s:keymap += [['DiffToggle','D','Toggle diff panel']]
-let s:keymap += [['GoNext','OA','Revert to next state']]
-let s:keymap += [['GoPrevious','OB','Revert to previous state']]
-let s:keymap += [['GoNextSaved','<','Revert to next saved state']]
-let s:keymap += [['GoPreviousSaved','>','Revert to previous saved state']]
-let s:keymap += [['Redo','<c-r>','Redo']]
-let s:keymap += [['Undo','u','Undo']]
-let s:keymap += [['Enter','<2-LeftMouse>','Revert to current']]
-let s:keymap += [['Enter','<cr>','Revert to current']]
-
+function g:Undotree_CustomMap()
+	map <buffer> OA K
+	map <buffer> OB J
+endfunction
 
