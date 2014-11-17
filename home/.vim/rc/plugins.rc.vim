@@ -185,9 +185,10 @@ if neobundle#tap('tagbar') && neobundle#is_installed('tagbar') "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('gundo.vim') && neobundle#is_installed('gundo.vim') "{{{
-	nnoremap <silent> <F5> :GundoToggle<CR>
-	:imap <F5> <C-o>:GundoToggle<CR>
+if neobundle#tap('undotree') && neobundle#is_installed('undotree') "{{{
+	nnoremap <silent> <F5> :UndotreeToggle<CR>
+	:imap <F5> <C-o>:UndotreeToggle<CR>
+	let neobundle#hooks.on_source = '~/.vim/rc/plugins/undotree.rc.vim'
 	call neobundle#untap()
 endif "}}}
 

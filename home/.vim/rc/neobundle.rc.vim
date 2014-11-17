@@ -122,7 +122,10 @@ NeoBundle 'tejr/vim-tmux'
 NeoBundle 'plasticboy/vim-markdown'
 NeoBundle 'ap/vim-css-color'
 NeoBundle 'klen/python-mode'
-NeoBundle 'sjl/gundo.vim', {
+NeoBundle 'mbbill/undotree', {
+			\ 'vim_version' : '7.3',
+			\ }
+NeoBundleLazy 'sjl/gundo.vim', {
 			\ 'disabled' : !has('python'),
 			\ 'vim_version' : '7.3'
 			\ }
