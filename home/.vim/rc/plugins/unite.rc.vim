@@ -1,14 +1,32 @@
+"P
 "---------------------------------------------------------------------------
 " unite.vim
 "
 
-call g:Source_rc('plugins/unite.menu.vim')
+" Default configuration.
+let default_context = {
+			\ 'vertical' : 0,
+			\ 'cursor_line_highlight' : 'TabLineSel',
+			\ 'start_insert' : 1,
+			\ 'complete' : 1,
+			\ }
+
+let g:unite_enable_short_source_names = 1
+" let g:unite_abbr_highlight = 'TabLine'
+
+if IsWindows()
+else
+	" Like Textmate icons.
+	let g:unite_marked_icon = '✗'
+	let default_context.prompt = '» '
+endif
+
+call unite#custom#profile('default', 'context', default_context)
 
 let g:unite_kind_file_vertical_preview = 1
 
 let g:unite_split_rule = "botright"
 let g:unite_force_overwrite_statusline = 0
-
 let g:unite_source_history_yank_enable = 1
 
 " For unite-alias.
@@ -64,6 +82,11 @@ call unite#filters#sorter_default#use(['sorter_rank'])
 "}}}
 
 function! s:unite_my_settings() "{{{
+	let b:actually_quit = 0
+	setlocal updatetime=3
+	autocmd! InsertEnter <buffer> let b:actually_quit = 0
+	autocmd! InsertLeave <buffer> let b:actually_quit = 1
+	autocmd! CursorHold  <buffer> if exists('b:actually_quit') && b:actually_quit | close | endif
 	" Directory partial match.
 	call unite#custom#alias('file', 'h', 'left')
 	call unite#custom#default_action('directory', 'narrow')
@@ -80,7 +103,6 @@ function! s:unite_my_settings() "{{{
 	nmap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
 	imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
 	nmap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-	nmap <buffer> <ESC> <Plug>(unite_exit)
 	imap <buffer>  jj        <Plug>(unite_insert_leave)
 	imap <buffer>  <Tab>     <Plug>(unite_complete)
 	imap <buffer> <C-w>      <Plug>(unite_delete_backward_path)
@@ -110,27 +132,6 @@ function! s:unite_my_settings() "{{{
 				\ empty(unite#mappings#get_current_filters()) ? ['sorter_reverse'] : [])
 endfunction"}}}
 
-" Default configuration.
-let default_context = {
-			\ 'vertical' : 0,
-			\ 'cursor_line_highlight' : 'TabLineSel',
-			\ }
-
-let g:unite_enable_short_source_names = 1
-" let g:unite_abbr_highlight = 'TabLine'
-
-if IsWindows()
-else
-	" Like Textmate icons.
-	let g:unite_marked_icon = '✗'
-
-	" Prompt choices.
-	"let g:unite_prompt = '❫ '
-	let default_context.prompt = '» '
-endif
-
-call unite#custom#profile('default', 'context', default_context)
-
 if executable('ag')
 	" Use ag in unite grep source.
 	let g:unite_source_grep_command = 'ag'
@@ -158,10 +159,12 @@ let g:unite_build_error_icon    = '~/.vim/signs/err.'
 			\ . (IsWindows() ? 'bmp' : 'png')
 let g:unite_build_warning_icon  = '~/.vim/signs/warn.'
 			\ . (IsWindows() ? 'bmp' : 'png')
-
 let g:unite_source_rec_max_cache_files = -1
 call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
 			\ 'ignore_pattern', join([
 			\ '\.git/',
 			\ ], '\|'))
+
+" Source Menu
+call g:Source_rc('plugins/unite.menu.vim')
 
