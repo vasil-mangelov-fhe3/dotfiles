@@ -84,7 +84,8 @@ if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
 	" Execute help by cursor keyword.
 	nnoremap <silent> g<C-h>	:<C-u>UniteWithCursorWord help<CR>
 	" Search.
-	nnoremap <silent><expr> / :<C-u>Unite -buffer-name=search line:all -start-insert -no-quit<CR>
+	nnoremap <silent><expr> /
+				\ ":\<C-u>Unite -buffer-name=search line:all -start-insert -no-quit\<CR>"
 	nnoremap <expr> g/  <SID>smart_search_expr('g/',
 				\ :<C-u>Unite -buffer-name=search -start-insert line_migemo<CR>)
 	nnoremap <silent><expr> ?

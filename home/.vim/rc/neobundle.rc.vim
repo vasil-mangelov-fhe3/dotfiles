@@ -125,12 +125,7 @@ NeoBundle 'klen/python-mode'
 NeoBundle 'mbbill/undotree', {
 			\ 'vim_version' : '7.3',
 			\ }
-NeoBundleLazy 'sjl/gundo.vim', {
-			\ 'disabled' : !has('python'),
-			\ 'vim_version' : '7.3'
-			\ }
 NeoBundle 'Yggdroot/indentLine'
-NeoBundle 'vim-scripts/IndexedSearch'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'shawncplus/phpcomplete.vim'
 NeoBundle 'spf13/PIV'
