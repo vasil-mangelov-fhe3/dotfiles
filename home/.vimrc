@@ -32,14 +32,17 @@ endfunction
 call g:Source_rc('init.rc.vim')
 
 call neobundle#begin(expand('~/.vim/bundle/'))
+call g:Source_rc('neobundle.rc.vim')
+NeoBundleClean
 
-if neobundle#has_fresh_cache(resolve(expand('~/.vim/rc/neobundle.rc.vim')))
-	NeoBundleLoadCache
-else
-	call g:Source_rc('neobundle.rc.vim')
-	NeoBundleSaveCache
-	NeoBundleClean
-endif
+" Use NeoBundleCache
+"if neobundle#has_fresh_cache(resolve(expand('~/.vim/rc/neobundle.rc.vim')))
+"	NeoBundleLoadCache
+"else
+"	call g:Source_rc('neobundle.rc.vim')
+"	NeoBundleSaveCache
+"	NeoBundleClean
+"endif
 
 if isdirectory(expand('~/.vim/localbundle'))
 	NeoBundleLocal expand(~/.vim/localbundle)
