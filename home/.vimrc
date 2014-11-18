@@ -38,6 +38,7 @@ if neobundle#has_fresh_cache(resolve(expand('~/.vim/rc/neobundle.rc.vim')))
 else
 	call g:Source_rc('neobundle.rc.vim')
 	NeoBundleSaveCache
+	NeoBundleClean
 endif
 
 if isdirectory(expand('~/.vim/localbundle'))
