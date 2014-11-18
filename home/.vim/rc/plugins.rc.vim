@@ -264,3 +264,8 @@ endif "}}}
 if neobundle#tap('vinarise.vim') && neobundle#is_installed('vinarise.vim') "{{{
 	let g:vinarise_enable_auto_detect = 1
 endif "}}}
+
+if neobundle#tap('rainbow_parentheses.vim') && neobundle#is_installed('rainbow_parentheses.vim') "{{{
+	let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['<', '>']]
+	au VimEnter * call rainbow_parentheses#activate()
+endif "}}}
