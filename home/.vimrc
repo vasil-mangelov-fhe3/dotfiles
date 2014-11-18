@@ -40,6 +40,10 @@ else
 	NeoBundleSaveCache
 endif
 
+if isdirectory(expand('~/.vim/localbundle'))
+	NeoBundleLocal expand(~/.vim/localbundle)
+endif
+
 call neobundle#end()
 
 "load ftplugins and indent files
