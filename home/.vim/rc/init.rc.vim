@@ -97,3 +97,11 @@ if has('gui_running')
 	set guioptions=Mc
 endif
 
+" Disable GetLatestVimPlugin.vim
+if !&verbose
+	let g:loaded_getscriptPlugin = 1
+endif
+
+let g:loaded_netrwPlugin = 1
+let g:loaded_2html_plugin = 1
+let g:loaded_vimballPlugin = 1

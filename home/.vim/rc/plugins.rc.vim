@@ -107,6 +107,8 @@ if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
 endif "}}}
 
 if neobundle#tap('vimfiler.vim') && neobundle#is_installed('vimfiler.vim') "{{{
+	let g:vimfiler_as_default_explorer = 1
+	autocmd VimEnter * if !argc() | VimFiler | endif
 	nnoremap <silent> <F2> :<C-u>VimFilerExplorer -parent -explorer-columns=type:size:time -toggle -no-safe -winwidth=50<CR>
 	:imap <silent> <F2> <C-o>:<C-u>VimFilerExplorer -parent -explorer-columns=type:size:time -toggle -no-safe -winwidth=50<CR>
 	autocmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
@@ -258,7 +260,7 @@ if neobundle#tap('vim-diffchanges') && neobundle#is_installed('vim-diffchanges')
 endif "}}}
 
 if neobundle#tap('vim-trailing-whitespace') && neobundle#is_installed('vim-trailing-whitespace') "{{{
-	let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd', 'vimfiler', 'vimfiler:explorer']
+	let g:extra_whitespace_ignored_filetypes = ['unite', 'vimfiler', 'vimfiler:explorer', 'startify']
 endif "}}}
 
 if neobundle#tap('vinarise.vim') && neobundle#is_installed('vinarise.vim') "{{{
@@ -281,6 +283,7 @@ if neobundle#tap('promptline.vim') && neobundle#is_installed('promptline.vim') "
 		\'warn' : [ promptline#slices#last_exit_code() ]}
 endif "}}}
 
-if neobundle#tap('vim-startify.vim') && neobundle#is_installed('vim-startify.vim') "{{{
+if neobundle#tap('vim-startify') && neobundle#is_installed('vim-startify') "{{{
+	autocmd FileType startify setlocal nospell
 	let neobundle#hooks.on_source = '~/.vim/rc/plugins/vim-startify.vim'
 endif "}}}

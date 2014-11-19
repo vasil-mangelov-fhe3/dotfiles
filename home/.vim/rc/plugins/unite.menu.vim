@@ -6,7 +6,8 @@ call unite#custom#profile('menu', 'context', {
 			\ 'winwidth': 35,
 			\ 'vertical': 1,
 			\ 'direction': 'topleft',
-			\ 'toggle': 1
+			\ 'toggle': 1,
+			\ 'quick-match' : 1,
 			\ })
 
 let s:unite_call_menu = 'Unite -profile-name=menu menu:'
@@ -16,6 +17,7 @@ let g:unite_source_menu_menus.Main = {}
 let g:unite_source_menu_menus.Main.command_candidates =[
 			\ ['>> File', s:unite_call_menu . 'File'],
 			\ ['>> Git', s:unite_call_menu . 'Git'],
+			\ [' > Help', 'Startify'],
 			\ ]
 
 let g:unite_source_menu_menus.File = {}
