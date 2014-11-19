@@ -1,8 +1,8 @@
 # NRE.Com.Net Dotfiles
 
+
 ## Description
 This is our compilation of dotfiles, they are build to be managed by [Anders Ingemann's homeshick](https://github.com/andsens/homeshick)
-
 
 **NOTE:**
 This includes
@@ -16,6 +16,7 @@ This includes
 
 All contribution goes to the original developers we only have put the pieces together.
 
+
 ## Install
 
 ### Manual
@@ -28,13 +29,14 @@ We sugest to install [Lokaltog powerline-fonts](https://github.com/Lokaltog/powe
 and run `fc-cache -fv` (The bootstrap script includes and installes/registers them automatically.).
 Then you should restart your terminal application and change the font to a powerline one.
 
-
 ### Bootstraped
 Just run:
 `curl -sL https://raw.githubusercontent.com/NemesisRE/dotfiles/master/bootstrap.sh | /bin/bash`
 
 
-## Command Line
+## Features
+
+### Command Line
 1. Fast Bash only Powerline Theme
 	* With VCS detection
 	* Last error code
