@@ -9,7 +9,7 @@ set show-all-if-ambiguous on
 set mark-symlinked-directories on
 
 # Use the text that has already been typed as the prefix for searching through
-# commands (i.e. more intelligent Up/Down behavior)
+# commands ALT-Up/ALT-Down
 "\e[1;3B": history-search-forward
 "\e[1;3A": history-search-backward
 
@@ -41,6 +41,7 @@ set skip-completed-text on
 # The shortcut "\e[Z" doesn't exist and it's replaced by "TAB".
 # There is also no difference between <tab> and <shift+tab> on msysGit
 TAB: menu-complete
+"\e[Z": menu-complete-backward
 
 # Allow UTF-8 input and output, instead of showing stuff like $'\0123\0456'
 set input-meta on

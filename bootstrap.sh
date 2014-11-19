@@ -28,6 +28,9 @@ homeshick link
 # Register powerline fonts
 fc-cache -fv
 
+# Installing Vim plugins
+vim +NeoBundleInstall! +qall
+
 # Source .bashrc_homesick in .bashrc
 grep -xq 'source "${HOME}/.bashrc_homesick"' ${HOME}/.bashrc || printf '\nsource "${HOME}/.bashrc_homesick"' >> ${HOME}/.bashrc
 

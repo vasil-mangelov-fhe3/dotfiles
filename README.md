@@ -5,13 +5,14 @@ This is our compilation of dotfiles, they are build to be managed by [Anders Ing
 
 
 **NOTE:**
-This includes 
-* [revans bash-it](https://github.com/revans/bash-it/wiki/Themes#powerline) Powerline Theme 
+This includes
+* [promptline.vim](https://github.com/edkolev/promptline.vim) Powerline Theme (powerlineclone)
 * [Lokaltogs powerline-fonts](https://github.com/Lokaltog/powerline-fonts) which is installed into "${HOME}/.fonts"
 * [seebis solarized dircolors ](https://github.com/seebi/dircolors-solarized#theme-1-256dark-by-seebi) which is installed into "${HOME}/.config"
 * [seebis solarized tmux theme](https://github.com/seebi/tmux-colors-solarized)
 * [tmux-plugins tpm](https://github.com/tmux-plugins/tpm) disabled at the moment
 * a huge compilation of vim Plugins ([Pluginlist](https://github.com/NemesisRE/dotfiles/blob/master/home/.vim/rc/neobundle.rc.vim))
+* and some other dotfiles e.g. gitconfig, wget, curl, tmux...
 
 All contribution goes to the original developers we only have put the pieces together.
 
@@ -29,4 +30,18 @@ Then you should restart your terminal application and change the font to a power
 
 
 ### Bootstraped
-1. `curl -sL https://raw.githubusercontent.com/NemesisRE/dotfiles/master/bootstrap.sh | /bin/bash`
+Just run:
+`curl -sL https://raw.githubusercontent.com/NemesisRE/dotfiles/master/bootstrap.sh | /bin/bash`
+
+
+## Command Line
+1. Fast Bash only Powerline Theme
+	* With VCS detection
+	* Last error code
+2. Solarized dircolors
+3. Inputrc tweaks
+	* TAB/SHIFT-TAB menu-completion/menu-completion-backward
+	* ALT-UP/ALT-DOWN search History for command
+	* ALT-BACKSPACE kill-word
+	* Complete hidden files
+	* and more
