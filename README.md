@@ -31,6 +31,7 @@ Then you should restart your terminal application and change the font to a power
 
 ### Bootstraped
 Just run:
+
 `curl -sL https://raw.githubusercontent.com/NemesisRE/dotfiles/master/bootstrap.sh | /bin/bash`
 
 
@@ -38,8 +39,9 @@ Just run:
 
 ### Command Line
 1. Fast Bash only Powerline Theme
-	* With VCS detection
-	* Last error code
+	* VCS detection
+	* Python virtualenv detection
+	* Last error code (!=0)
 2. Solarized dircolors
 3. Inputrc tweaks
 	* TAB/SHIFT-TAB menu-completion/menu-completion-backward
@@ -47,3 +49,12 @@ Just run:
 	* ALT-BACKSPACE kill-word
 	* Complete hidden files
 	* and more
+
+### Vim
+Many Plugins, most of them will just work and do their magic.
+
+Quick start: Just start Vim without a file or Press "F1 -> Help" This will give you a small overview
+over the common keybindings.
+
+The other Functions will be available via the Menu (F1) or their normal keybindings/commands.
+
