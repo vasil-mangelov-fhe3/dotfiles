@@ -1,3 +1,4 @@
+autocmd FileType startify setlocal nospell
 let g:startify_custom_header = [
 			\ '						Keybindings',
 			\ '	Function Keys:',

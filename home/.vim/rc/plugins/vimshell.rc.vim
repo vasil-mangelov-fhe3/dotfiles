@@ -1,6 +1,9 @@
 "---------------------------------------------------------------------------
 " vimshell.vim
 "
+" <C-Space>: switch to vimshell
+nmap <C-@>  <Plug>(vimshell_switch)
+nnoremap !  q:VimShellExecute<Space>
 let g:vimshell_interactive_update_time = 10
 let g:vimshell_smart_case = 1
 autocmd MyAutoCmd FileType vimshell imap <buffer> <C-d> <Plug>(vimshell_exit)
@@ -8,39 +11,33 @@ autocmd MyAutoCmd FileType vimshell call vimshell#hook#add('chpwd', 'my_chpwd', 
 function! g:My_chpwd(args, context)
 	call vimshell#execute('ls -aF')
 endfunction
-let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
-let g:vimshell_right_prompt = 'vcs#info("(%s)-[%b]%p", "(%s)-[%b|%a]%p")'
+"let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
+"let g:vimshell_right_prompt = 'vcs#info("(%s)-[%b]", "(%s)-[%b|%a]")'
 let g:vimshell_prompt = '% '
 let g:vimshell_environment_term = 'xterm-256'
 let g:vimshell_split_command = ''
 let g:vimshell_enable_transient_user_prompt = 1
-let g:vimshell_force_overwrite_statusline = 1
 let g:vimshell_vimshrc_path = expand('~/.vimshrc')
- let g:vimshell_prompt_expr =
-     \ 'escape($USER . ":". fnamemodify(getcwd(), ":~")."%", "\\[]()?! ")." "'
- let g:vimshell_prompt_pattern = '^\f\+:\%(\f\|\\.\)\+% '
+let g:vimshell_prompt_expr = 'escape($USER . ":". fnamemodify(getcwd(), ":~")."%", "\\[]()?! ")." "'
+let g:vimshell_prompt_pattern = '^\f\+:\%(\f\|\\.\)\+% '
 
 autocmd MyAutoCmd FileType vimshell call s:vimshell_settings()
 function! s:vimshell_settings()
 	if IsWindows()
 		" Display user name on Windows.
-		"let g:vimshell_prompt = $USERNAME."% "
-
+		let g:vimshell_prompt = $USERNAME."% "
 		" Use ckw.
 		let g:vimshell_use_terminal_command = 'ckw -e'
 	else
 		" Display user name on Linux.
-		"let g:vimshell_prompt = $USER."% "
-
+		let g:vimshell_prompt = $USER."% "
 		" Use bash history.
 		let g:vimshell_external_history_path = expand('~/.bash_history')
-
 		call vimshell#set_execute_file('bmp,jpg,png,gif', 'gexe eog')
 		call vimshell#set_execute_file('mp3,m4a,ogg', 'gexe amarok')
 		let g:vimshell_execute_file_list['zip'] = 'zipinfo'
 		call vimshell#set_execute_file('tgz,gz', 'gzcat')
 		call vimshell#set_execute_file('tbz,bz2', 'bzcat')
-
 		" Use gnome-terminal.
 		let g:vimshell_use_terminal_command = 'gnome-terminal -e'
 	endif

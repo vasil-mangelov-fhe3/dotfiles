@@ -1,6 +1,30 @@
 "---------------------------------------------------------------------------
 " vimfiler.vim
 "
+let g:vimfiler_as_default_explorer = 1
+nnoremap <silent> <F2> :<C-u>VimFilerExplorer -parent -explorer-columns=type:size:time -toggle -no-safe -winwidth=50<CR>
+:imap <silent> <F2> <C-o>:<C-u>VimFilerExplorer -parent -explorer-columns=type:size:time -toggle -no-safe -winwidth=50<CR>
+autocmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
+autocmd FileType vimfiler setlocal nonumber
+autocmd FileType vimfiler nmap <buffer><silent> <2-LeftMouse> :call <SID>vimfiler_on_double_left()<CR>
+function! s:vimfiler_on_double_left() "{{{
+	let context = vimfiler#get_context()
+	let mapping = vimfiler#mappings#smart_cursor_map(
+				\ "\<Plug>(vimfiler_expand_tree)",
+				\ "\<Plug>(vimfiler_edit_file)"
+				\ )
+	execute "normal " . mapping
+endfunction"}}}
+autocmd FileType vimfiler nmap <buffer><silent> <2-MiddleMouse> :call <SID>vimfiler_on_double_middle()<CR>
+function! s:vimfiler_on_double_middle() "{{{
+	let context = vimfiler#get_context()
+	let mapping = vimfiler#mappings#smart_cursor_map(
+				\ "\<Plug>(vimfiler_cd_file)",
+				\ "\<Plug>(vimfiler_edit_file)"
+				\ )
+	execute "normal " . mapping
+endfunction"}}}
+let g:vimfiler_ignore_pattern = '^\%(.git\|.DS_Store\)$'
 let g:vimfiler_execute_file_list = {}
 let g:vimfiler_execute_file_list['_'] = 'vim'
 let g:vimfiler_enable_clipboard = 0
