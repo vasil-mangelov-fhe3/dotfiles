@@ -63,8 +63,7 @@ NeoBundleCheck
 " Encoding:
 "
 
-set fileformat=unix
-set fileformats=unix,dos,mac
+call g:Source_rc('encoding.rc.vim')
 
 "--------------------------------------------------------------------------------------------------
 " Search:

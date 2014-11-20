@@ -8,8 +8,7 @@ if has('lua') && (v:version > 703 || (v:version == 703 && has('patch885')))
 	if neobundle#tap('neocomplete.vim') "{{{
 		NeoBundleSource neocomplete.vim
 		let g:neocomplete#enable_at_startup = 1
-		let neobundle#hooks.on_source =
-					\ '~/.vim/rc/plugins/neocomplete.rc.vim'
+		let neobundle#hooks.on_source = '~/.vim/rc/plugins/neocomplete.rc.vim'
 		call neobundle#untap()
 	endif "}}}
 else
@@ -26,7 +25,7 @@ if neobundle#tap('neosnippet.vim') "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('vimshell.vim') && neobundle#is_installed('vimshell.vim') "{{{
+if neobundle#tap('vimshell.vim') && neobundle#is_sourced('vimshell.vim') "{{{
 	" <C-Space>: switch to vimshell.
 	nmap <C-@>  <Plug>(vimshell_switch)
 	nnoremap !  q:VimShellExecute<Space>
@@ -36,7 +35,7 @@ if neobundle#tap('vimshell.vim') && neobundle#is_installed('vimshell.vim') "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
+if neobundle#tap('unite.vim') && neobundle#is_sourced('unite.vim') "{{{
 	" The prefix key.
 	nnoremap	[unite] <Nop>
 	xnoremap	[unite] <Nop>
@@ -106,7 +105,7 @@ if neobundle#tap('unite.vim') && neobundle#is_installed('unite.vim') "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('vimfiler.vim') && neobundle#is_installed('vimfiler.vim') "{{{
+if neobundle#tap('vimfiler.vim') && neobundle#is_sourced('vimfiler.vim') "{{{
 	let g:vimfiler_as_default_explorer = 1
 	autocmd VimEnter * if !argc() | VimFiler | endif
 	nnoremap <silent> <F2> :<C-u>VimFilerExplorer -parent -explorer-columns=type:size:time -toggle -no-safe -winwidth=50<CR>
@@ -180,7 +179,7 @@ nmap R <Plug>(operator-replace)
 xmap R <Plug>(operator-replace)
 xmap p <Plug>(operator-replace)
 
-if neobundle#tap('tagbar') && neobundle#is_installed('tagbar') "{{{
+if neobundle#tap('tagbar') && neobundle#is_sourced('tagbar') "{{{
 	let g:tagbar_singleclick = 1
 	let g:tagbar_sort = 0
 	nnoremap <silent> <F3> :<C-u>TagbarToggle<CR>
@@ -188,7 +187,7 @@ if neobundle#tap('tagbar') && neobundle#is_installed('tagbar') "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('undotree') && neobundle#is_installed('undotree') "{{{
+if neobundle#tap('undotree') && neobundle#is_sourced('undotree') "{{{
 	nnoremap <silent> <F5> :UndotreeToggle<CR>
 	:imap <F5> <C-o>:UndotreeToggle<CR>
 	let neobundle#hooks.on_source = '~/.vim/rc/plugins/undotree.rc.vim'
@@ -254,25 +253,25 @@ if neobundle#tap('auto-neobundle') && g:inet_connection == 0 "{{{
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('vim-diffchanges') && neobundle#is_installed('vim-diffchanges') "{{{
+if neobundle#tap('vim-diffchanges') && neobundle#is_sourced('vim-diffchanges') "{{{
 	nnoremap <silent> <F12> :DiffChangesDiffToggle<CR>
 	call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('vim-trailing-whitespace') && neobundle#is_installed('vim-trailing-whitespace') "{{{
+if neobundle#tap('vim-trailing-whitespace') && neobundle#is_sourced('vim-trailing-whitespace') "{{{
 	let g:extra_whitespace_ignored_filetypes = ['unite', 'vimfiler', 'vimfiler:explorer', 'startify']
 endif "}}}
 
-if neobundle#tap('vinarise.vim') && neobundle#is_installed('vinarise.vim') "{{{
+if neobundle#tap('vinarise.vim') && neobundle#is_sourced('vinarise.vim') "{{{
 	let g:vinarise_enable_auto_detect = 1
 endif "}}}
 
-if neobundle#tap('rainbow_parentheses.vim') && neobundle#is_installed('rainbow_parentheses.vim') "{{{
+if neobundle#tap('rainbow_parentheses.vim') && neobundle#is_sourced('rainbow_parentheses.vim') "{{{
 	let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['<', '>']]
 	au VimEnter * call rainbow_parentheses#activate()
 endif "}}}
 
-if neobundle#tap('promptline.vim') && neobundle#is_installed('promptline.vim') "{{{
+if neobundle#tap('promptline.vim') && neobundle#is_sourced('promptline.vim') "{{{
 	let g:promptline_theme = 'powerlineclone'
 	let g:promptline_preset = {
 		\'a' : [ promptline#slices#user(), promptline#slices#host() ],
@@ -282,7 +281,7 @@ if neobundle#tap('promptline.vim') && neobundle#is_installed('promptline.vim') "
 		\'warn' : [ promptline#slices#last_exit_code() ]}
 endif "}}}
 
-if neobundle#tap('vim-startify') && neobundle#is_installed('vim-startify') "{{{
+if neobundle#tap('vim-startify') && neobundle#is_sourced('vim-startify') "{{{
 	autocmd FileType startify setlocal nospell
 	let neobundle#hooks.on_source = '~/.vim/rc/plugins/vim-startify.vim'
 endif "}}}

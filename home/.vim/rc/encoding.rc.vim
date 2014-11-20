@@ -8,8 +8,6 @@
 set encoding=utf-8
 set termencoding=  " same as 'encoding'
 
-autocmd MyAutoCmd BufReadPost * call s:ReCheck_FENC()
-
 " Default fileformat.
 set fileformat=unix
 " Automatic recognition of a new line cord.

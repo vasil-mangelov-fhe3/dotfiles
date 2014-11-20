@@ -62,17 +62,6 @@ NeoBundle 'Shougo/unite-sudo'
 NeoBundle 'Shougo/unite-outline', {'autoload':{'unite_sources':'outline'}}
 NeoBundle 'Shougo/unite-help', {'autoload':{'unite_sources':'help'}}
 NeoBundle 'Shougo/unite-session'
-NeoBundle 'Shougo/javacomplete', {
-				\ 'external_commands' : 'javac',
-				\ 'build': {
-				\       'cygwin': 'javac autoload/Reflection.java',
-				\       'mac': 'javac autoload/Reflection.java',
-				\       'unix': 'javac autoload/Reflection.java',
-				\   },
-				\ 'autoload' : {
-				\   'filetypes' : 'java',
-				\ }
-				\}
 NeoBundle 'thinca/vim-ref', {
 			\ 'commands' : 'Ref',
 			\ 'unite_sources' : 'ref',
@@ -103,35 +92,14 @@ NeoBundle 'tpope/vim-git'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-ragtag'
-NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-repeat', {
 			\ 'mappings' : '.',
 			\ }
-NeoBundle 'chrisbra/csv.vim'
-NeoBundle 'rodjek/vim-puppet'
-NeoBundle 'JulesWang/css.vim'
-NeoBundle 'othree/html5.vim'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'phongnh/vim-jquery'
-NeoBundle 'elzr/vim-json'
-NeoBundle 'vim-perl/vim-perl'
-NeoBundle 'evanmiller/nginx-vim-syntax'
-NeoBundle 'StanAngeloff/php.vim'
-NeoBundle 'vim-ruby/vim-ruby'
-NeoBundle 'tejr/vim-tmux'
-NeoBundle 'plasticboy/vim-markdown'
-NeoBundle 'ap/vim-css-color'
-NeoBundle 'klen/python-mode'
 NeoBundle 'mbbill/undotree', {
 			\ 'vim_version' : '7.3',
 			\ }
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'shawncplus/phpcomplete.vim'
-NeoBundle 'spf13/PIV'
-NeoBundle 'medihack/sh.vim', {
-			\ 'autoload' : { 'filetypes' : 'syntax'}
-			\ }
 NeoBundle 'altercation/vim-colors-solarized', {
 			\ 'autoload' : { 'unite_sources' : 'colorscheme', }
 			\ }
@@ -170,4 +138,38 @@ NeoBundle 'zhaocai/DirDiff.vim'
 NeoBundle 'junegunn/rainbow_parentheses.vim'
 NeoBundle 'edkolev/promptline.vim'
 NeoBundle 'mhinz/vim-startify'
+NeoBundle 'ap/vim-css-color'
+
+" Syntax
+NeoBundle 'Shougo/javacomplete', {
+				\ 'external_commands' : 'javac',
+				\ 'build': {
+				\       'cygwin': 'javac autoload/Reflection.java',
+				\       'mac': 'javac autoload/Reflection.java',
+				\       'unix': 'javac autoload/Reflection.java',
+				\   },
+				\ 'autoload' : {
+				\   'filetypes' : 'java',
+				\ }
+				\}
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'chrisbra/csv.vim'
+NeoBundle 'rodjek/vim-puppet'
+NeoBundle 'JulesWang/css.vim'
+NeoBundle 'othree/html5.vim'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'phongnh/vim-jquery'
+NeoBundle 'vim-perl/vim-perl'
+NeoBundle 'evanmiller/nginx-vim-syntax'
+NeoBundle 'StanAngeloff/php.vim'
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'tejr/vim-tmux'
+NeoBundle 'klen/python-mode'
+NeoBundle 'plasticboy/vim-markdown'
+NeoBundle 'shawncplus/phpcomplete.vim'
+NeoBundle 'spf13/PIV'
+NeoBundle 'medihack/sh.vim', {
+			\ 'autoload' : { 'filetypes' : 'syntax'}
+			\ }
 NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'elzr/vim-json'
