@@ -173,3 +173,4 @@ NeoBundle 'medihack/sh.vim', {
 			\ }
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'elzr/vim-json'
+NeoBundle 'vim-scripts/SQLComplete.vim'

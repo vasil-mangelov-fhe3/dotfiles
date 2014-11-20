@@ -107,7 +107,6 @@ endif "}}}
 
 if neobundle#tap('vimfiler.vim') && neobundle#is_sourced('vimfiler.vim') "{{{
 	let g:vimfiler_as_default_explorer = 1
-	autocmd VimEnter * if !argc() | VimFiler | endif
 	nnoremap <silent> <F2> :<C-u>VimFilerExplorer -parent -explorer-columns=type:size:time -toggle -no-safe -winwidth=50<CR>
 	:imap <silent> <F2> <C-o>:<C-u>VimFilerExplorer -parent -explorer-columns=type:size:time -toggle -no-safe -winwidth=50<CR>
 	autocmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
