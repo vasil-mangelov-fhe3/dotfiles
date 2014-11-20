@@ -1,4 +1,3 @@
-"P
 "---------------------------------------------------------------------------
 " unite.vim
 "
@@ -7,7 +6,6 @@
 let default_context = {
 			\ 'vertical' : 0,
 			\ 'cursor_line_highlight' : 'TabLineSel',
-			\ 'start_insert' : 1,
 			\ 'complete' : 1,
 			\ }
 
@@ -31,10 +29,6 @@ let g:unite_source_history_yank_enable = 1
 
 " For unite-alias.
 let g:unite_source_alias_aliases = {}
-let g:unite_source_alias_aliases.test = {
-			\ 'source' : 'file_rec',
-			\ 'args'   : '~/',
-			\ }
 let g:unite_source_alias_aliases.line_migemo = 'line'
 let g:unite_source_alias_aliases.calc = 'kawaii-calc'
 let g:unite_source_alias_aliases.l = 'launcher'
@@ -82,19 +76,11 @@ call unite#filters#sorter_default#use(['sorter_rank'])
 "}}}
 
 function! s:unite_my_settings() "{{{
-	let b:actually_quit = 0
-	setlocal updatetime=3
-	autocmd! InsertEnter <buffer> let b:actually_quit = 0
-	autocmd! InsertLeave <buffer> let b:actually_quit = 1
-	autocmd! CursorHold  <buffer> if exists('b:actually_quit') && b:actually_quit | close | endif
 	" Directory partial match.
 	call unite#custom#alias('file', 'h', 'left')
 	call unite#custom#default_action('directory', 'narrow')
-	" call unite#custom#default_action('file', 'my_tabopen')
 
 	call unite#custom#default_action('versions/git/status', 'commit')
-
-	" call unite#custom#default_action('directory', 'cd')
 
 	" Overwrite settings.
 	imap <silent><buffer><expr> <C-x> unite#do_action('split')

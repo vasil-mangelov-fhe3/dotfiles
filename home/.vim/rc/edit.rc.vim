@@ -66,7 +66,6 @@ set foldmethod=marker
 " Show folding level.
 set foldcolumn=1
 set fillchars=vert:\|
-set commentstring=%s
 
 if exists('*FoldCCtext')
 	" Use FoldCCtext().
