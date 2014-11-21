@@ -1,16 +1,19 @@
 "---------------------------------------------------------------------------
 " unite.vim
 "
+" FIXME: insert mode after leaving unite
 
 " The prefix key.
 nnoremap	[unite] <Nop>
 xnoremap	[unite] <Nop>
 nmap	;u [unite]
 xmap	;u [unite]
-nnoremap <silent> <F1> :<C-u>Unite -profile-name=menu -toggle menu:Main<CR>
-inoremap <silent> <F1> <C-o>:<C-u>Unite -profile-name=menu -toggle menu:Main<CR>
-nnoremap <silent> <F4> :<C-u>Unite buffer_tab -toggle -start-insert -immediately<CR>
-inoremap <silent> <F4> <C-o>:<C-u>Unite buffer_tab -toggle -start-insert -immediately<CR>
+nnoremap <silent> <F1> :<C-u>Unite -profile-name=menu menu:Main<CR>
+inoremap <silent> <F1> <C-o>:<C-u>Unite -profile-name=menu menu:Main<CR>
+nnoremap <silent> <F4> :<C-u>Unite buffer_tab -toggle -start-insert<CR>
+inoremap <silent> <F4> <C-o>:<C-u>Unite buffer_tab -toggle -start-insert<CR>
+nnoremap <silent> <F9> :<C-u>Unite tasklist -toggle -start-insert -vertical -winwidth=40<CR>
+inoremap <silent> <F9> <C-o>:<C-u>Unite tasklist -toggle -start-insert -vertical -winwidth=40<CR>
 nnoremap <silent> <C-P> :<C-u>Unite -buffer-name=files -toggle -start-insert neomru/file file_rec/async:!<CR>
 nnoremap <expr><silent> ;b  <SID>unite_build()
 function! s:unite_build()
@@ -49,24 +52,21 @@ nnoremap <silent> <C-h>  :<C-u>Unite -buffer-name=help help<CR>
 " Execute help by cursor keyword.
 nnoremap <silent> g<C-h>	:<C-u>UniteWithCursorWord help<CR>
 " Search.
-nnoremap <silent><expr> /
-			\ ":\<C-u>Unite -buffer-name=search line:all -start-insert -no-quit\<CR>"
+nnoremap <silent><expr> / ":\<C-u>Unite -buffer-name=search line:all -start-insert -no-quit\<CR>"
 nnoremap <expr> g/  <SID>smart_search_expr('g/',
 			\ :<C-u>Unite -buffer-name=search -start-insert line_migemo<CR>)
-nnoremap <silent><expr> ?
-			\ ":\<C-u>Unite -buffer-name=search%".bufnr('%')." -start-insert line:backward\<CR>"
-nnoremap <silent><expr> *
-			\ ":\<C-u>UniteWithCursorWord -buffer-name=search%".bufnr('%')." line:forward:wrap\<CR>"
-nnoremap [Alt]/		/
-nnoremap [Alt]?		?
-cnoremap <expr><silent><C-g>		  (getcmdtype() == '/') ?
+nnoremap <silent><expr> ? ":\<C-u>Unite -buffer-name=search%".bufnr('%')." -start-insert line:backward\<CR>"
+nnoremap <silent><expr> * ":\<C-u>UniteWithCursorWord -buffer-name=search%".bufnr('%')." line:forward:wrap\<CR>"
+nnoremap [Alt]/ /
+nnoremap [Alt]? ?
+cnoremap <expr><silent><C-g> (getcmdtype() == '/') ?
 			\ "\<ESC>:Unite -buffer-name=search line:forward:wrap -input=".getcmdline()."\<CR>" : "\<C-g>"
 function! s:smart_search_expr(expr1, expr2)
 	return line('$') > 5000 ?  a:expr1 : a:expr2
 endfunction
-nnoremap <silent><expr> n
-			\ ":\<C-u>UniteResume search%".bufnr('%')." -no-start-insert\<CR>"
-nnoremap <silent> <C-w>  :<C-u>Unite -auto-resize window/gui<CR>
+" FIXME: Search next and previous doesnt work.
+nnoremap <silent> n :<C-u>UniteNext search<CR>
+nnoremap <silent> N :<C-u>UnitePrevious search<CR>
 " Default configuration.
 let default_context = {
 			\ 'vertical' : 0,
@@ -114,10 +114,6 @@ let g:unite_source_alias_aliases.scriptnames = {
 autocmd MyAutoCmd FileType unite call s:unite_my_settings()
 
 let g:unite_ignore_source_files = []
-
-call unite#custom#profile('action', 'context', {
-			\ 'start_insert' : 1
-			\ })
 
 " migemo.
 call unite#custom#source('line_migemo', 'matchers', 'matcher_migemo')

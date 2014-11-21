@@ -19,14 +19,15 @@ xnoremap > >gv
 xnoremap < <gv
 
 " make :Q work like :q
-command! -bang Q quit<bang>
-command! -bang W write<bang>
+command! -bang QQ :call SmartExit()<bang>
+command! -bang Q q<bang>
+command! -bang W w<bang>
 command! -bang Wq wq<bang>
 command! -bang WQ wq<bang>
 nnoremap <silent> <F6> :call CopyModeToggle()<CR>
-:imap <F6> <C-o> :call CopyModeToggle()<CR>
+:inoremap <F6> <C-o>:<C-u>call CopyModeToggle()<CR>
 nnoremap <silent> <F11> :setlocal spell! spell?<CR>
-:imap <F11> <C-o> :setlocal spell! spell?<CR>
+:inoremap <F11> <C-o>:<C-u>setlocal spell! spell?<CR>
 " Next Tab
 nnoremap <silent> <C-Right> :tabnext<CR>
 " Previous Tab

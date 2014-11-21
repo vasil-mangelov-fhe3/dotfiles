@@ -35,7 +35,7 @@ set shortmess=aTI
 if &term =~ '256color'
 	set t_ut=
 endif
-" allows cursor change in tmux mode 
+" allows cursor change in tmux mode
 if exists('$TMUX')
 	let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
 	let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
@@ -182,3 +182,8 @@ function! s:_wcwidth(ucs)
 	return 1
 endfunction
 "}}}
+
+" View logfiles as ft messages
+autocmd BufNewFile,BufReadPost *.log :set filetype=messages
+autocmd BufNewFile,BufReadPost /var/log/* :set filetype=messages
+

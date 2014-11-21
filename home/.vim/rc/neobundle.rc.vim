@@ -105,6 +105,7 @@ NeoBundle 'altercation/vim-colors-solarized', {
 			\ }
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'godlygeek/tabular'
+NeoBundle 'junkblocker/unite-tasklist'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'airblade/vim-gitgutter'
@@ -138,6 +139,8 @@ NeoBundle 'zhaocai/DirDiff.vim'
 NeoBundle 'edkolev/promptline.vim'
 NeoBundle 'mhinz/vim-startify'
 NeoBundle 'ap/vim-css-color'
+NeoBundle 'bogado/file-line'
+NeoBundle 'vim-scripts/bufkill.vim'
 
 " Syntax
 NeoBundle 'Shougo/javacomplete', {
@@ -173,4 +176,7 @@ NeoBundle 'medihack/sh.vim', {
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'elzr/vim-json'
 NeoBundle 'vim-scripts/SQLComplete.vim'
-NeoBundle 'violetyk/cake.vim'
+NeoBundle 'violetyk/cake.vim', {
+			\ 'vim_version' : '7.3.885',
+			\ }
+

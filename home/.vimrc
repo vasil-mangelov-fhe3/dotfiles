@@ -4,7 +4,6 @@
 "--------------------------------------------------------------------------------------------------
 " Initialize:
 "
-
 " Note: Skip initialization for vim-tiny or vim-small.
 if !1 | finish | endif
 
@@ -32,17 +31,16 @@ endfunction
 call g:Source_rc('init.rc.vim')
 
 call neobundle#begin(expand('~/.vim/bundle/'))
-call g:Source_rc('neobundle.rc.vim')
-NeoBundleClean
 
 " Use NeoBundleCache
-"if neobundle#has_fresh_cache(resolve(expand('~/.vim/rc/neobundle.rc.vim')))
-"	NeoBundleLoadCache
-"else
-"	call g:Source_rc('neobundle.rc.vim')
-"	NeoBundleSaveCache
-"	NeoBundleClean
-"endif
+if neobundle#has_fresh_cache(resolve(expand('~/.vim/rc/neobundle.rc.vim')))
+	NeoBundleLoadCache
+else
+	NeoBundleClearCache
+	call g:Source_rc('neobundle.rc.vim')
+	NeoBundleSaveCache
+	NeoBundleClean
+endif
 
 if isdirectory(expand('~/.vim/localbundle'))
 	NeoBundleLocal expand(~/.vim/localbundle)
@@ -143,6 +141,63 @@ endif
 "--------------------------------------------------------------------------------------------------
 " Commands:
 "
+function! CountListedBuffers()
+	let cnt = 0
+	for nr in range(1,bufnr("$"))
+		if buflisted(nr)
+			let cnt += 1
+		endif
+	endfor
+	return cnt
+endfunction
+
+function! SmartExit()
+	let s:BufferToKill = bufnr('%')
+	let s:EmptyBuffer = 0
+
+	if bufname('%') == '' && !&modified && &modifiable
+		if &buftype == 'nofile' && &swapfile == 0
+			" Is scratch buffer, not empty
+		else
+			let s:EmptyBuffer = 1
+		endif
+	endif
+
+	" Get a list of all windows which have this buffer loaded
+	let s:WindowListWithBufferLoaded = []
+	let i = 1
+	let buf = winbufnr(i)
+	while buf != -1
+		if buf == s:BufferToKill
+			let s:WindowListWithBufferLoaded += [i]
+		endif
+		let i = i + 1
+		let buf = winbufnr(i)
+	endwhile
+
+	" Check that the buffer is last
+	if(CountListedBuffers() < 2)
+		let s:LastBuffer = 1
+	else
+		let s:LastBuffer = 0
+	endif
+
+	if s:LastBuffer
+		if len(s:WindowListWithBufferLoaded) > 1
+			execute "close"
+		else
+			if ! s:EmptyBuffer
+				execute "bw | bw"
+			else
+				execute "q"
+			endif
+		endif
+	else
+		let g:BufKillActionWhenBufferDisplayedInAnotherWindow="kill"
+		execute "BW"
+		let g:BufKillActionWhenBufferDisplayedInAnotherWindow="confirm"
+	endif
+endfunction
 
 "jump to last cursor position when opening a file, dont do it when writing a commit log entry
 function! SetCursorPosition()
