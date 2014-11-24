@@ -1,7 +1,6 @@
 #!/bin/bash
-set -x
 # Paste this into ssh
-# curl -sL https://raw.githubusercontent.com/NemesisRE/dinner/master/bootstrap.sh | /bin/bash
+# curl -sL https://raw.githubusercontent.com/NemesisRE/dotfiles/master/bootstrap.sh | /bin/bash
 # When forking, you can get the URL from the raw (<>) button.
 
 SCRIPT_NAME=$(basename ${0})
@@ -11,7 +10,7 @@ LOG_DIR=${TMP_PATH}
 rm -rf ${TMP_PATH}
 if ! [[ -e ${TMP_PATH}/log.sh ]]; then
 	[[ -d ${TMP_PATH} ]] || mkdir ${TMP_PATH}
-	$(which wget) --quiet https://raw.github}sercontent.com/NemesisRE/dotfiles/master/helper/log.sh -O ${TMP_PATH}/log.sh
+	$(which wget) --quiet https://raw.githubusercontent.com/NemesisRE/dotfiles/master/helper/log.sh -O ${TMP_PATH}/log.sh
 fi
 source ${TMP_PATH}/log.sh
 
