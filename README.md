@@ -11,7 +11,7 @@ This includes
 * [seebis solarized dircolors ](https://github.com/seebi/dircolors-solarized#theme-1-256dark-by-seebi) which is installed into "${HOME}/.config"
 * [seebis solarized tmux theme](https://github.com/seebi/tmux-colors-solarized)
 * [tmux-plugins tpm](https://github.com/tmux-plugins/tpm) disabled at the moment
-* a huge compilation of vim Plugins ([Pluginlist](https://github.com/NemesisRE/dotfiles/blob/master/home/.vim/rc/neobundle.rc.vim))
+* a huge compilation of vim Plugins ([Pluginlist](https://github.com/NemesisRE/vimfiles/blob/master/home/.vim/rc/neobundle.rc.vim))
 * and some other dotfiles e.g. gitconfig, wget, curl, tmux...
 
 All contribution goes to the original developers we only have put the pieces together.
