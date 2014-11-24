@@ -1,10 +1,19 @@
 #!/bin/bash
-
+set -x
 # Paste this into ssh
 # curl -sL https://raw.githubusercontent.com/NemesisRE/dinner/master/bootstrap.sh | /bin/bash
 # When forking, you can get the URL from the raw (<>) button.
-SPATH=$(cd $(dirname ${0}) && pwd)
-source ${SPATH}helper/log.sh
+
+SCRIPT_NAME=$(basename ${0})
+SCRIPT_PATH=$(cd $(dirname ${0}) && pwd)
+TMP_PATH=/tmp/nrecomnet
+LOG_DIR=${TMP_PATH}
+rm -rf ${TMP_PATH}
+if ! [[ -e ${TMP_PATH}/log.sh ]]; then
+	[[ -d ${TMP_PATH} ]] || mkdir ${TMP_PATH}
+	$(which wget) --quiet https://raw.github}sercontent.com/NemesisRE/dotfiles/master/helper/log.sh -O ${TMP_PATH}log.sh
+fi
+source ${TMP_PATH}/log.sh
 
 ### Set some command variables depending on whether we are root or not ###
 # This assumes you use a debian derivate, replace with yum, pacman etc.
@@ -14,21 +23,14 @@ else
 	APT='sudo apt-get'
 fi
 
-### Install git and some other tools we'd like to use ###
-${APT} update
-${APT} install -y tmux vim git screen htop exuberant-ctags
-
-### Install homeshick ###
-git clone git://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
-source ${HOME}/.homesick/repos/homeshick/homeshick.sh
-
 function _install_dotfiles() {
 	_e_pending "Do you want to install NRE.Com.Net Dotfiles? (y/N): "  "ACTION" "${BLYLW}" "0"
 	read -n1 ANSWER
-	if ! [[ "${ANSWER}" =~ [yY] ]]; then
+	if [[ "${ANSWER}" =~ [yY] ]]; then
 		DOTFILES=true
 		_exec_command "_run_dotfiles_installation"
 		_e_pending_success "Successfully installed NRE.Com.Net Dotfiles."
+		_e_notice "Relog to start your proper shell"
 	else
 		DOTFILES=false
 		_e_pending_skipped "Installation of NRE.Com.Net Dotfiles skipped."
@@ -36,6 +38,9 @@ function _install_dotfiles() {
 }
 
 function _run_dotfiles_installation() {
+	if [[ -d ${HOME}/.homesick/repos/dotfiles ]]; then
+		rm -rf ${HOME}/.homesick/repos/dotfiles
+	fi
 	homeshick --batch clone https://github.com/NemesisRE/dotfiles.git
 	homeshick link
 	# Register fonts
@@ -47,7 +52,7 @@ function _run_dotfiles_installation() {
 function _install_vimfiles() {
 	_e_pending "Do you want to install NRE.Com.Net Vim Environment? (y/N): "  "ACTION" "${BLYLW}" "0"
 	read -n1 ANSWER
-	if ! [[ "${ANSWER}" =~ [yY] ]]; then
+	if [[ "${ANSWER}" =~ [yY] ]]; then
 		if ${DOTFILES}; then
 			_exec_command "_run_vimfiles_installation"
 			_e_pending_success "Successfully installed NRE.Com.Net Vim Environment."
@@ -69,9 +74,26 @@ function _install_vimfiles() {
 }
 
 function _run_vimfiles_installation () {
+	if [[ -d ${HOME}/.homesick/repos/vimfiles ]]; then
+		rm -rf ${HOME}/.homesick/repos/vimfiles
+	fi
 	homeshick --batch clone https://github.com/NemesisRE/vimfiles.git
 	homeshick link
-	vim +NeoBundleInstall! +qall
+	vim +"set nomore" +NeoBundleInstall! +qall 2>/dev/null
 }
 
-_e_notice "Relog to start your proper shell"
+function _main() {
+	### Install git and some other tools we'd like to use ###
+	#${APT} update
+	#${APT} install -y tmux vim git screen htop exuberant-ctags
+
+	### Install homeshick ###
+	if [[ -d ${HOME}/.homesick/repos/homeshick ]]; then
+		_e_notice "Homeshick seems already installed, moving on..."
+	else
+		git clone git://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
+	fi
+	source ${HOME}/.homesick/repos/homeshick/homeshick.sh
+}
+
+_main

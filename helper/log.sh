@@ -42,26 +42,26 @@ function _e {
 	local STATUS_NAME=${2}
 	local STATUS_MESSAGE=${3}
 	shift 3
-	if [[ ${STATUS_NAME} =~ ^ERROR$|^ABORT$ ]] || ! ${DINNER_CRON}; then
+	if [[ ${STATUS_NAME} =~ ^ERROR$|^ABORT$ || -z  ${IS_CRON} ]] || ! ${IS_CRON}; then
 		printf "${STATUS_COLOR}%${HALIGN}b:\t%b\n${TXTDEF}" "${STATUS_NAME}" "${STATUS_MESSAGE}"
-		printf "%${HALIGN}b:\t%b\n" "${STATUS_NAME}" "${STATUS_MESSAGE}" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" &> /dev/null > >( tee -a ${CURRENT_LOG:-${DINNER_LOG_DIR}/dinner.log} ${CURRENT_ERRLOG:-${DINNER_LOG_DIR}/dinner_error.log} )
+		printf "%${HALIGN}b:\t%b\n" "${STATUS_NAME}" "${STATUS_MESSAGE}" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" &> /dev/null > >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )
 
 		for LINE in "$@"; do
 			printf "${STATUS_COLOR}%13b\t%b${TXTDEF}" " " "${LINE}\n"
-			printf "%$((HALIGN+1))b\t%b" " " "${LINE}\n" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" &> /dev/null > >( tee -a ${CURRENT_LOG:-${DINNER_LOG_DIR}/dinner.log} ${CURRENT_ERRLOG:-${DINNER_LOG_DIR}/dinner_error.log} )
+			printf "%$((HALIGN+1))b\t%b" " " "${LINE}\n" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" &> /dev/null > >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )
 		done
 	fi
 }
 
 function _e_pending {
-	if ! ${DINNER_CRON}; then
+	if [[ -z ${IS_CRON} ]] || ! ${IS_CRON}; then
 		unset PENDING_MESSAGE PENDING_STATUS PENDING_COLOR PENDING_SLEEP
 		[[ ${1} ]] && [[ "${1}" = " " ]] && local PENDING_MESSAGE="" || local PENDING_MESSAGE=${1}
 		[[ ${2} ]] && local PENDING_STATUS=${2} || local PENDING_STATUS="RUNNING"
 		[[ ${3} ]] && local PENDING_COLOR=${3} || local PENDING_COLOR="${BLDCYN}"
 		[[ ${4} ]] && local PENDING_SLEEP=${4} || local PENDING_SLEEP="3"
-		printf "${PENDING_COLOR}%${HALIGN}b:\t%b${TXTDEF}" "${PENDING_STATUS}" "${PENDING_MESSAGE}"
-		printf "%${HALIGN}b:\t%b\n" "${PENDING_STATUS}" "${PENDING_MESSAGE}"  | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" &> /dev/null > >( tee -a ${CURRENT_LOG:-${DINNER_LOG_DIR}/dinner.log} ${CURRENT_ERRLOG:-${DINNER_LOG_DIR}/dinner_error.log} )
+		printf "\r\033[K${PENDING_COLOR}%${HALIGN}b:\t%b${TXTDEF}" "${PENDING_STATUS}" "${PENDING_MESSAGE}"
+		printf "%${HALIGN}b:\t%b\n" "${PENDING_STATUS}" "${PENDING_MESSAGE}"  | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" &> /dev/null > >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )
 		sleep ${PENDING_SLEEP}
 	fi
 }
@@ -102,7 +102,7 @@ function _e_pending_fatal () {
 	unset PENDING_FATAL_MESSAGE EXIT_CODE
 	[[ ${1} ]] && local PENDING_FATAL_MESSAGE=${1} && shift 1
 	[[ ${1} ]] && [[ ${1} =~ ^[0-9]+$ ]] && local EXIT_CODE="${1}" && local EXIT_MCODE="(Exit Code ${1})" && shift 1
-	_e "\r\033[K${BLDPUR}" "ABORT" "${PENDING_FATAL_MESSAGE} ${EXIT_MCODE}" "${@}" "To paste the error log run: dinner pastelog ${CURRENT_CONFIG:-dinner}" "Or look into the logfiles for more information" "Combined Log: ${CURRENT_LOG:-${DINNER_LOG_DIR}/dinner.log}" "Error log: ${CURRENT_ERRLOG:-${DINNER_LOG_DIR}/dinner_error.log}" "Stopping..."
+	_e "\r\033[K${BLDPUR}" "ABORT" "${PENDING_FATAL_MESSAGE} ${EXIT_MCODE}" "${@}" "To paste the error log run: dinner pastelog ${CURRENT_CONFIG:-dinner}" "Or look into the logfiles for more information" "Combined Log: ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log}" "Error log: ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log}" "Stopping..."
 	exit ${EXIT_CODE:-1}
 }
 
@@ -141,14 +141,14 @@ function _e_fatal () {
 	unset EXIT_MESSAGE EXIT_CODE
 	[[ ${1} ]] && local FATAL_MESSAGE=${1}
 	[[ ${2} ]] && [[ ${2} =~ ^[0-9]+$ ]] && local EXIT_CODE="${2}" && local EXIT_MCODE="(Exit Code ${2})" && shift 2 || shift 1
-	_e "${BLDPUR}" "ABORT" "${FATAL_MESSAGE} ${EXIT_MCODE}" "${@}" "To paste the error log run: dinner pastelog ${CURRENT_CONFIG:-dinner}" "See logfiles for more information" "Combined Log: ${CURRENT_LOG:-${DINNER_LOG_DIR}/dinner.log}" "Error log: ${CURRENT_ERRLOG:-${DINNER_LOG_DIR}/dinner_error.log}" "Stopping..."
+	_e "${BLDPUR}" "ABORT" "${FATAL_MESSAGE} ${EXIT_MCODE}" "${@}" "To paste the error log run: dinner pastelog ${CURRENT_CONFIG:-dinner}" "See logfiles for more information" "Combined Log: ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log}" "Error log: ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log}" "Stopping..."
 	exit ${EXIT_CODE:-1}
 }
 
 function _log_msg () {
 	unset LOG_MESSAGE
 	[[ ${1} ]] && local LOG_MESSAGE=${1} && shift 1
-	printf "%${HALIGN}b:\t%b\n" "LOGMESSAGE" "${LOG_MESSAGE}" &> /dev/null > >( tee -a ${CURRENT_LOG:-${DINNER_LOG_DIR}/dinner.log} ${CURRENT_ERRLOG:-${DINNER_LOG_DIR}/dinner_error.log} )
+	printf "%${HALIGN}b:\t%b\n" "LOGMESSAGE" "${LOG_MESSAGE}" &> /dev/null > >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )
 }
 
 ##
@@ -162,17 +162,20 @@ function _exec_command () {
 	local COMMAND=${1}
 	[[ ${2} ]] && local FAIL=${2} || local FAIL="NOTSET"
 	[[ ${3} ]] && local SUCCESS=${3} || local SUCCESS="NOTSET"
-	if ${SHOW_VERBOSE}; then
+	if [[ -n ${SHOW_FULL_VERBOSE} ]] && ${SHOW_FULL_VERBOSE}; then
 		# log STDOUT and STDERR, send both to STDOUT
 		_e "\n${BLDYLW}" "COMMAND" "${COMMAND}"
-		eval "${COMMAND} &> >( tee -a ${CURRENT_LOG:-${DINNER_LOG_DIR}/dinner.log} ) 2> >( tee -a ${CURRENT_ERRLOG:-${DINNER_LOG_DIR}/dinner_error.log} )"
-	else
+		eval "${COMMAND} &> >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ) 2> >( tee -a ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )"
+	elif [[ -n ${SHOW_VERBOSE} ]] && ${SHOW_VERBOSE}; then
 		# log STDOUT and STDERR but send only STDERR to STDOUT
-		printf "%13b:\t%b\n" "COMMAND" "${COMMAND}" &> /dev/null > >( tee -a ${CURRENT_LOG:-${DINNER_LOG_DIR}/dinner.log} ${CURRENT_ERRLOG:-${DINNER_LOG_DIR}/dinner_error.log} )
-		eval "${COMMAND} &>>${CURRENT_LOG:-${DINNER_LOG_DIR}/dinner.log} 2>>${CURRENT_ERRLOG:-${DINNER_LOG_DIR}/dinner_error.log}"
+		printf "%13b:\t%b\n" "COMMAND" "${COMMAND}" &> /dev/null > >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )
+		eval "${COMMAND} &>>${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} 2>>${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log}"
+	else
+		_e_pending "..."
+		eval "${COMMAND} &>>${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} 2>>${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log}"
 	fi
 	local EXIT_CODE=${?}
-	printf "%13b:\t%b\n" "EXIT CODE" "${EXIT_CODE}" &> /dev/null > >( tee -a ${CURRENT_LOG:-${DINNER_LOG_DIR}/dinner.log} ${CURRENT_ERRLOG:-${DINNER_LOG_DIR}/dinner_error.log} )
+	printf "%13b:\t%b\n" "EXIT CODE" "${EXIT_CODE}" &> /dev/null > >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )
 	if [ "${EXIT_CODE}" != 0 ] && [ "${FAIL}" != "NOTSET" ]; then
 		eval ${FAIL} ${EXIT_CODE}
 	elif [ "${SUCCESS}" != "NOTSET" ]; then
