@@ -3,6 +3,8 @@
 # Paste this into ssh
 # curl -sL https://raw.githubusercontent.com/NemesisRE/dinner/master/bootstrap.sh | /bin/bash
 # When forking, you can get the URL from the raw (<>) button.
+SPATH=$(cd $(dirname ${0}) && pwd)
+source ${SPATH}helper/log.sh
 
 ### Set some command variables depending on whether we are root or not ###
 # This assumes you use a debian derivate, replace with yum, pacman etc.
@@ -20,18 +22,56 @@ ${APT} install -y tmux vim git screen htop exuberant-ctags
 git clone git://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
 source ${HOME}/.homesick/repos/homeshick/homeshick.sh
 
-homeshick --batch clone https://github.com/NemesisRE/dotfiles.git
+function _install_dotfiles() {
+	_e_pending "Do you want to install NRE.Com.Net Dotfiles? (y/N): "  "ACTION" "${BLYLW}" "0"
+	read -n1 ANSWER
+	if ! [[ "${ANSWER}" =~ [yY] ]]; then
+		DOTFILES=true
+		_exec_command "_run_dotfiles_installation"
+		_e_pending_success "Successfully installed NRE.Com.Net Dotfiles."
+	else
+		DOTFILES=false
+		_e_pending_skipped "Installation of NRE.Com.Net Dotfiles skipped."
+	fi
+}
 
-### Link it all to $HOME ###
-homeshick link
+function _run_dotfiles_installation() {
+	homeshick --batch clone https://github.com/NemesisRE/dotfiles.git
+	homeshick link
+	# Register fonts
+	fc-cache -fv
+	# Source .bashrc_homesick in .bashrc
+	grep -xq 'source "${HOME}/.bashrc_homesick"' ${HOME}/.bashrc || printf '\nsource "${HOME}/.bashrc_homesick"' >> ${HOME}/.bashrc
+}
 
-# Register powerline fonts
-fc-cache -fv
+function _install_vimfiles() {
+	_e_pending "Do you want to install NRE.Com.Net Vim Environment? (y/N): "  "ACTION" "${BLYLW}" "0"
+	read -n1 ANSWER
+	if ! [[ "${ANSWER}" =~ [yY] ]]; then
+		if ${DOTFILES}; then
+			_exec_command "_run_vimfiles_installation"
+			_e_pending_success "Successfully installed NRE.Com.Net Vim Environment."
+		else
+			_e_pending_warn "The NRE.Com.Net Vim Environment needs Powerline Fonts to be correctly displayed."
+			_e_notice "Look into the README how to manual install Powerline Fonts or install NRE.Com.Net Dotfiles."
+			_e_pending "Do you want to install NRE.Com.Net Vim Environment anyway? (y/N): "  "ACTION" "${BLYLW}" "0"
+			read -n1 ANSWER
+			if ! [[ "${ANSWER}" =~ [yY] ]]; then
+				_exec_command "_run_vimfiles_installation"
+				_e_pending_success "Successfully installed NRE.Com.Net Vim Environment."
+			else
+				_e_pending_skipped "Installation of NRE.Com.Net Vim Environment skipped."
+			fi
+		fi
+	else
+		_e_pending_skipped "Installation of NRE.Com.Net Vim Environment skipped."
+	fi
+}
 
-# Installing Vim plugins
-vim +NeoBundleInstall! +qall
+function _run_vimfiles_installation () {
+	homeshick --batch clone https://github.com/NemesisRE/vimfiles.git
+	homeshick link
+	vim +NeoBundleInstall! +qall
+}
 
-# Source .bashrc_homesick in .bashrc
-grep -xq 'source "${HOME}/.bashrc_homesick"' ${HOME}/.bashrc || printf '\nsource "${HOME}/.bashrc_homesick"' >> ${HOME}/.bashrc
-
-echo "Relog to start your proper shell"
+_e_notice "Relog to start your proper shell"
