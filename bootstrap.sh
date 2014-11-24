@@ -40,8 +40,8 @@ function _run_dotfiles_installation() {
 	if [[ -d ${HOME}/.homesick/repos/dotfiles ]]; then
 		rm -rf ${HOME}/.homesick/repos/dotfiles
 	fi
-	homeshick --batch clone https://github.com/NemesisRE/dotfiles.git
-	homeshick link
+	homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git
+	homeshick --quiet link
 	# Register fonts
 	fc-cache -fv
 	# Source .bashrc_homesick in .bashrc
@@ -58,14 +58,8 @@ function _install_vimfiles() {
 		else
 			_e_pending_warn "The NRE.Com.Net Vim Environment needs Powerline Fonts to be correctly displayed."
 			_e_notice "Look into the README how to manual install Powerline Fonts or install NRE.Com.Net Dotfiles."
-			_e_pending "Do you want to install NRE.Com.Net Vim Environment anyway? (y/N): "  "ACTION" "${BLYLW}" "0"
-			read -n1 ANSWER
-			if ! [[ "${ANSWER}" =~ [yY] ]]; then
-				_exec_command "_run_vimfiles_installation"
-				_e_pending_success "Successfully installed NRE.Com.Net Vim Environment."
-			else
-				_e_pending_skipped "Installation of NRE.Com.Net Vim Environment skipped."
-			fi
+			_exec_command "_run_vimfiles_installation"
+			_e_pending_success "Successfully installed NRE.Com.Net Vim Environment."
 		fi
 	else
 		_e_pending_skipped "Installation of NRE.Com.Net Vim Environment skipped."
@@ -76,14 +70,14 @@ function _run_vimfiles_installation () {
 	if [[ -d ${HOME}/.homesick/repos/vimfiles ]]; then
 		rm -rf ${HOME}/.homesick/repos/vimfiles
 	fi
-	homeshick --batch clone https://github.com/NemesisRE/vimfiles.git
-	homeshick link
+	homeshick --quiet --batch clone https://github.com/NemesisRE/vimfiles.git
+	homeshick --quiet link
 	vim +"set nomore" +NeoBundleInstall! +qall 2>/dev/null
 }
 
 function _main() {
 	### Install git and some other tools we'd like to use ###
-	#${APT} update
+	#${APT} update -qq
 	#${APT} install -y tmux vim git screen htop exuberant-ctags
 
 	### Install homeshick ###
@@ -93,6 +87,8 @@ function _main() {
 		git clone git://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
 	fi
 	source ${HOME}/.homesick/repos/homeshick/homeshick.sh
+	_install_dotfiles
+	_install_vimfiles
 }
 
 _main

@@ -3,15 +3,13 @@
 #
 # vim: ai:ts=4:sw=4:noet:sts=4:ft=sh
 #
-# Copyright 2013, Steven Koeberich (nemesissre@gmail.com)
+# Copyright 2014, Steven Koeberich (nemesissre@gmail.com)
 #
-# Title:			Dinner
 # Author:			Steven "NemesisRE" Koeberich
 # Author URL:		https://nrecom.net
-# Contributors:		ToeiRei
 # Creation Date:	20131117
 # Version:			2.0
-# Description:		Builds Roms automatically
+# Description:		Makes nice output in scripts and logs everything
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
