@@ -11,7 +11,7 @@ LOG_DIR=${TMP_PATH}
 rm -rf ${TMP_PATH}
 if ! [[ -e ${TMP_PATH}/log.sh ]]; then
 	[[ -d ${TMP_PATH} ]] || mkdir ${TMP_PATH}
-	$(which wget) --quiet https://raw.github}sercontent.com/NemesisRE/dotfiles/master/helper/log.sh -O ${TMP_PATH}log.sh
+	$(which wget) --quiet https://raw.github}sercontent.com/NemesisRE/dotfiles/master/helper/log.sh -O ${TMP_PATH}/log.sh
 fi
 source ${TMP_PATH}/log.sh
 
