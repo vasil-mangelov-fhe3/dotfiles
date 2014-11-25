@@ -32,7 +32,7 @@ Then you should restart your terminal application and change the font to a power
 ### Bootstraped
 Just run:
 
-`curl -sL https://raw.githubusercontent.com/NemesisRE/dotfiles/master/bootstrap.sh | /bin/bash`
+`bash <(curl -sL https://raw.githubusercontent.com/NemesisRE/dotfiles/master/bootstrap.sh)`
 
 
 ## Features
