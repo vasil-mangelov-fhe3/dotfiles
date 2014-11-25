@@ -23,6 +23,7 @@ else
 fi
 
 function _install_dotfiles() {
+	local ANSWER
 	until [[ -n ${ANSWER} ]]; do
 		_e_pending "Do you want to install NRE.Com.Net Dotfiles? (y/N): "  "ACTION" "${BLYLW}" "0"
 		read -n1 ANSWER
@@ -51,6 +52,7 @@ function _run_dotfiles_installation() {
 }
 
 function _install_vimfiles() {
+	local ANSWER
 	until [[ -n ${ANSWER} ]]; do
 		_e_pending "Do you want to install NRE.Com.Net Vim Environment? (y/N): "  "ACTION" "${BLYLW}" "0"
 		read -n1 ANSWER
@@ -58,13 +60,13 @@ function _install_vimfiles() {
 	if [[ "${ANSWER}" =~ [yY] ]]; then
 		if ${DOTFILES}; then
 			_exec_command "_run_vimfiles_installation"
-			vim +qall
+			vim +"set nomore" +qall
 			_e_pending_success "Successfully installed NRE.Com.Net Vim Environment."
 		else
 			_e_pending_warn "The NRE.Com.Net Vim Environment needs Powerline Fonts to be correctly displayed."
 			_e_notice "Look into the README how to manual install Powerline Fonts or install NRE.Com.Net Dotfiles."
 			_exec_command "_run_vimfiles_installation"
-			vim +qall 2>/dev/null
+			vim +"set nomore" +qall
 			_e_pending_success "Successfully installed NRE.Com.Net Vim Environment."
 		fi
 	else
