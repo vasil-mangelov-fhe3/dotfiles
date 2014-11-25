@@ -48,19 +48,26 @@ function _e {
 			printf "${STATUS_COLOR}%13b\t%b${TXTDEF}" " " "${LINE}\n"
 			printf "%$((HALIGN+1))b\t%b" " " "${LINE}\n" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" &> /dev/null > >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )
 		done
+	else
+		printf "%${HALIGN}b:\t%b\n" "${STATUS_NAME}" "${STATUS_MESSAGE}" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" &> /dev/null > >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )
+		for LINE in "$@"; do
+			printf "%$((HALIGN+1))b\t%b" " " "${LINE}\n" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" &> /dev/null > >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )
+		done
 	fi
 }
 
 function _e_pending {
+	unset PENDING_MESSAGE PENDING_STATUS PENDING_COLOR PENDING_SLEEP
+	[[ ${1} ]] && [[ "${1}" = " " ]] && local PENDING_MESSAGE="" || local PENDING_MESSAGE=${1}
+	[[ ${2} ]] && local PENDING_STATUS=${2} || local PENDING_STATUS="RUNNING"
+	[[ ${3} ]] && local PENDING_COLOR=${3} || local PENDING_COLOR="${BLDCYN}"
+	[[ ${4} ]] && local PENDING_SLEEP=${4} || local PENDING_SLEEP="3"
 	if [[ -z ${IS_CRON} ]] || ! ${IS_CRON}; then
-		unset PENDING_MESSAGE PENDING_STATUS PENDING_COLOR PENDING_SLEEP
-		[[ ${1} ]] && [[ "${1}" = " " ]] && local PENDING_MESSAGE="" || local PENDING_MESSAGE=${1}
-		[[ ${2} ]] && local PENDING_STATUS=${2} || local PENDING_STATUS="RUNNING"
-		[[ ${3} ]] && local PENDING_COLOR=${3} || local PENDING_COLOR="${BLDCYN}"
-		[[ ${4} ]] && local PENDING_SLEEP=${4} || local PENDING_SLEEP="3"
 		printf "\r\033[K${PENDING_COLOR}%${HALIGN}b:\t%b${TXTDEF}" "${PENDING_STATUS}" "${PENDING_MESSAGE}"
 		printf "%${HALIGN}b:\t%b\n" "${PENDING_STATUS}" "${PENDING_MESSAGE}"  | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" &> /dev/null > >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )
 		sleep ${PENDING_SLEEP}
+	else
+		printf "%${HALIGN}b:\t%b\n" "${PENDING_STATUS}" "${PENDING_MESSAGE}"  | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" &> /dev/null > >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )
 	fi
 }
 
@@ -160,14 +167,10 @@ function _exec_command () {
 	local COMMAND=${1}
 	[[ ${2} ]] && local FAIL=${2} || local FAIL="NOTSET"
 	[[ ${3} ]] && local SUCCESS=${3} || local SUCCESS="NOTSET"
-	if [[ -n ${SHOW_FULL_VERBOSE} ]] && ${SHOW_FULL_VERBOSE}; then
+	if [[ -n ${SHOW_VERBOSE} ]] && ${SHOW_VERBOSE}; then
 		# log STDOUT and STDERR, send both to STDOUT
 		_e "\n${BLDYLW}" "COMMAND" "${COMMAND}"
 		eval "${COMMAND} &> >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ) 2> >( tee -a ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )"
-	elif [[ -n ${SHOW_VERBOSE} ]] && ${SHOW_VERBOSE}; then
-		# log STDOUT and STDERR but send only STDERR to STDOUT
-		printf "%13b:\t%b\n" "COMMAND" "${COMMAND}" &> /dev/null > >( tee -a ${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} ${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log} )
-		eval "${COMMAND} &>>${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} 2>>${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log}"
 	else
 		_e_pending "..."
 		eval "${COMMAND} &>>${CURRENT_LOG:-${LOG_DIR:-${HOME}}/$(basename ${0}).log} 2>>${CURRENT_ERRLOG:-${LOG_DIR:-${HOME}}/$(basename ${0})_error.log}"
