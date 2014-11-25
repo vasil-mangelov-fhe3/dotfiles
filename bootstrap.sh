@@ -54,13 +54,13 @@ function _install_vimfiles() {
 	if [[ "${ANSWER}" =~ [yY] ]]; then
 		if ${DOTFILES}; then
 			_exec_command "_run_vimfiles_installation"
-			vim +"set nomore" +NeoBundleInstall! +qall 2>/dev/null
+			vim +"set nomore" +NeoBundleInstall! +qall <<<y 2>/dev/null
 			_e_pending_success "Successfully installed NRE.Com.Net Vim Environment."
 		else
 			_e_pending_warn "The NRE.Com.Net Vim Environment needs Powerline Fonts to be correctly displayed."
 			_e_notice "Look into the README how to manual install Powerline Fonts or install NRE.Com.Net Dotfiles."
 			_exec_command "_run_vimfiles_installation"
-			vim +"set nomore" +NeoBundleInstall! +qall 2>/dev/null
+			vim +"set nomore" +NeoBundleInstall! +qall <<<y 2>/dev/null
 			_e_pending_success "Successfully installed NRE.Com.Net Vim Environment."
 		fi
 	else
