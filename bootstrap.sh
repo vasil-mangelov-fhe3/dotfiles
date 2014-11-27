@@ -14,7 +14,7 @@ if ! [[ -e ${TMP_PATH}/log.sh ]]; then
 fi
 source ${TMP_PATH}/log.sh
 
-### Set some command variables depending on whether we are root or not ###
+### Set some command variabl:qes depending on whether we are root or not ###
 # This assumes you use a debian derivate, replace with yum, pacman etc.
 if [ $(whoami) = 'root' ]; then
 	APT='apt-get'
@@ -44,7 +44,7 @@ function _run_dotfiles_installation() {
 		rm -rf ${HOME}/.homesick/repos/dotfiles
 	fi
 	homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git
-	homeshick --quiet link
+	homeshick --quiet --batch --force link
 	# Register fonts
 	fc-cache -fv
 	# Source .bashrc_homesick in .bashrc
@@ -79,7 +79,7 @@ function _run_vimfiles_installation () {
 		rm -rf ${HOME}/.homesick/repos/vimfiles
 	fi
 	homeshick --quiet --batch clone https://github.com/NemesisRE/vimfiles.git
-	homeshick --quiet link
+	homeshick --quiet --batch --force link
 }
 
 function _main() {
