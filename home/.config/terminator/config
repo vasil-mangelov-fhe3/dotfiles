@@ -1,0 +1,49 @@
+[global_config]
+  window_state = maximise
+  enabled_plugins = APTURLHandler,
+  sticky = True
+  always_on_top = True
+  title_hide_sizetext = True
+  tab_position = bottom
+[keybindings]
+  next_tab = <Primary>Right
+  hide_window = Pause
+  prev_tab = <Primary>Left
+[profiles]
+  [[default]]
+    palette = "#000000:#aa0000:#00aa00:#aa5500:#0000aa:#aa00aa:#00aaaa:#aaaaaa:#555555:#ff5555:#55ff55:#ffff55:#5555ff:#ff55ff:#55ffff:#ffffff"
+    copy_on_selection = True
+    background_image = None
+    background_darkness = 0.97
+    scrollback_lines = 5000
+    background_type = transparent
+    use_system_font = False
+    cursor_color = "#ffffff"
+    foreground_color = "#cacaca"
+    font = DejaVu Sans Mono for Powerline 10
+    background_color = "#303030"
+    scrollback_infinite = True
+  [[TSM]]
+    palette = "#000000:#aa0000:#00aa00:#aa5500:#0000aa:#aa00aa:#00aaaa:#aaaaaa:#555555:#ff5555:#55ff55:#ffff55:#5555ff:#ff55ff:#55ffff:#ffffff"
+    copy_on_selection = True
+    background_image = None
+    background_darkness = 0.97
+    background_type = transparent
+    use_system_font = False
+    cursor_color = "#ffffff"
+    foreground_color = "#cacaca"
+    delete_binding = control-h
+    font = DejaVu Sans Mono for Powerline 10
+    background_color = "#303030"
+    scrollback_infinite = True
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+      size = 100%, 90%
+    [[[window0]]]
+      type = Window
+      parent = ""
+[plugins]
