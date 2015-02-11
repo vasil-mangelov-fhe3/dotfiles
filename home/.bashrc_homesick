@@ -66,7 +66,7 @@ fi
 # Some special Aliases
 alias reload="source ${HOME}/.bashrc"
 alias htop="TERM=screen-256color htop"
-alias root="sudo -E bash"
+alias root="sudo env \"HOME=${HOME}\" \"PATH=${PATH}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" bash"
 alias tmux="tmux -2"
 
 # Load overrides
