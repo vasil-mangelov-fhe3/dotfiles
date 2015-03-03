@@ -66,8 +66,9 @@ fi
 # Some special Aliases
 alias reload="source ${HOME}/.bashrc"
 alias htop="TERM=screen-256color htop"
-alias root="sudo env \"HOME=${HOME}\" \"PATH=${PATH}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" bash"
+alias root="sudo env \"HOME=${HOME}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" bash"
 alias tmux="tmux -2"
+alias vimfiler="vim -c \"VimFilerDouble\""
 
 # Load overrides
 if [ -f ${HOME}/.bash_aliases ]; then
