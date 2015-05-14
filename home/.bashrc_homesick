@@ -23,6 +23,7 @@ if [ -d ${HOME}/.homesick ]; then
 	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
 	source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
 	homeshick pull -q
+	homeshick link -q
 fi
 
 if [ -e ${HOME}/.config/bashrc_functions ]; then
@@ -79,6 +80,7 @@ alias vim="TERM=xterm-256color vim"
 alias nvim="TERM=xterm-256color nvim"
 alias ll="ls -AlFh --color"
 alias lls="ls -AlFh --color | sort -hk5"
+alias dush="du -sh | sort -h"
 
 # Load overrides
 if [ -f ${HOME}/.bash_aliases ]; then
