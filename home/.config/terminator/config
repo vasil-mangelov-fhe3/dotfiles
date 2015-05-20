@@ -1,40 +1,29 @@
 [global_config]
   window_state = maximise
+  handle_size = 1
   enabled_plugins = APTURLHandler,
-  sticky = True
-  always_on_top = True
   title_hide_sizetext = True
   tab_position = bottom
+  inactive_color_offset = 1.0
 [keybindings]
+  move_tab_left = <Primary><Shift>Left
+  move_tab_right = <Primary><Shift>Right
   next_tab = <Primary>Right
   hide_window = Pause
   prev_tab = <Primary>Left
 [profiles]
   [[default]]
-    palette = "#000000:#aa0000:#00aa00:#aa5500:#0000aa:#aa00aa:#00aaaa:#aaaaaa:#555555:#ff5555:#55ff55:#ffff55:#5555ff:#ff55ff:#55ffff:#ffffff"
-    copy_on_selection = True
+    palette = "#3f3f3f:#705050:#60b48a:#dfaf8f:#9ab8d7:#dc8cc3:#8cd0d3:#dcdccc:#709080:#dca3a3:#72d5a3:#f0dfaf:#94bff3:#ec93d3:#93e0e3:#ffffff"
+    font = DejaVu Sans Mono for Powerline 10
     background_image = None
     background_darkness = 0.97
     scrollback_lines = 5000
-    background_type = transparent
     use_system_font = False
     cursor_color = "#ffffff"
-    foreground_color = "#cacaca"
-    font = DejaVu Sans Mono for Powerline 10
-    background_color = "#303030"
-    scrollback_infinite = True
-  [[TSM]]
-    palette = "#000000:#aa0000:#00aa00:#aa5500:#0000aa:#aa00aa:#00aaaa:#aaaaaa:#555555:#ff5555:#55ff55:#ffff55:#5555ff:#ff55ff:#55ffff:#ffffff"
+    foreground_color = "#dcdccc"
     copy_on_selection = True
-    background_image = None
-    background_darkness = 0.97
-    background_type = transparent
-    use_system_font = False
-    cursor_color = "#ffffff"
-    foreground_color = "#cacaca"
-    delete_binding = control-h
-    font = DejaVu Sans Mono for Powerline 10
-    background_color = "#303030"
+    background_color = "#2c2c2c"
+    cursor_blink = False
     scrollback_infinite = True
 [layouts]
   [[default]]

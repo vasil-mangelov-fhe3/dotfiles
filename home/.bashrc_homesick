@@ -63,7 +63,7 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Lock and Load a custom theme file
-source ~/.config/ps1/shell_prompt.sh
+[[ ${TERM} != "linux" ]] && source ~/.config/ps1/shell_prompt.sh
 
 # Load npm completion
 if [ -f /usr/lib/node_modules/npm/lib/utils/completion.sh ]; then

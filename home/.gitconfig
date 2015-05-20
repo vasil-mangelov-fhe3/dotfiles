@@ -49,4 +49,4 @@
 	lstat = log --stat --relative --abbrev-commit --date=local --pretty=format:'%C(white)%h %C(cyan)%cr %C(green)by %cn %Creset%C(yellow)%n%s%Creset'
 
 [include]
-	path = .gitconfig.user
+	path = ~/.gitconfig.user
