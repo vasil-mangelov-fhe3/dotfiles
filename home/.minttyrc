@@ -1,0 +1,27 @@
+Locale=C
+Charset=UTF-8
+Term=xterm-256color
+Font=DejaVu Sans Mono for Powerline
+FontHeight=11
+FontSmoothing=full
+
+# Dark Pastel (KDE Yakuake)
+ForegroundColour=220,220,204
+BackgroundColour=44,44,44
+CursorColour=253,157,79
+Black=63,63,63
+BoldBlack=44,44,44
+Red=112,80,80
+BoldRed=112,144,128
+Green=96,180,138
+BoldGreen=114,213,163
+Yellow=223,175,143
+BoldYellow=240,223,175
+Blue=154,184,215
+BoldBlue=148,191,243
+Magenta=220,140,195
+BoldMagenta=236,147,211
+Cyan=140,208,211
+BoldCyan=147,224,227
+White=220,220,204
+BoldWhite=255,255,255
