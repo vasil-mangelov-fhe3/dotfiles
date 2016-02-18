@@ -99,7 +99,7 @@ elif [[ -e ~/.config/dircolors-solarized/dircolors.256dark ]]; then
     eval `dircolors ~/.config/dircolors-solarized/dircolors.256dark`
 fi
 
-if command -v keydchain >/dev/null 2>&1; then
+if command -v keychain >/dev/null 2>&1; then
 	eval $(keychain --eval --agents gpg --quiet)
 fi
 
