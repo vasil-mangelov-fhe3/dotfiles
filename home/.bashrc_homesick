@@ -10,6 +10,12 @@
 # If not running interactively, don't do anything
 [ -z "${PS1}" ] && return
 
+if [ -e ${HOME}/.config/bashrc_functions ]; then
+	source "${HOME}/.config/bashrc_functions"
+fi
+
+start-gpg-agent
+
 # Load RVM if you are using it
 [[ -s ${HOME}/.rvm/scripts/rvm ]] && source ${HOME}/.rvm/scripts/rvm
 # Load PYENV if you are using it
@@ -24,10 +30,6 @@ if [ -d ${HOME}/.homesick ]; then
 	source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
 	homeshick pull -q
 	homeshick link -q
-fi
-
-if [ -e ${HOME}/.config/bashrc_functions ]; then
-	source "${HOME}/.config/bashrc_functions"
 fi
 
 # Disable CTRL-S & CTRL-Q
@@ -98,8 +100,6 @@ if [[ -e /etc/redhat-release ]] && [[ $(cat /etc/redhat-release | awk '{print $7
 elif [[ -e ~/.config/dircolors-solarized/dircolors.256dark ]]; then
     eval `dircolors ~/.config/dircolors-solarized/dircolors.256dark`
 fi
-
-start-gpg-agent
 
 if [[ -z "${TMUX}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
 	if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
