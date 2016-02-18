@@ -99,6 +99,10 @@ elif [[ -e ~/.config/dircolors-solarized/dircolors.256dark ]]; then
     eval `dircolors ~/.config/dircolors-solarized/dircolors.256dark`
 fi
 
+if command -v keydchain >/dev/null 2>&1; then
+	eval $(keychain --eval --agents gpg --quiet)
+fi
+
 if [[ -z "${TMUX}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
 	if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
 		unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
