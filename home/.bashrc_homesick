@@ -14,8 +14,6 @@ if [ -e ${HOME}/.config/bashrc_functions ]; then
 	source "${HOME}/.config/bashrc_functions"
 fi
 
-start-gpg-agent
-
 # Load RVM if you are using it
 [[ -s ${HOME}/.rvm/scripts/rvm ]] && source ${HOME}/.rvm/scripts/rvm
 # Load PYENV if you are using it
@@ -83,6 +81,7 @@ alias nvim="TERM=xterm-256color nvim"
 alias ll="ls -AlFh --color"
 alias lls="ls -AlFh --color | sort -hk5"
 alias dush="du -sh | sort -h"
+alias gpg_agent="/usr/bin/gpgconf --kill gpg-agent && /usr/bin/gpgconf --launch gpg-agent"
 
 # Load overrides
 if [ -f ${HOME}/.bash_aliases ]; then

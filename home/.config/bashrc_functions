@@ -62,15 +62,3 @@ function git_remove_submodule() {
 		exit 1
 	fi
 }
-
-function start-gpg-agent() {
-	if [[ $(command -v gpg-agent >/dev/null 2>&1) ]]; then
-		if test -f ${HOME}/.gnupg/gpg-agent-info && kill -0 $(head -n 1 ${HOME}/.gnupg/gpg-agent-info | cut -d: -f2) 2>/dev/null ; then
-			eval $(< ${HOME}/.gnupg/gpg-agent-info)
-		else
-			eval $(gpg-agent --daemon --enable-ssh-support --write-env-file ${HOME}/.gnupg/gpg-agent-info)
-		fi
-		export GPG_AGENT_INFO
-		export SSH_AUTH_SOCK
-	fi
-}
