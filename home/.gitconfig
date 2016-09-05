@@ -50,3 +50,6 @@
 
 [include]
 	path = ~/.gitconfig.user
+
+[credential]
+	helper = cache --timeout=3600
