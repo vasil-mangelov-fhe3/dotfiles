@@ -10,29 +10,23 @@
 # If not running interactively, don't do anything
 [ -z "${PS1}" ] && return
 
-if [ -e ${HOME}/.config/bashrc_functions ]; then
-	source "${HOME}/.config/bashrc_functions"
-fi
-
-# Load RVM if you are using it
-[[ -s ${HOME}/.rvm/scripts/rvm ]] && source ${HOME}/.rvm/scripts/rvm
-# Load PYENV if you are using it
-if [[ -s ${HOME}/.pyenv ]]; then
-	export PYENV_ROOT="${HOME}/.pyenv"
-	export PATH="${PYENV_ROOT}/bin:${PATH}"
-	eval "$(pyenv init -)"
-fi
-
-if [[ -s ${HOME}/bin ]]; then
-	export PATH="${HOME}/bin:${PATH}"
-fi
-
 # Load homeshick
 if [ -d ${HOME}/.homesick ]; then
 	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
 	source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
 	homeshick pull -q
 	homeshick link -q
+fi
+
+[[ -e ${HOME}/.config/bashrc_functions ]] && source "${HOME}/.config/bashrc_functions"
+[[ -s ${HOME}/.rvm/scripts/rvm ]] && source ${HOME}/.rvm/scripts/rvm
+[[ -s ${HOME}/bin ]] && export PATH="${HOME}/bin:${PATH}"
+[[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
+# Load PYENV if you are using it
+if [[ -s ${HOME}/.pyenv ]]; then
+	export PYENV_ROOT="${HOME}/.pyenv"
+	export PATH="${PYENV_ROOT}/bin:${PATH}"
+	eval "$(pyenv init -)"
 fi
 
 # Disable CTRL-S & CTRL-Q
@@ -58,7 +52,6 @@ HISTCONTROL=ignoreboth
 HISTTIMEFORMAT="%d/%m/%y %T "
 # append to the history file, don't overwrite it
 shopt -s histappend
-
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
