@@ -18,3 +18,7 @@
 	path = home/.oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh.git
 	branch = master
+[submodule "home/.config/zgen"]
+	path = home/.config/zgen
+	url = https://github.com/tarjoilija/zgen.git
+	branch = master
