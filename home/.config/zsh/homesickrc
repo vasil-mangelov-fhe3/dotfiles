@@ -18,16 +18,9 @@ if [ -d ${HOME}/.homesick ]; then
 	homeshick link -q
 fi
 
-[[ -e ${HOME}/.zsh/functions ]] && source "${HOME}/.zsh/functions"
-[[ -s ${HOME}/.rvm/scripts/rvm ]] && source ${HOME}/.rvm/scripts/rvm
+[[ -e ${HOME}/.config/zsh/functions ]] && source "${HOME}/.config/zsh/functions"
 [[ -s ${HOME}/bin ]] && export PATH="${HOME}/bin:${PATH}"
 [[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
-# Load PYENV if you are using it
-if [[ -s ${HOME}/.pyenv ]]; then
-	export PYENV_ROOT="${HOME}/.pyenv"
-	export PATH="${PYENV_ROOT}/bin:${PATH}"
-	eval "$(pyenv init -)"
-fi
 
 # Disable CTRL-S & CTRL-Q
 stty stop ''
@@ -35,10 +28,6 @@ stty start ''
 stty -ixon
 stty -ixoff
 
-#use english on commandline for better compatibility
-export LANGUAGE="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
-export LANG="en_US.UTF-8"
 #set editor to vim
 export EDITOR="vim"
 export GIT_EDITOR="vim"
@@ -54,18 +43,19 @@ alias tmux="TERM=xterm-256color tmux -2"
 alias vimfiler="TERM=xterm-256color vim -c \"VimFilerDouble\""
 alias vim="TERM=xterm-256color vim"
 alias nvim="TERM=xterm-256color nvim"
-alias gpg_agent="/usr/bin/gpgconf --kill gpg-agent && /usr/bin/gpgconf --launch gpg-agent"
+# alias gpg_agent="/usr/bin/gpgconf --kill gpg-agent && /usr/bin/gpgconf --launch gpg-agent"
 
 # Load overrides
-if [ -f ${HOME}/.zsh/aliases ]; then
-	source ${HOME}/.zsh/aliases
+if [ -f ${HOME}/.config/zsh/aliases ]; then
+	source ${HOME}/.config/zsh/aliases
 fi
 
-if [ -f ${HOME}/.zsh/localrc ]; then
-	source ${HOME}/.zsh/localrc
+if [ -f ${HOME}/.config/zsh/localrc ]; then
+	source ${HOME}/.config/zsh/localrc
 fi
 
-trap _unsudo exit
+setopt IGNORE_EOF
+bindkey -s '^D' '^q_unsudo\n'
 
 if [[ -e /etc/redhat-release ]] && [[ $(cat /etc/redhat-release | awk '{print $7}' | awk -F '.' '{print $1}') -lt 6 ]] && [[ -e ~/.config/dircolors-solarized/dircolors.rhel5.256dark ]]; then
     eval `dircolors ~/.config/dircolors-solarized/dircolors.rhel5.256dark`
