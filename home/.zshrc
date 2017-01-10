@@ -53,7 +53,9 @@ if ! zgen saved; then
 	zgen oh-my-zsh plugins/virtualenv
 	zgen load zsh-users/zsh-syntax-highlighting
 	zgen load chrissicool/zsh-256color
-	zegn load zsh-users/zsh-completions
+	zgen load zsh-users/zsh-completions
+	zgen load hlissner/zsh-autopair
+	zgen load zsh-users/zsh-autosuggestions
 	# generate the init script from plugins above
 	zgen save
 fi
