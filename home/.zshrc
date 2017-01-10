@@ -53,7 +53,7 @@ HIST_STAMPS="dd.mm.yyyy"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
-source ${HOME}/.zshrc_homesick
+source ${HOME}/.config/zshrc/homesickrc
 
 source ${ZSH}/oh-my-zsh.sh
 
@@ -88,3 +88,5 @@ export LANG=en_US.UTF-8
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

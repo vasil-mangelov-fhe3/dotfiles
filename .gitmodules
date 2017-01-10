@@ -18,3 +18,7 @@
 	path = home/.fzf
 	url = https://github.com/junegunn/fzf.git
 	branch = master
+[submodule "home/.oh-my-zsh"]
+	path = home/.oh-my-zsh
+	url = https://github.com/robbyrussell/oh-my-zsh.git
+	branch = master

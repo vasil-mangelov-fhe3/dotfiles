@@ -2,7 +2,7 @@
 #
 #
 #	For Entries that you want only local or
-#	per user use ${HOME}/.bashrc_local
+#	per user use ${HOME}/.bash/localrc
 #
 #
 ################################################
@@ -18,7 +18,7 @@ if [ -d ${HOME}/.homesick ]; then
 	homeshick link -q
 fi
 
-[[ -e ${HOME}/.config/bashrc_functions ]] && source "${HOME}/.config/bashrc_functions"
+[[ -e ${HOME}/.bash/rc_functions ]] && source "${HOME}/.config/bash/functions"
 [[ -s ${HOME}/.rvm/scripts/rvm ]] && source ${HOME}/.rvm/scripts/rvm
 [[ -s ${HOME}/bin ]] && export PATH="${HOME}/bin:${PATH}"
 [[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
@@ -61,7 +61,7 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Lock and Load a custom theme file
-[[ ${TERM} != "linux" ]] && source ~/.config/ps1/shell_prompt.sh
+[[ ${TERM} != "linux" ]] && source ~/.config/bash/ps1/shell_prompt.sh
 
 # Load npm completion
 if [ -f /usr/lib/node_modules/npm/lib/utils/completion.sh ]; then
@@ -82,12 +82,12 @@ alias dush="du -sh | sort -h"
 alias gpg_agent="/usr/bin/gpgconf --kill gpg-agent && /usr/bin/gpgconf --launch gpg-agent"
 
 # Load overrides
-if [ -f ${HOME}/.bash_aliases ]; then
-	source ${HOME}/.bash_aliases
+if [ -f ${HOME}/.config/bash/aliases ]; then
+	source ${HOME}/.config/bash/aliases
 fi
 
-if [ -f ${HOME}/.bashrc_local ]; then
-	source ${HOME}/.bashrc_local
+if [ -f ${HOME}/.config/bash/localrc ]; then
+	source ${HOME}/.config/bash/localrc
 fi
 
 trap _unsudo exit

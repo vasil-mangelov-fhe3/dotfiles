@@ -18,7 +18,7 @@ if [ -d ${HOME}/.homesick ]; then
 	homeshick link -q
 fi
 
-[[ -e ${HOME}/.config/zshrc_functions ]] && source "${HOME}/.config/zshrc_functions"
+[[ -e ${HOME}/.zsh/functions ]] && source "${HOME}/.zsh/functions"
 [[ -s ${HOME}/.rvm/scripts/rvm ]] && source ${HOME}/.rvm/scripts/rvm
 [[ -s ${HOME}/bin ]] && export PATH="${HOME}/bin:${PATH}"
 [[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
@@ -47,7 +47,7 @@ export GIT_EDITOR="vim"
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Some special Aliases
-alias reload="source ${HOME}/.bashrc"
+alias reload="source ${HOME}/.zshrc"
 alias htop="TERM=xterm-256color htop"
 alias root="sudo env \"HOME=${HOME}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" zsh"
 alias tmux="TERM=xterm-256color tmux -2"
@@ -57,12 +57,12 @@ alias nvim="TERM=xterm-256color nvim"
 alias gpg_agent="/usr/bin/gpgconf --kill gpg-agent && /usr/bin/gpgconf --launch gpg-agent"
 
 # Load overrides
-if [ -f ${HOME}/.zsh_aliases ]; then
-	source ${HOME}/.zsh_aliases
+if [ -f ${HOME}/.zsh/aliases ]; then
+	source ${HOME}/.zsh/aliases
 fi
 
-if [ -f ${HOME}/.zshrc_local ]; then
-	source ${HOME}/.zshrc_local
+if [ -f ${HOME}/.zsh/localrc ]; then
+	source ${HOME}/.zsh/localrc
 fi
 
 trap _unsudo exit
