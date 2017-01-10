@@ -96,10 +96,12 @@ function al() { # list content of archive but don't unpack
 	esac
 }
 
-function _unsudo() {
+function _exit_shell() {
 	if [[ ${EUID} -eq 0 && -n ${SUDO_USER} && ${HOME} = $(eval echo ~${SUDO_USER}) ]]; then
 		local SUDO_GROUP=$(id -g -n ${SUDO_USER})
 		chown -R ${SUDO_USER}:${SUDO_GROUP} ${HOME}
+		exit
+	else
 		exit
 	fi
 }

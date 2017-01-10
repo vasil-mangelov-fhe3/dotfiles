@@ -3,11 +3,11 @@
 	url = https://github.com/Lokaltog/powerline-fonts.git
 	branch = master
 [submodule "home/.tmux/themes/solarized"]
-	path = home/.tmux/themes/solarized
+	path = home/.config/tmux/themes/solarized
 	url = https://github.com/seebi/tmux-colors-solarized.git
 	branch = master
 [submodule "home/.tmux/plugins/tpm"]
-	path = home/.tmux/plugins/tpm
+	path = home/.config/tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm.git
 	branch = master
 [submodule "home/.config/dircolors-solarized"]
