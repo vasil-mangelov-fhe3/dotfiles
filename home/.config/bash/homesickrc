@@ -1,27 +1,31 @@
-################################################
-#
-#
-#	For Entries that you want only local or
-#	per user use ${HOME}/.bash/localrc
-#
-#
-################################################
+TERM=xterm-256color
 
-# If not running interactively, don't do anything
-[ -z "${PS1}" ] && return
+[[ -s ${HOME}/bin ]] && export PATH="${HOME}/bin:${PATH}"
 
-# Load homeshick
-if [ -d ${HOME}/.homesick ]; then
-	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-	source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
-	homeshick pull -q
-	homeshick link -q
+# Some special Aliases
+alias reload="source ${HOME}/.bashrc"
+alias root="sudo env \"HOME=${HOME}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" bash"
+alias tmux="tmux -2"
+alias vimfiler="vim -c \"VimFilerDouble\""
+alias ll="ls -lFh --color"
+alias la="ls -AlFh --color | sort -hk5"
+alias las="ls -AlFh --color | sort -hk5"
+alias gpg_agent="/usr/bin/gpgconf --kill gpg-agent && /usr/bin/gpgconf --launch gpg-agent"
+
+[[ -f ${HOME}/.config/bash/aliases ]] && source ${HOME}/.config/bash/aliases
+
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+	source /etc/bash_completion
 fi
 
-[[ -e ${HOME}/.bash/rc_functions ]] && source "${HOME}/.config/bash/functions"
+if [ -f /usr/lib/node_modules/npm/lib/utils/completion.sh ]; then
+	source /usr/lib/node_modules/npm/lib/utils/completion.sh
+fi
+
+[[ -e ${HOME}/.config/bash/functions ]] && source "${HOME}/.config/bash/functions"
 [[ -s ${HOME}/.rvm/scripts/rvm ]] && source ${HOME}/.rvm/scripts/rvm
-[[ -s ${HOME}/bin ]] && export PATH="${HOME}/bin:${PATH}"
 [[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
+
 # Load PYENV if you are using it
 if [[ -s ${HOME}/.pyenv ]]; then
 	export PYENV_ROOT="${HOME}/.pyenv"
@@ -39,19 +43,22 @@ stty -ixoff
 export LANGUAGE="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export LANG="en_US.UTF-8"
+
 #set editor to vim
 export EDITOR="vim"
 export GIT_EDITOR="vim"
 
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-	source /etc/bash_completion
-fi
-
+###################################################################################################
+# History Settings
+###################################################################################################
 # bash_history: Ignore dups and add timestamp
 HISTCONTROL=ignoreboth
 HISTTIMEFORMAT="%d/%m/%y %T "
 # append to the history file, don't overwrite it
 shopt -s histappend
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -63,39 +70,24 @@ shopt -s checkwinsize
 # Lock and Load a custom theme file
 [[ ${TERM} != "linux" ]] && source ~/.config/bash/ps1/shell_prompt.sh
 
-# Load npm completion
-if [ -f /usr/lib/node_modules/npm/lib/utils/completion.sh ]; then
-	source /usr/lib/node_modules/npm/lib/utils/completion.sh
-fi
-
-# Some special Aliases
-alias reload="source ${HOME}/.bashrc"
-alias htop="TERM=xterm-256color htop"
-alias root="sudo env \"HOME=${HOME}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" bash"
-alias tmux="TERM=xterm-256color tmux -2"
-alias vimfiler="TERM=xterm-256color vim -c \"VimFilerDouble\""
-alias vim="TERM=xterm-256color vim"
-alias nvim="TERM=xterm-256color nvim"
-alias ll="ls -AlFh --color"
-alias lls="ls -AlFh --color | sort -hk5"
-alias dush="du -sh | sort -h"
-alias gpg_agent="/usr/bin/gpgconf --kill gpg-agent && /usr/bin/gpgconf --launch gpg-agent"
-
-# Load overrides
-if [ -f ${HOME}/.config/bash/aliases ]; then
-	source ${HOME}/.config/bash/aliases
-fi
-
-if [ -f ${HOME}/.config/bash/localrc ]; then
-	source ${HOME}/.config/bash/localrc
-fi
-
 trap _unsudo exit
 
 if [[ -e /etc/redhat-release ]] && [[ $(cat /etc/redhat-release | awk '{print $7}' | awk -F '.' '{print $1}') -lt 6 ]] && [[ -e ~/.config/dircolors-solarized/dircolors.rhel5.256dark ]]; then
     eval `dircolors ~/.config/dircolors-solarized/dircolors.rhel5.256dark`
 elif [[ -e ~/.config/dircolors-solarized/dircolors.256dark ]]; then
     eval `dircolors ~/.config/dircolors-solarized/dircolors.256dark`
+fi
+
+if [ -f ${HOME}/.config/bash/localrc ]; then
+	source ${HOME}/.config/bash/localrc
+fi
+
+# Load homeshick
+if [ -d ${HOME}/.homesick ]; then
+	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
+	source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
+	homeshick pull -q
+	homeshick link -q
 fi
 
 if [[ -z "${TMUX}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
