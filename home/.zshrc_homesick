@@ -1,0 +1,89 @@
+################################################
+#
+#
+#	For Entries that you want only local or
+#	per user use ${HOME}/.bashrc_local
+#
+#
+################################################
+
+# If not running interactively, don't do anything
+[ -z "${PS1}" ] && return
+
+# Load homeshick
+if [ -d ${HOME}/.homesick ]; then
+	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
+	fpath=(${HOME}/.homesick/repos/homeshick/completions ${fpath})
+	homeshick pull -q
+	homeshick link -q
+fi
+
+[[ -e ${HOME}/.config/zshrc_functions ]] && source "${HOME}/.config/zshrc_functions"
+[[ -s ${HOME}/.rvm/scripts/rvm ]] && source ${HOME}/.rvm/scripts/rvm
+[[ -s ${HOME}/bin ]] && export PATH="${HOME}/bin:${PATH}"
+[[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
+# Load PYENV if you are using it
+if [[ -s ${HOME}/.pyenv ]]; then
+	export PYENV_ROOT="${HOME}/.pyenv"
+	export PATH="${PYENV_ROOT}/bin:${PATH}"
+	eval "$(pyenv init -)"
+fi
+
+# Disable CTRL-S & CTRL-Q
+stty stop ''
+stty start ''
+stty -ixon
+stty -ixoff
+
+#use english on commandline for better compatibility
+export LANGUAGE="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
+#set editor to vim
+export EDITOR="vim"
+export GIT_EDITOR="vim"
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# Some special Aliases
+alias reload="source ${HOME}/.bashrc"
+alias htop="TERM=xterm-256color htop"
+alias root="sudo env \"HOME=${HOME}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" zsh"
+alias tmux="TERM=xterm-256color tmux -2"
+alias vimfiler="TERM=xterm-256color vim -c \"VimFilerDouble\""
+alias vim="TERM=xterm-256color vim"
+alias nvim="TERM=xterm-256color nvim"
+alias gpg_agent="/usr/bin/gpgconf --kill gpg-agent && /usr/bin/gpgconf --launch gpg-agent"
+
+# Load overrides
+if [ -f ${HOME}/.zsh_aliases ]; then
+	source ${HOME}/.zsh_aliases
+fi
+
+if [ -f ${HOME}/.zshrc_local ]; then
+	source ${HOME}/.zshrc_local
+fi
+
+trap _unsudo exit
+
+if [[ -e /etc/redhat-release ]] && [[ $(cat /etc/redhat-release | awk '{print $7}' | awk -F '.' '{print $1}') -lt 6 ]] && [[ -e ~/.config/dircolors-solarized/dircolors.rhel5.256dark ]]; then
+    eval `dircolors ~/.config/dircolors-solarized/dircolors.rhel5.256dark`
+elif [[ -e ~/.config/dircolors-solarized/dircolors.256dark ]]; then
+    eval `dircolors ~/.config/dircolors-solarized/dircolors.256dark`
+fi
+
+if [[ -z "${TMUX}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
+	if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
+		unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
+		ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
+		export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
+	fi
+fi
+
+# Start tmux on connection
+if [ "${PS1}" != "" -a "$(tmux -L remote has-session -t remote &>/dev/null; echo $?)" = 0 -a "${SSH_TTY:-x}" != x -a "$(which tmux 2>/dev/null)" != "" -a "${TMUX}" = "" ]; then
+	tmux -L remote attach-session -t remote
+elif [ "${PS1}" != "" -a "${SSH_TTY:-x}" != x -a "$(which tmux 2>/dev/null)" != "" -a "${TMUX}" = "" ]; then
+	tmux -f ~/.tmux.conf -L remote new-session -s remote
+fi
