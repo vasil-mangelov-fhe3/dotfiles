@@ -16,3 +16,5 @@ zgen load chrissicool/zsh-256color
 zgen load zsh-users/zsh-completions
 zgen load hlissner/zsh-autopair
 zgen load zsh-users/zsh-autosuggestions
+
+zgen load caiogondim/bullet-train-oh-my-zsh-theme bullet-train
