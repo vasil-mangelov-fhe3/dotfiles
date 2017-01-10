@@ -1,0 +1,18 @@
+# oh-my-zsh
+zgen oh-my-zsh
+zgen oh-my-zsh plugins/git
+zgen oh-my-zsh plugins/colored-man-pages
+zgen oh-my-zsh plugins/colorize
+zgen oh-my-zsh plugins/cp
+zgen oh-my-zsh plugins/gpg-agent
+zgen oh-my-zsh plugins/npm
+zgen oh-my-zsh plugins/rvm
+zgen oh-my-zsh plugins/pyenv
+zgen oh-my-zsh plugins/virtualenv
+
+# Additional plugins
+zgen load zsh-users/zsh-syntax-highlighting
+zgen load chrissicool/zsh-256color
+zgen load zsh-users/zsh-completions
+zgen load hlissner/zsh-autopair
+zgen load zsh-users/zsh-autosuggestions

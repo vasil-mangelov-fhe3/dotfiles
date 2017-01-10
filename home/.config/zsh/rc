@@ -1,16 +1,44 @@
-################################################
-#
-#
-#	For Entries that you want only local or
-#	per user use ${HOME}/.bashrc_local
-#
-#
-################################################
-
-# If not running interactively, don't do anything
-[ -z "${PS1}" ] && return
-
 TERM=xterm-256color
+
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-zsh is loaded.
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="bullet-train"
+
+# Use hyphen-insensitive completion. Case sensitive completion must
+# be off. _ and - will be interchangeable.
+HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to enable command auto-correction.
+ENABLE_CORRECTION="true"
+
+# Change the command execution time stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+HIST_STAMPS="dd.mm.yyyy"
+
+# You may need to manually set your language environment
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+#set editor to vim
+export EDITOR="vim"
+export GIT_EDITOR="vim"
+
+
+# Some special Aliases
+alias reload="source ${HOME}/.zshrc"
+alias root="sudo env \"HOME=${HOME}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" zsh"
+alias tmux="tmux -2"
+alias vimfiler="vim -c \"VimFilerDouble\""
+
+# Load overrides
+if [ -f ${RC_PATH}/aliases ]; then
+	source ${RC_PATH}/aliases
+fi
 
 # Load homeshick
 if [ -d ${HOME}/.homesick ]; then
@@ -23,33 +51,8 @@ fi
 [[ -e ${HOME}/.config/zsh/functions ]] && source "${HOME}/.config/zsh/functions"
 [[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
 
-# Disable CTRL-S & CTRL-Q
-stty stop ''
-stty start ''
-stty -ixon
-stty -ixoff
-
-#set editor to vim
-export EDITOR="vim"
-export GIT_EDITOR="vim"
-
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# Some special Aliases
-alias reload="source ${HOME}/.zshrc"
-alias htop="TERM=xterm-256color htop"
-alias root="sudo env \"HOME=${HOME}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" zsh"
-alias tmux="TERM=xterm-256color tmux -2"
-alias vimfiler="TERM=xterm-256color vim -c \"VimFilerDouble\""
-alias vim="TERM=xterm-256color vim"
-alias nvim="TERM=xterm-256color nvim"
-# alias gpg_agent="/usr/bin/gpgconf --kill gpg-agent && /usr/bin/gpgconf --launch gpg-agent"
-
-# Load overrides
-if [ -f ${HOME}/.config/zsh/aliases ]; then
-	source ${HOME}/.config/zsh/aliases
-fi
 
 if [ -f ${HOME}/.config/zsh/localrc ]; then
 	source ${HOME}/.config/zsh/localrc

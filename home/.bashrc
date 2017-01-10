@@ -8,7 +8,12 @@
 ################################################
 
 # If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+[ -z "${PS1}" ] && return
 
-source "${HOME}/.config/bash/rc"
+export PATH=${HOME}/bin:/usr/local/bin:${PATH}
+
+RC_PATH=${HOME}/.config/bash
+
+source "${RC_PATH}/rc"
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

@@ -1,7 +1,5 @@
 TERM=xterm-256color
 
-[[ -s ${HOME}/bin ]] && export PATH="${HOME}/bin:${PATH}"
-
 # Some special Aliases
 alias reload="source ${HOME}/.bashrc"
 alias root="sudo env \"HOME=${HOME}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" bash"
@@ -12,7 +10,7 @@ alias la="ls -AlFh --color | sort -hk5"
 alias las="ls -AlFh --color | sort -hk5"
 alias gpg_agent="/usr/bin/gpgconf --kill gpg-agent && /usr/bin/gpgconf --launch gpg-agent"
 
-[[ -f ${HOME}/.config/bash/aliases ]] && source ${HOME}/.config/bash/aliases
+[[ -f ${RC_PATH}/aliases ]] && source ${RC_PATH}/aliases
 
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 	source /etc/bash_completion
@@ -22,7 +20,7 @@ if [ -f /usr/lib/node_modules/npm/lib/utils/completion.sh ]; then
 	source /usr/lib/node_modules/npm/lib/utils/completion.sh
 fi
 
-[[ -e ${HOME}/.config/bash/functions ]] && source "${HOME}/.config/bash/functions"
+[[ -e ${RC_PATH}/functions ]] && source "${RC_PATH}/functions"
 [[ -s ${HOME}/.rvm/scripts/rvm ]] && source ${HOME}/.rvm/scripts/rvm
 [[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
 
@@ -68,7 +66,7 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Lock and Load a custom theme file
-[[ ${TERM} != "linux" ]] && source ~/.config/bash/ps1/shell_prompt.sh
+[[ ${TERM} != "linux" ]] && source ${RC_PATH}/ps1/shell_prompt.sh
 
 trap _unsudo exit
 
@@ -78,8 +76,8 @@ elif [[ -e ~/.config/dircolors-solarized/dircolors.256dark ]]; then
     eval `dircolors ~/.config/dircolors-solarized/dircolors.256dark`
 fi
 
-if [ -f ${HOME}/.config/bash/localrc ]; then
-	source ${HOME}/.config/bash/localrc
+if [ -f ${RC_PATH}/localrc ]; then
+	source ${RC_PATH}/localrc
 fi
 
 # Load homeshick
