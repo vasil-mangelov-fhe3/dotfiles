@@ -1,5 +1,8 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Additional config
+source ${HOME}/.config/zsh/homesickrc
 
 # Path to your oh-my-zsh installation.
 export ZSH=${HOME}/.oh-my-zsh
@@ -7,7 +10,7 @@ export ZSH=${HOME}/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="agnosterzak"
+ZSH_THEME="bullet-train"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -52,8 +55,6 @@ ZSH_CUSTOM=${HOME}/.config/zsh
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git colored-man-pages colorize cp gpg-agent npm rvm pyenv virtualenv)
-
-source ${HOME}/.config/zsh/homesickrc
 
 source ${ZSH}/oh-my-zsh.sh
 
