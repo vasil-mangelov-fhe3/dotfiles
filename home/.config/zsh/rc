@@ -1,11 +1,22 @@
 TERM=xterm-256color
 
 # Bullet Train theme settings
-BULLETTRAIN_STATUS_EXIT_SHOW=true
+BULLETTRAIN_PROMPT_ORDER=(
+	time
+	status
+	cmd_exec_time
+	context
+	git
+	hg
+	go
+	nvm
+	dir
+	virtualenv
+)
 BULLETTRAIN_DIR_FG=black
 BULLETTRAIN_DIR_EXTENDED=2
 BULLETTRAIN_GIT_COLORIZE_DIRTY=true
-BULLETTRAIN_EXEC_TIME_SHOW=true
+BULLETTRAIN_IS_SSH_CLIENT=${SSH_CONNECTION+true}
 
 # Use hyphen-insensitive completion. Case sensitive completion must
 # be off. _ and - will be interchangeable.

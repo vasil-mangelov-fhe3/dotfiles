@@ -14,6 +14,9 @@ export PATH=${HOME}/bin:/usr/local/bin:${PATH}
 
 RC_PATH=${HOME}/.config/zsh
 
+# Additional settings
+source ${RC_PATH}/rc
+
 # Would you like to use another custom folder than $ZSH/custom?
 ZSH_CUSTOM=${RC_PATH}
 
@@ -38,8 +41,5 @@ else
 	zplug install
 	zplug load
 fi
-
-# Additional settings
-source ${RC_PATH}/rc
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
