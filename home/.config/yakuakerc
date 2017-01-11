@@ -10,6 +10,10 @@ DefaultProfile=Shell.profile
 [Dialogs]
 FirstRun=false
 
+[DownloadDialog Settings]
+Height 1200=502
+Width 1920=700
+
 [Favorite Profiles]
 Favorites=
 

@@ -2,6 +2,7 @@
 zgen oh-my-zsh
 zgen load caiogondim/bullet-train-oh-my-zsh-theme bullet-train
 zgen oh-my-zsh plugins/git
+zgen oh-my-zsh plugins/extract
 zgen oh-my-zsh plugins/colored-man-pages
 zgen oh-my-zsh plugins/colorize
 zgen oh-my-zsh plugins/cp
