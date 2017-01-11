@@ -1,6 +1,6 @@
 [Appearance]
 BoldIntense=true
-ColorScheme=nrecomnet
+ColorScheme=google-dark
 Font=DejaVu Sans Mono for Powerline,10,-1,5,50,0,0,0,0,0
 
 [General]
