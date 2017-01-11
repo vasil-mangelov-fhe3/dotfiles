@@ -57,14 +57,6 @@ if [ -f ${RC_PATH}/aliases ]; then
 	source ${RC_PATH}/aliases
 fi
 
-# Load homeshick
-if [ -d ${HOME}/.homesick ]; then
-	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-	fpath=(${HOME}/.homesick/repos/homeshick/completions ${fpath})
-	homeshick pull -q
-	homeshick link -q
-fi
-
 [[ -e ${HOME}/.config/zsh/functions ]] && source "${HOME}/.config/zsh/functions"
 [[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
 

@@ -80,14 +80,6 @@ if [ -f ${RC_PATH}/localrc ]; then
 	source ${RC_PATH}/localrc
 fi
 
-# Load homeshick
-if [ -d ${HOME}/.homesick ]; then
-	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-	source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
-	homeshick pull -q
-	homeshick link -q
-fi
-
 if [[ -z "${TMUX}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
 	if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
 		unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
