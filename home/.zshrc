@@ -38,11 +38,13 @@ ZSH_CUSTOM=${RC_PATH}
 
 # Set a different zplug path
 ZPLUG_HOME=${HOME}/.config/zplug
-ZPLUG_LOADFILE=${RC_PATH}/plugins
+ZPLUG_PLUGINS=${RC_PATH}/plugins
+ZPLUG_LOADFILE=${RC_PATH}/plugins.local
 PLUGINSRC=${RC_PATH}/pluginsrc
 
 if [[ -d ${ZPLUG_HOME} ]]; then
 	source ${ZPLUG_HOME}/init.zsh
+	source ${ZPLUG_PLUGINS}
 	source ${ZPLUG_LOADFILE}
 
 	if ! zplug check; then
@@ -54,6 +56,7 @@ if [[ -d ${ZPLUG_HOME} ]]; then
 else
 	git clone https://github.com/zplug/zplug ${ZPLUG_HOME}
 	source ${ZPLUG_HOME}/init.zsh
+	source ${ZPLUG_PLUGINS}
 	source ${ZPLUG_LOADFILE}
 	zplug install
 	zplug load
