@@ -1,8 +1,6 @@
 # oh-my-zsh
-zplug "robbyrussell/oh-my-zsh"
+zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme
-zplug "lib/directories", from:oh-my-zsh
-zplug "lib/theme-and-appearance", from:oh-my-zsh
 zplug "plugins/common-aliases", from:oh-my-zsh
 zplug "plugins/git",   from:oh-my-zsh
 zplug "plugins/svn",   from:oh-my-zsh
@@ -18,12 +16,8 @@ zplug "plugins/virtualenv",   from:oh-my-zsh
 
 # Additional plugins
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-history-substring-search", \
-	hook-load:"source ${PLUGINSRC}/zsh-history-substring-search"
 zplug "chrissicool/zsh-256color"
 zplug "zsh-users/zsh-completions"
 zplug "hlissner/zsh-autopair"
 zplug "zsh-users/zsh-autosuggestions"
-zplug "junegunn/fzf", use:shell/key-bindings.zsh
-zplug "seebi/dircolors-solarized"
 
