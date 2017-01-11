@@ -20,7 +20,7 @@ BULLETTRAIN_IS_SSH_CLIENT=${SSH_CONNECTION+true}
 
 BULLETTRAIN_STATUS_EXIT_SHOW=true
 BULLETTRAIN_EXEC_TIME_SHOW=true
-BULLETTRAIN_CONTEXT_SHOW=${SSH_CONNECTION+true}
+BULLETTRAIN_CONTEXT_SHOW=$([[ -z ${SSH_CONNECTION} ]] && echo "false" || echo "true")
 
 # Use hyphen-insensitive completion. Case sensitive completion must
 # be off. _ and - will be interchangeable.
