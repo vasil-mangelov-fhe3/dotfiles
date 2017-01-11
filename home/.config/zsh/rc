@@ -60,9 +60,6 @@ if [ -f ${HOME}/.config/zsh/localrc ]; then
 	source ${HOME}/.config/zsh/localrc
 fi
 
-setopt IGNORE_EOF
-bindkey -s '^D' '^q_exit_shell\n'
-
 if [[ -e /etc/redhat-release ]] && [[ $(cat /etc/redhat-release | awk '{print $7}' | awk -F '.' '{print $1}') -lt 6 ]] && [[ -e ~/.config/dircolors-solarized/dircolors.rhel5.256dark ]]; then
     eval `dircolors ~/.config/dircolors-solarized/dircolors.rhel5.256dark`
 elif [[ -e ~/.config/dircolors-solarized/dircolors.256dark ]]; then
