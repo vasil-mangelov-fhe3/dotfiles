@@ -17,9 +17,6 @@ RC_PATH=${HOME}/.config/zsh
 # Would you like to use another custom folder than $ZSH/custom?
 ZSH_CUSTOM=${RC_PATH}
 
-# Additional settings
-source ${RC_PATH}/rc
-
 # Set a different zplug path
 ZPLUG_HOME=${HOME}/.config/zplug
 ZPLUG_LOADFILE=${RC_PATH}/plugins
@@ -42,17 +39,7 @@ else
 	zplug load
 fi
 
-# ZGEN_DIR=${HOME}/.config/zgen
-# ZGEN_RESET_ON_CHANGE=(${HOME}/.zshrc ${RC_PATH}/rc ${RC_PATH}/zgen_plugins)
-#
-# # load zgen
-# source "${ZGEN_DIR}/zgen.zsh"
-#
-# if ! zgen saved; then
-# 	# specify plugins in this file
-# 	source ${RC_PATH}/zgen_plugins
-# 	# generate the init script from plugins above
-# 	zgen save
-# fi
+# Additional settings
+source ${RC_PATH}/rc
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
