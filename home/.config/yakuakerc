@@ -1,4 +1,6 @@
 [Appearance]
+Skin=arc-dark
+SkinInstalledWithKns=true
 TerminalHighlightOnManualActivation=true
 
 [Colors]
