@@ -1,5 +1,6 @@
 # oh-my-zsh
 zgen oh-my-zsh
+zgen load caiogondim/bullet-train-oh-my-zsh-theme bullet-train
 zgen oh-my-zsh plugins/git
 zgen oh-my-zsh plugins/colored-man-pages
 zgen oh-my-zsh plugins/colorize
@@ -17,4 +18,3 @@ zgen load zsh-users/zsh-completions
 zgen load hlissner/zsh-autopair
 zgen load zsh-users/zsh-autosuggestions
 
-zgen load caiogondim/bullet-train-oh-my-zsh-theme bullet-train
