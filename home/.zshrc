@@ -22,11 +22,12 @@ source ${RC_PATH}/rc
 
 # Set a different zgen path
 ZGEN_DIR=${HOME}/.config/zgen
+ZGEN_RESET_ON_CHANGE=(${RC_PATH}/zgen_plugins)
 
 # load zgen
 source "${ZGEN_DIR}/zgen.zsh"
 
-# if the init scipt doesn't exist
+
 if ! zgen saved; then
 	# specify plugins in this file
 	source ${RC_PATH}/zgen_plugins

@@ -1,3 +1,7 @@
+xterm*faceName: DejaVu Sans Mono for Powerline:style=Book
+xterm*faceSize: 10
+xterm*renderFont: true
+
 ! special
 *.foreground:   #c5c8c6
 *.background:   #1d1f21
