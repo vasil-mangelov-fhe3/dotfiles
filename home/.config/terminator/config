@@ -5,6 +5,11 @@
   title_hide_sizetext = True
   tab_position = bottom
   inactive_color_offset = 1.0
+  title_transmit_fg_color = "#c5c8c6"
+  title_transmit_bg_color = "#1d1f21"
+  title_inactive_fg_color = "#c5c8c6"
+  title_inactive_bg_color = "#969896"
+
 [keybindings]
   next_tab = <Shift>Right
   full_screen = <Shift>F11
@@ -12,21 +17,23 @@
   move_tab_right = <Primary><Shift>Right
   move_tab_left = <Primary><Shift>Left
   hide_window = <Shift>F12
+
 [profiles]
   [[default]]
     use_theme_colors = False
-    background_color = "#262626"
-    foreground_color = "#d9d9d9"
-    palette = "#000000:#b87a7a:#7ab87a:#b8b87a:#7a7ab8:#b87ab8:#7ab8b8:#d9d9d9:#262626:#dbbdbd:#bddbbd:#dbdbbd:#bdbddb:#dbbddb:#bddbdb:#ffffff"
+    palette = "#1d1f21:#cc342b:#198844:#fba922:#3971ed:#a36ac7:#3971ed:#c5c8c6:#969896:#cc342b:#198844:#fba922:#3971ed:#a36ac7:#3971ed:#ffffff"
     font = DejaVu Sans Mono for Powerline 10
+    foreground_color = "#c5c8c6"
+    background_color = "#1d1f21"
+    cursor_color = "#c5c8c6"
     background_image = None
     background_darkness = 0.97
     scrollback_lines = 5000
     use_system_font = False
-    cursor_color = "#ffffff"
     copy_on_selection = True
     cursor_blink = False
     scrollback_infinite = True
+
 [layouts]
   [[default]]
     [[[child1]]]
@@ -38,3 +45,4 @@
       type = Window
       parent = ""
 [plugins]
+

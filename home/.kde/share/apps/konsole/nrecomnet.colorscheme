@@ -1,97 +1,72 @@
-# --- ~/.kde/share/apps/konsole/nrecomnet.colorscheme -------------------------------
-# ------------------------------------------------------------------------------
-# --- generated with 4bit Terminal Color Scheme Designer -----------------------
-# ------------------------------------------------------------------------------
-# --- http://ciembor.github.com/4bit -------------------------------------------
-# ------------------------------------------------------------------------------
-
 # --- special colors ---
 
 [Background]
-Color=38,38,38
-Transparency=false
+Color=29,31,33
 
 [BackgroundIntense]
-color=38,38,38
-Transparency=false
+Color=29,31,33
 
 [Foreground]
-Color=217,217,217
-Transparency=false
+Color=197,200,198
 
 [ForegroundIntense]
-Color=217,217,217
+Color=197,200,198
 Bold=true
-Transparency=false
 
 # --- standard colors ---
 
 [Color0]
-Color=0,0,0
-Transparency=false
+Color=29,31,33
 
 [Color0Intense]
-Color=38,38,38
-Transparency=false
+Color=150,152,150
 
 [Color1]
-Color=184,122,122
-Transparency=false
+Color=204,52,43
 
 [Color1Intense]
-Color=219,189,189
-Transparency=false
+Color=204,52,43
 
 [Color2]
-Color=122,184,122
-Transparency=false
+Color=25,136,68
 
 [Color2Intense]
-Color=189,219,189
-Transparency=false
+Color=25,136,68
 
 [Color3]
-Color=184,184,122
-Transparency=false
+Color=251,169,34
 
 [Color3Intense]
-Color=219,219,189
-Transparency=false
+Color=251,169,34
 
 [Color4]
-Color=122,122,184
-Transparency=false
+Color=57,113,237
 
 [Color4Intense]
-Color=189,189,219
-Transparency=false
+Color=57,113,237
 
 [Color5]
-Color=184,122,184
-Transparency=false
+Color=163,106,199
 
 [Color5Intense]
-Color=219,189,219
-Transparency=false
+Color=163,106,199
 
 [Color6]
-Color=122,184,184
-Transparency=false
+Color=57,113,237
 
 [Color6Intense]
-Color=189,219,219
-Transparency=false
+Color=57,113,237
 
 [Color7]
-Color=217,217,217
-Transparency=false
+Color=197,200,198
 
 [Color7Intense]
 Color=255,255,255
-Transparency=false
 
 # --- general options ---
 
 [General]
-Description=4bit-d9d9d9-on-262626
+Description=terminal.sexy
 Opacity=1
+Wallpaper=
+
