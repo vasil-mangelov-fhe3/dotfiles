@@ -23,6 +23,7 @@ ZSH_CUSTOM=${RC_PATH}
 # Set a different zplug path
 ZPLUG_HOME=${HOME}/.config/zplug
 ZPLUG_LOADFILE=${RC_PATH}/plugins
+PLUGINSRC=${RC_PATH}/pluginsrc
 
 if [[ -d ${ZPLUG_HOME} ]]; then
 	source ${ZPLUG_HOME}/init.zsh

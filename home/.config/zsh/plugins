@@ -17,12 +17,13 @@ zplug "plugins/pyenv",   from:oh-my-zsh
 zplug "plugins/virtualenv",   from:oh-my-zsh
 
 # Additional plugins
-zplug "zsh-users/zsh-syntax-highlighting"
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-history-substring-search", \
+	hook-load:"source ${PLUGINSRC}/zsh-history-substring-search"
 zplug "chrissicool/zsh-256color"
 zplug "zsh-users/zsh-completions"
 zplug "hlissner/zsh-autopair"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "junegunn/fzf", use:shell/key-bindings.zsh
-zplug "zsh-users/zsh-history-substring-search"
 zplug "seebi/dircolors-solarized"
 
