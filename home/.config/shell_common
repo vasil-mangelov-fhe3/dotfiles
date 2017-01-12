@@ -11,7 +11,7 @@ export GIT_EDITOR="vim"
 
 # Load overrides
 [[ -f ${RC_PATH}/aliases ]] && source ${RC_PATH}/aliases
-[[ -f ${RC_PATH}/aliases.local ]] && source ${RC_PATH}/aliases.local
+[[ -f ${RC_PATH}/aliases.local ]] && source ${RC_PATH}/aliases.local || touch ${RC_PATH}/aliases.local
 
 [[ -e ${RC_PATH}/functions ]] && source "${RC_PATH}/functions"
 
@@ -26,7 +26,7 @@ elif [[ -e ~/.config/dircolors-solarized/dircolors.256dark ]]; then
     eval `dircolors ~/.config/dircolors-solarized/dircolors.256dark`
 fi
 
-[[ -f ${RC_PATH}/rc.local ]] && source ${RC_PATH}/rc.local
+[[ -f ${RC_PATH}/rc.local ]] && source ${RC_PATH}/rc.local || touch ${RC_PATH}/rc.local
 
 if [[ -z "${TMUX}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
 	if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then

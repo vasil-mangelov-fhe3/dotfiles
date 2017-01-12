@@ -40,6 +40,7 @@ ZSH_CUSTOM=${RC_PATH}
 ZPLUG_HOME=${HOME}/.config/zplug
 ZPLUG_PLUGINS=${RC_PATH}/plugins
 ZPLUG_LOADFILE=${RC_PATH}/plugins.local
+[[ ! -f ${ZPLUG_LOADFILE} ]] && touch ${ZPLUG_LOADFILE}
 PLUGINSRC=${RC_PATH}/pluginsrc
 
 if [[ -d ${ZPLUG_HOME} ]]; then
