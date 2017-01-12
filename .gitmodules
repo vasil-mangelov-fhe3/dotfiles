@@ -14,7 +14,3 @@
 	path = home/.fzf
 	url = https://github.com/junegunn/fzf.git
 	branch = master
-[submodule "home/.config/zgen"]
-	path = home/.config/zgen
-	url = https://github.com/tarjoilija/zgen.git
-	branch = master
