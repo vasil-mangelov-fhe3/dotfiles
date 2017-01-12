@@ -20,4 +20,5 @@ zplug "chrissicool/zsh-256color"
 zplug "zsh-users/zsh-completions"
 zplug "hlissner/zsh-autopair"
 zplug "zsh-users/zsh-autosuggestions"
+zplug "NemesisRE/115f9b842b55171de8444eeed46d058e", from:gist
 
