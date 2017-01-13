@@ -32,8 +32,8 @@ xterm*renderFont: true
 *.color13:      #a36ac7
 
 ! cyan
-*.color6:       #3971ed
-*.color14:      #3971ed
+*.color6:       #008596
+*.color14:      #008596
 
 ! white
 *.color7:       #c5c8c6
