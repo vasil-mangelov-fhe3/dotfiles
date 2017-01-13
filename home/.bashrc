@@ -1,9 +1,9 @@
 ################################################
 #
-#
-#	For Entries that you want only local or
-#	per user use ${HOME}/.config/bash/localrc
-#
+#	For your local overrides there are several configs in ${HOME}/.config/bash/
+#	* aliases.local
+#	* functions.local
+#	* rc.local
 #
 ################################################
 
@@ -30,6 +30,7 @@ else
 	homeshick link -q
 fi
 
+# Additional settings
 source "${RC_PATH}/rc"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

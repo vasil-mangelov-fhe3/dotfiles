@@ -10,10 +10,10 @@ export EDITOR="vim"
 export GIT_EDITOR="vim"
 
 # Load overrides
-[[ -f ${RC_PATH}/aliases ]] && source ${RC_PATH}/aliases
+[[ -e ${RC_PATH}/aliases ]] && source ${RC_PATH}/aliases
 [[ -f ${RC_PATH}/aliases.local ]] && source ${RC_PATH}/aliases.local || touch ${RC_PATH}/aliases.local
-
-[[ -e ${RC_PATH}/functions ]] && source "${RC_PATH}/functions"
+[[ -e ${RC_PATH}/functions ]] && source ${RC_PATH}/functions
+[[ -f ${RC_PATH}/functions.local ]] && source ${RC_PATH}/functions.local || touch ${RC_PATH}/functions.local
 
 [[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
 

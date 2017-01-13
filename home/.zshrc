@@ -1,9 +1,10 @@
 ################################################
 #
-#
-#	For Entries that you want only local or
-#	per user use ${HOME}/.config/zsh/localrc
-#
+#	For your local overrides there are several configs in ${HOME}/.config/bash/
+#	* aliases.local
+#	* functions.local
+#	* rc.local
+#	* plugins.local
 #
 ################################################
 
@@ -27,7 +28,7 @@ else
 	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
 	fpath=(${HOME}/.homesick/repos/homeshick/completions ${fpath})
 	homeshick pull -q
-	homeshick link -q
+	homeshick link -fq
 fi
 
 # Additional settings
