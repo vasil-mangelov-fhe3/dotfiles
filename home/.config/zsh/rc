@@ -35,4 +35,7 @@ ENABLE_CORRECTION="true"
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 HIST_STAMPS="dd.mm.yyyy"
 
+# Enable math functions
+zmodload zsh/mathfunc
+
 source ${HOME}/.config/shell_common
