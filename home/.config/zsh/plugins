@@ -1,6 +1,31 @@
-# oh-my-zsh
 zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
+	ZSH_CUSTOM=${RC_PATH}
+	HYPHEN_INSENSITIVE="true"
+	DISABLE_AUTO_UPDATE="true"
+	ENABLE_CORRECTION="true"
+	HIST_STAMPS="dd.mm.yyyy"
 zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme
+	BULLETTRAIN_PROMPT_ORDER=(
+		time
+		status
+		cmd_exec_time
+		context
+		git
+		hg
+		go
+		nvm
+		dir
+		virtualenv
+	)
+	BULLETTRAIN_DIR_FG=black
+	BULLETTRAIN_DIR_EXTENDED=2
+	BULLETTRAIN_GIT_COLORIZE_DIRTY=true
+	BULLETTRAIN_IS_SSH_CLIENT=${SSH_CONNECTION+true}
+	BULLETTRAIN_STATUS_EXIT_SHOW=true
+	BULLETTRAIN_EXEC_TIME_SHOW=true
+	BULLETTRAIN_CONTEXT_DEFAULT_USER=${SUDO_USER:-$USER}
+	BULLETTRAIN_CONTEXT_SHOW=$([[ -z ${SSH_CONNECTION} ]] && echo "false" || echo "true")
+
 zplug "plugins/common-aliases", from:oh-my-zsh
 zplug "plugins/git",   from:oh-my-zsh
 zplug "plugins/svn",   from:oh-my-zsh
@@ -13,8 +38,6 @@ zplug "plugins/npm",   from:oh-my-zsh
 zplug "plugins/rvm",   from:oh-my-zsh
 zplug "plugins/pyenv",   from:oh-my-zsh
 zplug "plugins/virtualenv",   from:oh-my-zsh
-
-# Additional plugins
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "chrissicool/zsh-256color"
 zplug "zsh-users/zsh-completions"

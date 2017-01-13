@@ -31,12 +31,6 @@ else
 	homeshick link -fq
 fi
 
-# Additional settings
-source ${RC_PATH}/rc
-
-# Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM=${RC_PATH}
-
 # Set a different zplug path
 ZPLUG_HOME=${HOME}/.config/zplug
 ZPLUG_PLUGINS=${RC_PATH}/plugins
@@ -63,5 +57,8 @@ else
 	zplug install
 	zplug load
 fi
+
+# Additional settings
+source ${RC_PATH}/rc
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
