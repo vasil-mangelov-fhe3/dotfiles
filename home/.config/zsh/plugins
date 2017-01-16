@@ -13,21 +13,18 @@ zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme
 		git
 		hg
 		go
-		nvm
 		dir
 		virtualenv
 	)
 	BULLETTRAIN_DIR_FG=black
 	BULLETTRAIN_DIR_EXTENDED=2
 	BULLETTRAIN_GIT_COLORIZE_DIRTY=true
-	BULLETTRAIN_IS_SSH_CLIENT=${SSH_CONNECTION+true}
-	BULLETTRAIN_STATUS_EXIT_SHOW=true
-	BULLETTRAIN_EXEC_TIME_SHOW=true
 	BULLETTRAIN_CONTEXT_DEFAULT_USER=${SUDO_USER:-$USER}
-	BULLETTRAIN_CONTEXT_SHOW=$([[ -z ${SSH_CONNECTION} ]] && echo "false" || echo "true")
+	BULLETTRAIN_IS_SSH_CLIENT=${SSH_CONNECTION+true}
 
 zplug "plugins/common-aliases", from:oh-my-zsh
 zplug "plugins/git",   from:oh-my-zsh
+zplug "plugins/git-extras",   from:oh-my-zsh
 zplug "plugins/svn",   from:oh-my-zsh
 zplug "plugins/extract",   from:oh-my-zsh
 zplug "plugins/colored-man-pages",   from:oh-my-zsh
@@ -38,10 +35,14 @@ zplug "plugins/npm",   from:oh-my-zsh
 zplug "plugins/rvm",   from:oh-my-zsh
 zplug "plugins/pyenv",   from:oh-my-zsh
 zplug "plugins/virtualenv",   from:oh-my-zsh
+zplug "plugins/systemadmin",   from:oh-my-zsh
+zplug "plugins/systemd",   from:oh-my-zsh
+zplug "plugins/z",   from:oh-my-zsh
+zplug "plugins/zsh_reload",   from:oh-my-zsh
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "chrissicool/zsh-256color"
 zplug "zsh-users/zsh-completions"
 zplug "hlissner/zsh-autopair"
-zplug "zsh-users/zsh-autosuggestions"
+zplug "seletskiy/zsh-autosuggestions"
 zplug "NemesisRE/115f9b842b55171de8444eeed46d058e", from:gist
 
