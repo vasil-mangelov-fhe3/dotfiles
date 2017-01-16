@@ -39,10 +39,12 @@ zplug "plugins/systemadmin",   from:oh-my-zsh
 zplug "plugins/systemd",   from:oh-my-zsh
 zplug "plugins/z",   from:oh-my-zsh
 zplug "plugins/zsh_reload",   from:oh-my-zsh
+zplug "b4b4r07/enhancd", use:init.sh
+zplug "RobSis/zsh-completion-generator"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "chrissicool/zsh-256color"
 zplug "zsh-users/zsh-completions"
 zplug "hlissner/zsh-autopair"
-zplug "seletskiy/zsh-autosuggestions"
+zplug "josefson/zsh-autosuggestions"
 zplug "NemesisRE/115f9b842b55171de8444eeed46d058e", from:gist
 
