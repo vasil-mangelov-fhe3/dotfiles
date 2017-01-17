@@ -12,7 +12,8 @@
 
 export PATH=${HOME}/bin:/usr/local/bin:${PATH}
 
-RC_PATH=${HOME}/.config/bash
+DOT_PATH=${HOME}/.homesick/repos/dotfiles
+RC_PATH=${DOT_PATH}/shell_bash
 
 # Load homeshick
 if [ ! -d ${HOME}/.homesick ]; then

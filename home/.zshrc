@@ -13,7 +13,8 @@
 
 export PATH=${HOME}/bin:/usr/local/bin:${PATH}
 
-RC_PATH=${HOME}/.config/zsh
+DOT_PATH=${HOME}/.homesick/repos/dotfiles
+RC_PATH=${DOT_PATH}/shell_zsh
 
 # Load homeshick
 if [ ! -d ${HOME}/.homesick ]; then
@@ -32,7 +33,7 @@ else
 fi
 
 # Set a different zplug path
-ZPLUG_HOME=${HOME}/.config/zplug
+ZPLUG_HOME=${RC_PATH}/zplug
 ZPLUG_PLUGINS=${RC_PATH}/plugins
 ZPLUG_LOADFILE=${RC_PATH}/plugins.local
 [[ ! -f ${ZPLUG_LOADFILE} ]] && touch ${ZPLUG_LOADFILE}
