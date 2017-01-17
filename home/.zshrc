@@ -13,6 +13,8 @@
 
 export PATH=${HOME}/bin:/usr/local/bin:${PATH}
 
+[[ -f ${HOME}/.proxy.local ]] && source ${HOME}/.proxy.local
+
 DOT_PATH=${HOME}/.homesick/repos/dotfiles
 RC_PATH=${DOT_PATH}/shell_zsh
 
