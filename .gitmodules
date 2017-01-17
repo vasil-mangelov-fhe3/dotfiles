@@ -2,12 +2,12 @@
 	path = home/.fonts/powerline-fonts
 	url = https://github.com/Lokaltog/powerline-fonts.git
 	branch = master
-[submodule "home/.config/tmux/plugins/tpm"]
-	path = home/.config/tmux/plugins/tpm
+[submodule "shell_common/tmux/plugins/tpm"]
+	path = shell_common/tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm.git
 	branch = master
-[submodule "home/.config/dircolors-solarized"]
-	path = home/.config/dircolors-solarized
+[submodule "shell_common/dircolors-solarized"]
+	path = shell_common/dircolors-solarized
 	url = https://github.com/NemesisRE/dircolors-solarized.git
 	branch = master
 [submodule "home/.fzf"]
