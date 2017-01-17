@@ -126,5 +126,3 @@ function git_remove_submodule() {
 		exit 1
 	fi
 }
-
-[[ -s ${HOME}/.fzf ]] && source ${HOME}/.config/bash/fzf_functions
