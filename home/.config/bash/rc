@@ -1,13 +1,3 @@
-# Some special Aliases
-alias reload="source ${HOME}/.bashrc"
-alias root="sudo env \"HOME=${HOME}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" bash"
-alias tmux="tmux -2"
-alias vimfiler="vim -c \"VimFilerDouble\""
-alias ll="ls -lFh --color"
-alias la="ls -AlFh --color | sort -hk5"
-alias las="ls -AlFh --color | sort -hk5"
-alias gpg_agent="/usr/bin/gpgconf --kill gpg-agent && /usr/bin/gpgconf --launch gpg-agent"
-
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 	source /etc/bash_completion
 fi

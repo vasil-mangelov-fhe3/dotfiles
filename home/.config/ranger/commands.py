@@ -22,14 +22,7 @@ class fzf_select(Command):
     """
     def execute(self):
         import subprocess
-        if self.quantifier:
-            # match only directories
-            command="find -L . \( -path '*/\.*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
-            -o -type d -print 2> /dev/null | sed 1d | cut -b3- | fzf +m"
-        else:
-            # match files and directories
-            command="find -L . \( -path '*/\.*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
-            -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m"
+        command="fzf +m"
         fzf = self.fm.execute_command(command, stdout=subprocess.PIPE)
         stdout, stderr = fzf.communicate()
         if fzf.returncode == 0:
@@ -39,11 +32,3 @@ class fzf_select(Command):
             else:
                 self.fm.select_file(fzf_file)
 
-class fzf_cd(Command):
-    def execute(self):
-        from subprocess import PIPE
-        command="find -L \( -path '*.wine-pipelight' -o -path '*.ivy2*' -o -path '*.texlive*' -o -path '*.git' -o -path '*.metadata' -o -path '*_notes' \) -prune -o -type d -print 2>/dev/null | fzf"
-        fzf = self.fm.execute_command(command, stdout=PIPE)
-        stdout, stderr = fzf.communicate()
-        directory = stdout.decode('utf-8').rstrip('\n')
-        self.fm.cd(directory)

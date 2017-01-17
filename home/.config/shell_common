@@ -9,6 +9,12 @@ export LC_ALL=en_US.UTF-8
 export EDITOR="vim"
 export GIT_EDITOR="vim"
 
+# Aliases
+alias r="ranger"
+alias root="sudo env \"HOME=${HOME}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" zsh"
+alias tmux="tmux -2"
+alias vimfiler="vim -c \"VimFilerDouble\""
+
 # Load overrides
 [[ -e ${RC_PATH}/aliases ]] && source ${RC_PATH}/aliases
 [[ -f ${RC_PATH}/aliases.local ]] && source ${RC_PATH}/aliases.local || touch ${RC_PATH}/aliases.local
