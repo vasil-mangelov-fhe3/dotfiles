@@ -1,6 +1,6 @@
 ################################################
 #
-#	For your local overrides there are several configs in ${HOME}/.config/bash/
+#	For your local overrides there are several configs in ${HOME}/.config/zsh/
 #	* aliases.local
 #	* functions.local
 #	* rc.local
