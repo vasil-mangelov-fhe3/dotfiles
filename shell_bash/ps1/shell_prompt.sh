@@ -1,6 +1,13 @@
 #
 # This shell prompt config file was created by promptline.vim
 #
+function __promptline_host {
+  local only_if_ssh="0"
+
+  if [ $only_if_ssh -eq 0 -o -n "${SSH_CLIENT}" ]; then
+    if [[ -n ${ZSH_VERSION-} ]]; then print %m; elif [[ -n ${FISH_VERSION-} ]]; then hostname -s; else printf "%s" \\h; fi
+  fi
+}
 
 function __promptline_last_exit_code {
 
@@ -15,20 +22,30 @@ function __promptline_ps1 {
   slice_prefix="${a_bg}${sep}${a_fg}${a_bg}${space}" slice_suffix="$space${a_sep_fg}" slice_joiner="${a_fg}${a_bg}${alt_sep}${space}" slice_empty_prefix="${a_fg}${a_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
   # section "a" slices
-  __promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %n; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$USER"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
-  __promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %m; elif [[ -n ${FISH_VERSION-} ]]; then hostname -s; else printf "%s" \\h; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+  __promptline_wrapper "\t" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+
+  # section "warn" header
+  slice_prefix="${warn_bg}${sep}${warn_fg}${warn_bg}${space}" slice_suffix="$space${warn_sep_fg}" slice_joiner="${warn_fg}${warn_bg}${alt_sep}${space}" slice_empty_prefix="${warn_fg}${warn_bg}${space}"
+  [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
+  # section "warn" slices
+  __promptline_wrapper "$(__promptline_last_exit_code)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 
   # section "b" header
   slice_prefix="${b_bg}${sep}${b_fg}${b_bg}${space}" slice_suffix="$space${b_sep_fg}" slice_joiner="${b_fg}${b_bg}${alt_sep}${space}" slice_empty_prefix="${b_fg}${b_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
   # section "b" slices
-  __promptline_wrapper "$(__promptline_vcs_branch)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
-  __promptline_wrapper "$(__promptline_git_status)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+  __promptline_wrapper "$([[ -n ${SSH_CONNECTION} ]] && if [[ -n ${ZSH_VERSION-} ]]; then print "%n@$(__promptline_host)"; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$USER@$(__promptline_host)"; else printf "%s" "\\u@$(__promptline_host)"; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 
   # section "c" header
   slice_prefix="${c_bg}${sep}${c_fg}${c_bg}${space}" slice_suffix="$space${c_sep_fg}" slice_joiner="${c_fg}${c_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
   # section "c" slices
+  __promptline_wrapper "$(__promptline_vcs_branch)$(__promptline_git_status)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+
+  # section "x" header
+  slice_prefix="${x_bg}${sep}${x_fg}${x_bg}${space}" slice_suffix="$space${x_sep_fg}" slice_joiner="${x_fg}${x_bg}${alt_sep}${space}" slice_empty_prefix="${x_fg}${x_bg}${space}"
+  [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
+  # section "x" slices
   __promptline_wrapper "$(__promptline_cwd)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 
   # section "y" header
@@ -36,12 +53,6 @@ function __promptline_ps1 {
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
   # section "y" slices
   __promptline_wrapper "${VIRTUAL_ENV##*/}" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
-
-  # section "warn" header
-  slice_prefix="${warn_bg}${sep}${warn_fg}${warn_bg}${space}" slice_suffix="$space${warn_sep_fg}" slice_joiner="${warn_fg}${warn_bg}${alt_sep}${space}" slice_empty_prefix="${warn_fg}${warn_bg}${space}"
-  [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
-  # section "warn" slices
-  __promptline_wrapper "$(__promptline_last_exit_code)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 
   # close sections
   printf "%s" "${reset_bg}${sep}$reset$space"
@@ -58,69 +69,13 @@ function __promptline_vcs_branch {
       return
     fi
   fi
-
-  # mercurial
-  if hash hg 2>/dev/null; then
-    if branch=$(hg branch 2>/dev/null); then
-      printf "%s" "${branch_symbol}${branch:-unknown}"
-      return
-    fi
-  fi
-
-  # svn
-  if hash svn 2>/dev/null; then
-    local svn_info
-    if svn_info=$(svn info 2>/dev/null); then
-      local svn_url=${svn_info#*URL:\ }
-      svn_url=${svn_url/$'\n'*/}
-
-      local svn_root=${svn_info#*Repository\ Root:\ }
-      svn_root=${svn_root/$'\n'*/}
-
-      if [[ -n $svn_url ]] && [[ -n $svn_root ]]; then
-        # https://github.com/tejr/dotfiles/blob/master/bash/bashrc.d/prompt.bash#L179
-        branch=${svn_url/$svn_root}
-        branch=${branch#/}
-        branch=${branch#branches/}
-        branch=${branch%%/*}
-
-        printf "%s" "${branch_symbol}${branch:-unknown}"
-        return
-      fi
-    fi
-  fi
-
   return 1
 }
 function __promptline_cwd {
-  local dir_limit="3"
-  local truncation="⋯"
-  local first_char
-  local part_count=0
-  local formatted_cwd=""
-  local dir_sep="  "
-  local tilde="~"
-
-  local cwd="${PWD/#$HOME/$tilde}"
-
   # get first char of the path, i.e. tilde or slash
-  [[ -n ${ZSH_VERSION-} ]] && first_char=$cwd[1,1] || first_char=${cwd::1}
+  [[ -n ${ZSH_VERSION-} ]] && local cwd="$(print -rD $PWD)" || local cwd="$(dirs)"
 
-  # remove leading tilde
-  cwd="${cwd#\~}"
-
-  while [[ "$cwd" == */* && "$cwd" != "/" ]]; do
-    # pop off last part of cwd
-    local part="${cwd##*/}"
-    cwd="${cwd%/*}"
-
-    formatted_cwd="$dir_sep$part$formatted_cwd"
-    part_count=$((part_count+1))
-
-    [[ $part_count -eq $dir_limit ]] && first_char="$truncation" && break
-  done
-
-  printf "%s" "$first_char$formatted_cwd"
+  printf "%s" "$cwd"
 }
 function __promptline_left_prompt {
   local slice_prefix slice_empty_prefix slice_joiner slice_suffix is_prompt_empty=1
@@ -129,8 +84,7 @@ function __promptline_left_prompt {
   slice_prefix="${a_bg}${sep}${a_fg}${a_bg}${space}" slice_suffix="$space${a_sep_fg}" slice_joiner="${a_fg}${a_bg}${alt_sep}${space}" slice_empty_prefix="${a_fg}${a_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
   # section "a" slices
-  __promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %n; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$USER"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
-  __promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %m; elif [[ -n ${FISH_VERSION-} ]]; then hostname -s; else printf "%s" \\h; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+  __promptline_wrapper "\t" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 
   # section "b" header
   slice_prefix="${b_bg}${sep}${b_fg}${b_bg}${space}" slice_suffix="$space${b_sep_fg}" slice_joiner="${b_fg}${b_bg}${alt_sep}${space}" slice_empty_prefix="${b_fg}${b_bg}${space}"
@@ -143,7 +97,9 @@ function __promptline_left_prompt {
   slice_prefix="${c_bg}${sep}${c_fg}${c_bg}${space}" slice_suffix="$space${c_sep_fg}" slice_joiner="${c_fg}${c_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
   # section "c" slices
-  __promptline_wrapper "$(__promptline_cwd)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+  __promptline_wrapper "$(if [[ -n ${ZSH_VERSION-} ]]; then print %n; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$USER"; else printf "%s" \\u; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+  __promptline_wrapper "@" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+  __promptline_wrapper "$(__promptline_host)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 
   # close sections
   printf "%s" "${reset_bg}${sep}$reset$space"
@@ -195,7 +151,7 @@ function __promptline_git_status {
     is_clean=1
   fi
 
-  local leading_whitespace=""
+  local leading_whitespace=" "
   [[ $ahead_count -gt 0 ]]         && { printf "%s" "$leading_whitespace$ahead_symbol$ahead_count"; leading_whitespace=" "; }
   [[ $behind_count -gt 0 ]]        && { printf "%s" "$leading_whitespace$behind_symbol$behind_count"; leading_whitespace=" "; }
   [[ $modified_count -gt 0 ]]      && { printf "%s" "$leading_whitespace$modified_symbol$modified_count"; leading_whitespace=" "; }
@@ -211,6 +167,11 @@ function __promptline_right_prompt {
   slice_prefix="${warn_sep_fg}${rsep}${warn_fg}${warn_bg}${space}" slice_suffix="$space${warn_sep_fg}" slice_joiner="${warn_fg}${warn_bg}${alt_rsep}${space}" slice_empty_prefix=""
   # section "warn" slices
   __promptline_wrapper "$(__promptline_last_exit_code)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; }
+
+  # section "x" header
+  slice_prefix="${x_sep_fg}${rsep}${x_fg}${x_bg}${space}" slice_suffix="$space${x_sep_fg}" slice_joiner="${x_fg}${x_bg}${alt_rsep}${space}" slice_empty_prefix=""
+  # section "x" slices
+  __promptline_wrapper "$(__promptline_cwd)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; }
 
   # section "y" header
   slice_prefix="${y_sep_fg}${rsep}${y_fg}${y_bg}${space}" slice_suffix="$space${y_sep_fg}" slice_joiner="${y_fg}${y_bg}${alt_rsep}${space}" slice_empty_prefix=""
@@ -239,18 +200,21 @@ function __promptline {
   local alt_rsep=""
   local reset="${wrap}0${end_wrap}"
   local reset_bg="${wrap}49${end_wrap}"
-  local a_fg="${wrap}38;5;220${end_wrap}"
-  local a_bg="${wrap}48;5;166${end_wrap}"
-  local a_sep_fg="${wrap}38;5;166${end_wrap}"
-  local b_fg="${wrap}38;5;231${end_wrap}"
-  local b_bg="${wrap}48;5;31${end_wrap}"
-  local b_sep_fg="${wrap}38;5;31${end_wrap}"
-  local c_fg="${wrap}38;5;250${end_wrap}"
-  local c_bg="${wrap}48;5;240${end_wrap}"
-  local c_sep_fg="${wrap}38;5;240${end_wrap}"
-  local warn_fg="${wrap}38;5;231${end_wrap}"
-  local warn_bg="${wrap}48;5;52${end_wrap}"
-  local warn_sep_fg="${wrap}38;5;52${end_wrap}"
+  local a_fg="${wrap}38;5;16${end_wrap}"
+  local a_bg="${wrap}48;5;7${end_wrap}"
+  local a_sep_fg="${wrap}38;5;7${end_wrap}"
+  local b_fg="${wrap}38;5;7${end_wrap}"
+  local b_bg="${wrap}48;5;16${end_wrap}"
+  local b_sep_fg="${wrap}38;5;16${end_wrap}"
+  local c_fg="${wrap}38;5;16${end_wrap}"
+  local c_bg="${wrap}48;5;7${end_wrap}"
+  local c_sep_fg="${wrap}38;5;7${end_wrap}"
+  local warn_fg="${wrap}38;5;7${end_wrap}"
+  local warn_bg="${wrap}48;5;160${end_wrap}"
+  local warn_sep_fg="${wrap}38;5;160${end_wrap}"
+  local x_fg="${wrap}38;5;16${end_wrap}"
+  local x_bg="${wrap}48;5;4${end_wrap}"
+  local x_sep_fg="${wrap}38;5;4${end_wrap}"
   local y_fg="${wrap}38;5;250${end_wrap}"
   local y_bg="${wrap}48;5;236${end_wrap}"
   local y_sep_fg="${wrap}38;5;236${end_wrap}"
