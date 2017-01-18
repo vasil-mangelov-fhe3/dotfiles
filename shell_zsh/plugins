@@ -22,7 +22,7 @@ zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme
 	BULLETTRAIN_DIR_EXTENDED=2
 	BULLETTRAIN_GIT_COLORIZE_DIRTY=true
 	BULLETTRAIN_CONTEXT_DEFAULT_USER=${SUDO_USER:-$USER}
-	BULLETTRAIN_IS_SSH_CLIENT=${SSH_CONNECTION+true}
+	BULLETTRAIN_IS_SSH_CLIENT=${SSH_AUTH_SOCK+true}
 
 zplug "plugins/common-aliases", from:oh-my-zsh
 zplug "plugins/git",   from:oh-my-zsh

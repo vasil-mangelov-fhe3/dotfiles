@@ -34,7 +34,7 @@ function __promptline_ps1 {
   slice_prefix="${b_bg}${sep}${b_fg}${b_bg}${space}" slice_suffix="$space${b_sep_fg}" slice_joiner="${b_fg}${b_bg}${alt_sep}${space}" slice_empty_prefix="${b_fg}${b_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
   # section "b" slices
-  __promptline_wrapper "$([[ -n ${SSH_CONNECTION} ]] && if [[ -n ${ZSH_VERSION-} ]]; then print "%n@$(__promptline_host)"; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$USER@$(__promptline_host)"; else printf "%s" "\\u@$(__promptline_host)"; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+  __promptline_wrapper "$([[ -n ${SSH_AUTH_SOCK} ]] && if [[ -n ${ZSH_VERSION-} ]]; then print "%n@$(__promptline_host)"; elif [[ -n ${FISH_VERSION-} ]]; then printf "%s" "$USER@$(__promptline_host)"; else printf "%s" "\\u@$(__promptline_host)"; fi )" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 
   # section "c" header
   slice_prefix="${c_bg}${sep}${c_fg}${c_bg}${space}" slice_suffix="$space${c_sep_fg}" slice_joiner="${c_fg}${c_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_bg}${space}"
