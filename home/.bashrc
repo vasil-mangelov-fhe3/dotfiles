@@ -29,8 +29,8 @@ if [ ! -d ${HOME}/.homesick ]; then
 else
 	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
 	source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
-	homeshick pull -q
-	homeshick link -q
+	homeshick --quiet --batch --force pull
+	homeshick --quiet --batch --force link
 fi
 
 # Additional settings

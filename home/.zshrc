@@ -30,8 +30,8 @@ if [ ! -d ${HOME}/.homesick ]; then
 else
 	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
 	fpath=(${HOME}/.homesick/repos/homeshick/completions ${fpath})
-	homeshick pull -q
-	homeshick link -fq
+	homeshick --quiet --batch --force pull
+	homeshick --quiet --batch --force link
 fi
 
 # Set a different zplug path
