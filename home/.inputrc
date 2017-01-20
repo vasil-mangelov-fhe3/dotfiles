@@ -10,8 +10,8 @@ set mark-symlinked-directories on
 
 # Use the text that has already been typed as the prefix for searching through
 # commands ALT-Up/ALT-Down
-"\e[1;3B": history-search-forward
-"\e[1;3A": history-search-backward
+"\e[B": history-search-forward
+"\e[A": history-search-backward
 
 # Do not autocomplete hidden files unless the pattern explicitly begins with a dot
 set match-hidden-files on
