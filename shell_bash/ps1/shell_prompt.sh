@@ -55,64 +55,70 @@ function __promptline_ps1 {
 	printf "%s" "${reset_bg}${sep}$reset$space"
 }
 function __promptline_vcs {
-	slice_prefix="${c_mod_bg}${sep}${c_fg}${c_mod_bg}${space}" slice_suffix="$space${c_mod_sep_fg}" slice_joiner="${c_fg}${c_mod_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_mod_bg}${space}"
+	slice_prefix="${c_bg}${sep}${c_fg}${c_bg}${space}" slice_suffix="$space${c_sep_fg}" slice_joiner="${c_fg}${c_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_bg}${space}"
 	local branch
 	local branch_symbol=" "
+	local added_symbol="${bold_green_fg}+"
+	local unmerged_symbol="${bold_red_fg}✗"
+	local modified_symbol="${bold_blue_fg}✹"
+	local clean_symbol="${bold_green_fg}✔"
+	local has_untracked_files_symbol="${bold_red_fg}✭"
+
+	local ahead_symbol="↑"
+	local behind_symbol="↓"
+
+	local unmerged_count=0 modified_count=0 has_untracked_files=0 added_count=0 is_clean=""
 
 	# git
 	if hash git 2>/dev/null; then
 		if branch=$( { git symbolic-ref --quiet HEAD || git rev-parse --short HEAD; } 2>/dev/null ); then
 			branch=${branch##*/}
+			if [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) == true ]]; then
+				set -- $(git rev-list --left-right --count @{upstream}...HEAD 2>/dev/null)
+				local behind_count=$1
+				local ahead_count=$2
+
+				# Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R), changed (T), Unmerged (U), Unknown (X), Broken (B)
+				while read line; do
+					case "$line" in
+						M*) modified_count=$(( $modified_count + 1 )) ;;
+						U*) unmerged_count=$(( $unmerged_count + 1 )) ;;
+					esac
+				done < <(git diff --name-status)
+
+				while read line; do
+					case "$line" in
+						*) added_count=$(( $added_count + 1 )) ;;
+					esac
+				done < <(git diff --name-status --cached)
+
+				if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+					has_untracked_files=1
+				fi
+
+				if [ $(( unmerged_count + modified_count + has_untracked_files + added_count )) -eq 0 ]; then
+					is_clean=1
+					slice_prefix="${c_bg}${sep}${c_fg}${c_bg}${space}" slice_suffix="$space${c_sep_fg}" slice_joiner="${c_fg}${c_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_bg}${space}"
+				else
+					slice_prefix="${c_mod_bg}${sep}${c_fg}${c_mod_bg}${space}" slice_suffix="$space${c_mod_sep_fg}" slice_joiner="${c_fg}${c_mod_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_mod_bg}${space}"
+				fi
+
+				local leading_whitespace=" "
+		 		printf "%s" "${slice_prefix}${branch_symbol}${branch:-unknown}"
+				[[ $ahead_count -gt 0 ]]         && { printf "%s" "$leading_whitespace$ahead_symbol"; leading_whitespace=" "; }
+				[[ $behind_count -gt 0 ]]        && { printf "%s" "$leading_whitespace$behind_symbol"; leading_whitespace=" "; }
+				[[ $modified_count -gt 0 ]]      && { printf "%s" "$leading_whitespace$modified_symbol"; leading_whitespace=" "; }
+				[[ $unmerged_count -gt 0 ]]      && { printf "%s" "$leading_whitespace$unmerged_symbol"; leading_whitespace=" "; }
+				[[ $added_count -gt 0 ]]         && { printf "%s" "$leading_whitespace$added_symbol"; leading_whitespace=" "; }
+				[[ $has_untracked_files -gt 0 ]] && { printf "%s" "$leading_whitespace$has_untracked_files_symbol"; leading_whitespace=" "; }
+				[[ $is_clean -gt 0 ]]            && { printf "%s" "$leading_whitespace$clean_symbol"; leading_whitespace=" "; }
+				printf "%s" "${slice_suffix}"
+				return
+			else
+		 		printf "%s" "${slice_prefix}${branch_symbol}${branch:-unknown}${slice_suffix}"
+				return
+			fi
 		fi
-		local added_symbol="${bold_green_fg}+"
-		local unmerged_symbol="${bold_red_fg}✗"
-		local modified_symbol="${bold_blue_fg}✹"
-		local clean_symbol="${bold_green_fg}✔"
-		local has_untracked_files_symbol="${bold_red_fg}✭"
-
-		local ahead_symbol="↑"
-		local behind_symbol="↓"
-
-		local unmerged_count=0 modified_count=0 has_untracked_files=0 added_count=0 is_clean=""
-
-		set -- $(git rev-list --left-right --count @{upstream}...HEAD 2>/dev/null)
-		local behind_count=$1
-		local ahead_count=$2
-
-		# Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R), changed (T), Unmerged (U), Unknown (X), Broken (B)
-		while read line; do
-			case "$line" in
-				M*) modified_count=$(( $modified_count + 1 )) ;;
-				U*) unmerged_count=$(( $unmerged_count + 1 )) ;;
-			esac
-		done < <(git diff --name-status)
-
-		while read line; do
-			case "$line" in
-				*) added_count=$(( $added_count + 1 )) ;;
-			esac
-		done < <(git diff --name-status --cached)
-
-		if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-			has_untracked_files=1
-		fi
-
-		if [ $(( unmerged_count + modified_count + has_untracked_files + added_count )) -eq 0 ]; then
-			is_clean=1
-			slice_prefix="${c_bg}${sep}${c_fg}${c_bg}${space}" slice_suffix="$space${c_sep_fg}" slice_joiner="${c_fg}${c_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_bg}${space}"
-		fi
-
-		local leading_whitespace=" "
- 		printf "%s" "${slice_prefix}${branch_symbol}${branch:-unknown}"
-		[[ $ahead_count -gt 0 ]]         && { printf "%s" "$leading_whitespace$ahead_symbol"; leading_whitespace=" "; }
-		[[ $behind_count -gt 0 ]]        && { printf "%s" "$leading_whitespace$behind_symbol"; leading_whitespace=" "; }
-		[[ $modified_count -gt 0 ]]      && { printf "%s" "$leading_whitespace$modified_symbol"; leading_whitespace=" "; }
-		[[ $unmerged_count -gt 0 ]]      && { printf "%s" "$leading_whitespace$unmerged_symbol"; leading_whitespace=" "; }
-		[[ $added_count -gt 0 ]]         && { printf "%s" "$leading_whitespace$added_symbol"; leading_whitespace=" "; }
-		[[ $has_untracked_files -gt 0 ]] && { printf "%s" "$leading_whitespace$has_untracked_files_symbol"; leading_whitespace=" "; }
-		[[ $is_clean -gt 0 ]]            && { printf "%s" "$leading_whitespace$clean_symbol"; leading_whitespace=" "; }
-		printf "%s" "${slice_suffix}"
-		return
 	fi
 	return 1
 }
