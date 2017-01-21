@@ -35,10 +35,9 @@ function __promptline_ps1 {
 	__promptline_wrapper "$(__promptline_host)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 
 	# section "c" header
-	slice_prefix="${c_mod_bg}${sep}${c_fg}${c_mod_bg}${space}" slice_suffix="$space${c_mod_sep_fg}" slice_joiner="${c_fg}${c_mod_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_mod_bg}${space}"
 	[ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
 	# section "c" slices
-	__promptline_wrapper "$(__promptline_vcs)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+	__promptline_vcs && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 
 	# section "x" header
 	slice_prefix="${x_bg}${sep}${x_fg}${x_bg}${space}" slice_suffix="$space${x_sep_fg}" slice_joiner="${x_fg}${x_bg}${alt_sep}${space}" slice_empty_prefix="${x_fg}${x_bg}${space}"
@@ -56,6 +55,7 @@ function __promptline_ps1 {
 	printf "%s" "${reset_bg}${sep}$reset$space"
 }
 function __promptline_vcs {
+	slice_prefix="${c_mod_bg}${sep}${c_fg}${c_mod_bg}${space}" slice_suffix="$space${c_mod_sep_fg}" slice_joiner="${c_fg}${c_mod_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_mod_bg}${space}"
 	local branch
 	local branch_symbol=" "
 
@@ -63,13 +63,12 @@ function __promptline_vcs {
 	if hash git 2>/dev/null; then
 		if branch=$( { git symbolic-ref --quiet HEAD || git rev-parse --short HEAD; } 2>/dev/null ); then
 			branch=${branch##*/}
-			printf "%s" "${branch_symbol}${branch:-unknown}"
 		fi
-		local added_symbol="●"
-		local unmerged_symbol="${bold_red_sign}✗"
-		local modified_symbol="+"
-		local clean_symbol="${bold_green_sign}✔"
-		local has_untracked_files_symbol="…"
+		local added_symbol="${bold_green_fg}+"
+		local unmerged_symbol="${bold_red_fg}✗"
+		local modified_symbol="${bold_blue_fg}✹"
+		local clean_symbol="${bold_green_fg}✔"
+		local has_untracked_files_symbol="${bold_red_fg}✭"
 
 		local ahead_symbol="↑"
 		local behind_symbol="↓"
@@ -104,13 +103,15 @@ function __promptline_vcs {
 		fi
 
 		local leading_whitespace=" "
-		[[ $ahead_count -gt 0 ]]         && { printf "%s" "$leading_whitespace$ahead_symbol$ahead_count"; leading_whitespace=" "; }
-		[[ $behind_count -gt 0 ]]        && { printf "%s" "$leading_whitespace$behind_symbol$behind_count"; leading_whitespace=" "; }
-		[[ $modified_count -gt 0 ]]      && { printf "%s" "$leading_whitespace$modified_symbol$modified_count"; leading_whitespace=" "; }
-		[[ $unmerged_count -gt 0 ]]      && { printf "%s" "$leading_whitespace$unmerged_symbol$unmerged_count"; leading_whitespace=" "; }
-		[[ $added_count -gt 0 ]]         && { printf "%s" "$leading_whitespace$added_symbol$added_count"; leading_whitespace=" "; }
+ 		printf "%s" "${slice_prefix}${branch_symbol}${branch:-unknown}"
+		[[ $ahead_count -gt 0 ]]         && { printf "%s" "$leading_whitespace$ahead_symbol"; leading_whitespace=" "; }
+		[[ $behind_count -gt 0 ]]        && { printf "%s" "$leading_whitespace$behind_symbol"; leading_whitespace=" "; }
+		[[ $modified_count -gt 0 ]]      && { printf "%s" "$leading_whitespace$modified_symbol"; leading_whitespace=" "; }
+		[[ $unmerged_count -gt 0 ]]      && { printf "%s" "$leading_whitespace$unmerged_symbol"; leading_whitespace=" "; }
+		[[ $added_count -gt 0 ]]         && { printf "%s" "$leading_whitespace$added_symbol"; leading_whitespace=" "; }
 		[[ $has_untracked_files -gt 0 ]] && { printf "%s" "$leading_whitespace$has_untracked_files_symbol"; leading_whitespace=" "; }
 		[[ $is_clean -gt 0 ]]            && { printf "%s" "$leading_whitespace$clean_symbol"; leading_whitespace=" "; }
+		printf "%s" "${slice_suffix}"
 		return
 	fi
 	return 1
@@ -142,28 +143,29 @@ function __promptline {
 	local alt_rsep=""
 	local reset="${wrap}0${end_wrap}"
 	local reset_bg="${wrap}49${end_wrap}"
-	local a_fg="${wrap}38;5;16${end_wrap}"
+	local a_fg="${wrap}0;38;5;16${end_wrap}"
 	local a_bg="${wrap}48;5;7${end_wrap}"
-	local a_sep_fg="${wrap}38;5;7${end_wrap}"
-	local b_fg="${wrap}38;5;7${end_wrap}"
+	local a_sep_fg="${wrap}0;38;5;7${end_wrap}"
+	local b_fg="${wrap}0;38;5;7${end_wrap}"
 	local b_bg="${wrap}48;5;16${end_wrap}"
-	local b_sep_fg="${wrap}38;5;16${end_wrap}"
-	local c_fg="${wrap}38;5;16${end_wrap}"
+	local b_sep_fg="${wrap}0;38;5;16${end_wrap}"
+	local c_fg="${wrap}0;38;5;16${end_wrap}"
 	local c_bg="${wrap}48;5;7${end_wrap}"
 	local c_mod_bg="${wrap}48;5;3${end_wrap}"
-	local c_sep_fg="${wrap}38;5;7${end_wrap}"
-	local c_mod_sep_fg="${wrap}38;5;3${end_wrap}"
-	local warn_fg="${wrap}38;5;7${end_wrap}"
+	local c_sep_fg="${wrap}0;38;5;7${end_wrap}"
+	local c_mod_sep_fg="${wrap}0;38;5;3${end_wrap}"
+	local warn_fg="${wrap}0;38;5;7${end_wrap}"
 	local warn_bg="${wrap}48;5;160${end_wrap}"
-	local warn_sep_fg="${wrap}38;5;160${end_wrap}"
-	local x_fg="${wrap}38;5;16${end_wrap}"
+	local warn_sep_fg="${wrap}0;38;5;160${end_wrap}"
+	local x_fg="${wrap}0;38;5;16${end_wrap}"
 	local x_bg="${wrap}48;5;4${end_wrap}"
-	local x_sep_fg="${wrap}38;5;4${end_wrap}"
-	local y_fg="${wrap}38;5;250${end_wrap}"
+	local x_sep_fg="${wrap}0;38;5;4${end_wrap}"
+	local y_fg="${wrap}0;38;5;250${end_wrap}"
 	local y_bg="${wrap}48;5;236${end_wrap}"
-	local y_sep_fg="${wrap}38;5;236${end_wrap}"
+	local y_sep_fg="${wrap}0;38;5;236${end_wrap}"
 	local bold_red_fg="${wrap}1;38;5;9${end_wrap}"
 	local bold_green_fg="${wrap}1;38;5;10${end_wrap}"
+	local bold_blue_fg="${wrap}1;38;5;4${end_wrap}"
 
 	if [[ $EUID -eq 0 ]]; then
 		local shell_sign="${bold_red_fg}\n# ${reset}"
