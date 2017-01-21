@@ -58,11 +58,11 @@ function __promptline_vcs {
 	slice_prefix="${c_bg}${sep}${c_fg}${c_bg}${space}" slice_suffix="$space${c_sep_fg}" slice_joiner="${c_fg}${c_bg}${alt_sep}${space}" slice_empty_prefix="${c_fg}${c_bg}${space}"
 	local branch
 	local branch_symbol=" "
-	local added_symbol="${bold_green_fg}+"
-	local unmerged_symbol="${bold_red_fg}✗"
-	local modified_symbol="${bold_blue_fg}✹"
-	local clean_symbol="${bold_green_fg}✔"
-	local has_untracked_files_symbol="${bold_red_fg}✭"
+	local added_symbol="${green_fg}${c_mod_bg}+"
+	local unmerged_symbol="${red_fg}${c_mod_bg}✗"
+	local modified_symbol="${blue_fg}${c_mod_bg}✹"
+	local clean_symbol="${green_fg}${c_bg}✔"
+	local has_untracked_files_symbol="${red_fg}${c_mod_bg}✭"
 
 	local ahead_symbol="↑"
 	local behind_symbol="↓"
@@ -169,8 +169,11 @@ function __promptline {
 	local y_fg="${wrap}0;38;5;250${end_wrap}"
 	local y_bg="${wrap}48;5;236${end_wrap}"
 	local y_sep_fg="${wrap}0;38;5;236${end_wrap}"
+	local red_fg="${wrap}0;38;5;9${end_wrap}"
 	local bold_red_fg="${wrap}1;38;5;9${end_wrap}"
+	local green_fg="${wrap}0;38;5;10${end_wrap}"
 	local bold_green_fg="${wrap}1;38;5;10${end_wrap}"
+	local blue_fg="${wrap}0;38;5;4${end_wrap}"
 	local bold_blue_fg="${wrap}1;38;5;4${end_wrap}"
 
 	if [[ $EUID -eq 0 ]]; then
