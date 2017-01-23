@@ -20,7 +20,7 @@ RC_PATH=${DOT_PATH}/shell_zsh
 
 # Load homeshick
 if [ ! -d ${HOME}/.homesick ]; then
-	git clone git://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
+	git clone https://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
 	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
 	fpath=(${HOME}/.homesick/repos/homeshick/completions ${fpath})
 	homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git

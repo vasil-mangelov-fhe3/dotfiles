@@ -19,7 +19,7 @@ RC_PATH=${DOT_PATH}/shell_bash
 
 # Load homeshick
 if [ ! -d ${HOME}/.homesick ]; then
-	git clone git://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
+	git clone https://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
 	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
 	source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
 	homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git
