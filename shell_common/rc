@@ -1,6 +1,6 @@
 export TERM=xterm-256color
 
-if [ -z ${SSH_CONNECTION} -a "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+if [[ -z ${SSH_CONNECTION} && "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]]; then
 	export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
 	gpg-connect-agent /bye
 fi
