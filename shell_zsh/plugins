@@ -43,9 +43,8 @@ zplug "plugins/systemd",   from:oh-my-zsh
 zplug "plugins/z",   from:oh-my-zsh
 zplug "plugins/zsh_reload",   from:oh-my-zsh
 zplug "b4b4r07/enhancd", use:init.sh
-	ENHANCD_DISABLE_HOME=0
-	ENHANCD_DISABLE_DOT=0
-	ENHANCD_DOT_ARG=.
+	ENHANCD_DISABLE_HOME=1
+	ENHANCD_DISABLE_DOT=1
 
 zplug "RobSis/zsh-completion-generator"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
