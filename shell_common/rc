@@ -16,7 +16,8 @@ export GIT_EDITOR="vim"
 
 # Aliases
 alias r="ranger"
-alias root="sudo env \"HOME=${HOME}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" \"SSH_CLIENT=${SSH_CLIENT}\" ${SHELL}"
+#alias root="sudo env \"HOME=${HOME}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" \"SSH_CLIENT=${SSH_CLIENT}\" ${SHELL}"
+alias root="sudo -E \"HOME=$HOME\" su -m"
 alias tmux="tmux -2"
 alias vimfiler="vim -c \"VimFilerDouble\""
 
