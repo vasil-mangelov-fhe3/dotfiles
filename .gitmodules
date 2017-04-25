@@ -1,7 +1,3 @@
-[submodule "home/.fonts/powerline-fonts"]
-	path = home/.fonts/powerline-fonts
-	url = https://github.com/Lokaltog/powerline-fonts.git
-	branch = master
 [submodule "shell_common/tmux/plugins/tpm"]
 	path = shell_common/tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm.git
