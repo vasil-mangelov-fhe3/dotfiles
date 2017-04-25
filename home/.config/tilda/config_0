@@ -1,6 +1,6 @@
 tilda_config_version="1.3.1"
 # command=""
-font="DejaVu Sans Mono for Powerline 10"
+font="DejaVuSansMono Nerd Font Book 10"
 key="Pause"
 addtab_key="<Shift><Control>t"
 fullscreen_key="<Alt>F11"
