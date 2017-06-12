@@ -1,3 +1,5 @@
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+
 zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 	ZSH_CUSTOM=${RC_PATH}
 	HYPHEN_INSENSITIVE="true"
