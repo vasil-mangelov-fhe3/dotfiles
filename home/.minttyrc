@@ -1,8 +1,8 @@
 Locale=C
 Charset=UTF-8
 Term=xterm-256color
-Font=DejaVuSansMono Nerd Font Book
-FontHeight=11
+Font=DejaVuSansMono Nerd Font
+FontHeight=10
 FontSmoothing=full
 
 BoldAsFont=yes
