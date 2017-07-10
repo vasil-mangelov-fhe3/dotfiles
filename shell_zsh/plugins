@@ -35,7 +35,8 @@ zplug "plugins/extract",   from:oh-my-zsh
 zplug "plugins/colored-man-pages",   from:oh-my-zsh
 zplug "plugins/colorize",   from:oh-my-zsh
 zplug "plugins/cp",   from:oh-my-zsh
-zplug "plugins/gpg-agent",   from:oh-my-zsh
+zplug "plugins/gpg-agent",   from:oh-my-zsh, if:"[[ ${OSTYPE} != cygwin ]]"
+zplug "plugins/ssh-agent",   from:oh-my-zsh, if:"[[ ${OSTYPE} == cygwin ]]"
 zplug "plugins/npm",   from:oh-my-zsh
 zplug "plugins/rvm",   from:oh-my-zsh
 zplug "plugins/pyenv",   from:oh-my-zsh
@@ -44,9 +45,13 @@ zplug "plugins/systemadmin",   from:oh-my-zsh
 zplug "plugins/systemd",   from:oh-my-zsh
 zplug "plugins/z",   from:oh-my-zsh
 zplug "plugins/zsh_reload",   from:oh-my-zsh
+
 zplug "b4b4r07/enhancd", use:init.sh
 	ENHANCD_DISABLE_HOME=1
 	ENHANCD_DISABLE_DOT=1
+
+zplug "supercrabtree/k"
+	alias ka="k -hA"
 
 zplug "RobSis/zsh-completion-generator"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
