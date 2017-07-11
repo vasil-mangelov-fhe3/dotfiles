@@ -1,5 +1,6 @@
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
+# OH-MY-ZSH
 zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 	ZSH_CUSTOM=${RC_PATH}
 	HYPHEN_INSENSITIVE="true"
@@ -8,25 +9,26 @@ zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 	HIST_STAMPS="dd.mm.yyyy"
 	bindkey 'OA' history-substring-search-up
 	bindkey 'OB' history-substring-search-down
-zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme
-	BULLETTRAIN_PROMPT_ORDER=(
-		time
-		status
-		cmd_exec_time
-		context
-		git
-		hg
-		go
-		dir
-		virtualenv
-	)
-	BULLETTRAIN_DIR_FG=black
-	BULLETTRAIN_DIR_EXTENDED=2
-	BULLETTRAIN_GIT_COLORIZE_DIRTY=true
-	BULLETTRAIN_GIT_UNTRACKED=" %F{red}✭%F{black}"
-	BULLETTRAIN_CONTEXT_DEFAULT_USER=${SUDO_USER:-$USER}
-	BULLETTRAIN_IS_SSH_CLIENT=${SSH_CLIENT+true}
-
+zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme, \
+	hook-load:"
+		BULLETTRAIN_PROMPT_ORDER=(
+			time
+			status
+			cmd_exec_time
+			context
+			git
+			hg
+			go
+			dir
+			virtualenv
+		)
+		BULLETTRAIN_DIR_FG=black
+		BULLETTRAIN_DIR_EXTENDED=2
+		BULLETTRAIN_GIT_COLORIZE_DIRTY=true
+		BULLETTRAIN_GIT_UNTRACKED=\" %F{red}✭%F{black}\"
+		BULLETTRAIN_CONTEXT_DEFAULT_USER=${SUDO_USER:-$USER}
+		BULLETTRAIN_IS_SSH_CLIENT=${SSH_CLIENT+true}
+	"
 zplug "plugins/common-aliases", from:oh-my-zsh
 zplug "plugins/git",   from:oh-my-zsh
 zplug "plugins/git-extras",   from:oh-my-zsh
@@ -45,18 +47,25 @@ zplug "plugins/systemd",   from:oh-my-zsh
 zplug "plugins/z",   from:oh-my-zsh
 zplug "plugins/zsh_reload",   from:oh-my-zsh
 
-zplug "b4b4r07/enhancd", use:init.sh
-	ENHANCD_DISABLE_HOME=1
-	ENHANCD_DISABLE_DOT=1
+# PREZTO
+zplug "modules/utility", from:prezto
 
-zplug "supercrabtree/k"
-	alias ka="k -hA"
-
+# Others
+zplug "b4b4r07/enhancd", use:init.sh, \
+	hook-load:"
+		ENHANCD_DISABLE_HOME=1
+		ENHANCD_DISABLE_DOT=1
+	"
+zplug "supercrabtree/k", \
+	hook-load:"
+		alias ka='k -hA'
+	"
 zplug "RobSis/zsh-completion-generator"
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zdharma/fast-syntax-highlighting", defer:2
 zplug "chrissicool/zsh-256color"
 zplug "zsh-users/zsh-completions"
 zplug "hlissner/zsh-autopair"
 zplug "josefson/zsh-autosuggestions"
+zplug "arzzen/calc.plugin.zsh"
 zplug "NemesisRE/115f9b842b55171de8444eeed46d058e", from:gist
 
