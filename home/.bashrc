@@ -26,14 +26,14 @@ if [ ! -d ${HOME}/.homesick ]; then
 	homeshick --quiet --batch clone https://github.com/NemesisRE/vimfiles.git
 	homeshick --quiet --batch --force link
 	fc-cache -fv
-else
-	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-	source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
-	homeshick --quiet --batch --force pull
-	homeshick --quiet --batch --force link
 fi
 
 # Additional settings
 source "${RC_PATH}/rc"
+
+source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
+source "${HOME}/.homesick/repos/homeshick/completions/homeshick-completion.bash"
+homeshick --quiet --batch --force pull
+homeshick --quiet --batch --force link
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
