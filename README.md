@@ -1,6 +1,8 @@
 # NRE.Com.Net Dotfiles
 
 
+# NEEDS TO BE UPDATED!
+
 ## Description
 This is our compilation of dotfiles, they are build to be managed by [Anders Ingemann's homeshick](https://github.com/andsens/homeshick)
 
