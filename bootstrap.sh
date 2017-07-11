@@ -3,6 +3,8 @@
 # curl -sL https://raw.githubusercontent.com/NemesisRE/dotfiles/master/bootstrap.sh | /bin/bash
 # When forking, you can get the URL from the raw (<>) button.
 
+echo "needs to be fixed"
+exit 0
 SCRIPT_NAME=$(basename ${0})
 SCRIPT_PATH=$(cd $(dirname ${0}) && pwd)
 TMP_PATH=/tmp/nrecomnet
