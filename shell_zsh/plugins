@@ -30,7 +30,6 @@ zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme, \
 		BULLETTRAIN_IS_SSH_CLIENT=${SSH_CLIENT+true}
 	"
 zplug "plugins/common-aliases", from:oh-my-zsh
-zplug "plugins/git",   from:oh-my-zsh
 zplug "plugins/git-extras",   from:oh-my-zsh
 zplug "plugins/svn",   from:oh-my-zsh
 zplug "plugins/extract",   from:oh-my-zsh
@@ -43,7 +42,6 @@ zplug "plugins/rvm",   from:oh-my-zsh
 zplug "plugins/pyenv",   from:oh-my-zsh
 zplug "plugins/virtualenv",   from:oh-my-zsh
 zplug "plugins/systemadmin",   from:oh-my-zsh
-zplug "plugins/systemd",   from:oh-my-zsh
 zplug "plugins/z",   from:oh-my-zsh
 zplug "plugins/zsh_reload",   from:oh-my-zsh
 
@@ -64,6 +62,6 @@ zplug "RobSis/zsh-completion-generator"
 zplug "zdharma/fast-syntax-highlighting", defer:2
 zplug "chrissicool/zsh-256color"
 zplug "zsh-users/zsh-completions"
-zplug "hlissner/zsh-autopair"
 zplug "zsh-users/zsh-autosuggestions"
+zplug "hlissner/zsh-autopair"
 zplug "arzzen/calc.plugin.zsh"
