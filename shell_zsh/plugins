@@ -67,5 +67,3 @@ zplug "zsh-users/zsh-completions"
 zplug "hlissner/zsh-autopair"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "arzzen/calc.plugin.zsh"
-zplug "NemesisRE/115f9b842b55171de8444eeed46d058e", from:gist
-
