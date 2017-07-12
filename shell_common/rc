@@ -24,7 +24,7 @@ fi
 
 # Aliases
 alias r="ranger"
-alias ag="ag --hidden"
+alias ag="ag --hidden --nogroup"
 alias root="sudo -E \"HOME=$HOME\" su -m"
 alias tmux="tmux -2"
 
