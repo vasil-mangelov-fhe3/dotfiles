@@ -10,16 +10,23 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-#set editor to vim
-export EDITOR="vim"
-export GIT_EDITOR="vim"
+#set editor to vim/nvim
+if command -v nvim >/dev/null 2>&1; then
+	export EDITOR="nvim"
+	export GIT_EDITOR="nvim"
+	alias vim="nvim"
+	alias vimfiler="nvim -c \"VimFilerDouble\""
+else
+	export EDITOR="vim"
+	export GIT_EDITOR="vim"
+	alias vimfiler="vim -c \"VimFilerDouble\""
+fi
 
 # Aliases
 alias r="ranger"
 #alias root="sudo env \"HOME=${HOME}\" \"SSH_AUTH_SOCK=${SSH_AUTH_SOCK}\" \"SSH_CLIENT=${SSH_CLIENT}\" ${SHELL}"
 alias root="sudo -E \"HOME=$HOME\" su -m"
 alias tmux="tmux -2"
-alias vimfiler="vim -c \"VimFilerDouble\""
 
 # Load overrides
 [[ -e ${RC_PATH}/aliases ]] && source ${RC_PATH}/aliases

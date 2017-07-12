@@ -51,7 +51,7 @@ zplug "plugins/zsh_reload",   from:oh-my-zsh
 zplug "modules/utility", from:prezto
 
 # Others
-zplug "b4b4r07/enhancd", use:init.sh, \
+zplug "b4b4r07/enhancd", use:init.sh, defer:1, \
 	hook-load:"
 		ENHANCD_DISABLE_HOME=1
 		ENHANCD_DISABLE_DOT=1
@@ -65,7 +65,7 @@ zplug "zdharma/fast-syntax-highlighting", defer:2
 zplug "chrissicool/zsh-256color"
 zplug "zsh-users/zsh-completions"
 zplug "hlissner/zsh-autopair"
-zplug "josefson/zsh-autosuggestions"
+zplug "zsh-users/zsh-autosuggestions"
 zplug "arzzen/calc.plugin.zsh"
 zplug "NemesisRE/115f9b842b55171de8444eeed46d058e", from:gist
 
