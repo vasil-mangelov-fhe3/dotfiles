@@ -8,6 +8,9 @@
 ################################################
 
 # If not running interactively, don't do anything
+if command -v zsh >/dev/null 2>&1; then
+	zsh -l
+fi
 [ -z "${PS1}" ] && return
 
 export PATH=${HOME}/bin:/usr/local/bin:${PATH}
