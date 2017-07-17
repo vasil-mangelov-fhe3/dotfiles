@@ -47,6 +47,9 @@ fi
 
 [[ -f ${RC_PATH}/rc.local ]] && source ${RC_PATH}/rc.local || touch ${RC_PATH}/rc.local
 
+find ${HOME} -type l -xtype l
+find ${HOME} -type d -empty -delete
+
 if [[ -z "${TMUX}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
 	if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
 		unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
