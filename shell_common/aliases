@@ -1,0 +1,19 @@
+#set editor to vim/nvim
+if command -v nvim >/dev/null 2>&1; then
+	export EDITOR="TERM=screen-256color nvim"
+	export GIT_EDITOR="TERM=screen-256color nvim"
+	alias vim="TERM=screen-256color nvim"
+	alias nvim="TERM=screen-256color nvim"
+	alias vimfiler="TERM=screen-256color nvim -c \"VimFilerDouble\""
+else
+	export EDITOR="vim"
+	export GIT_EDITOR="vim"
+	alias vimfiler="vim -c \"VimFilerDouble\""
+fi
+
+# Aliases
+alias r="ranger"
+alias ls="ls --color=auto"
+alias ag="ag --hidden --nogroup"
+alias root="sudo -E \"HOME=$HOME\" su -m"
+alias tmux="tmux -2"

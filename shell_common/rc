@@ -10,25 +10,8 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-#set editor to vim/nvim
-if command -v nvim >/dev/null 2>&1; then
-	export EDITOR="nvim"
-	export GIT_EDITOR="nvim"
-	alias vim="nvim"
-	alias vimfiler="nvim -c \"VimFilerDouble\""
-else
-	export EDITOR="vim"
-	export GIT_EDITOR="vim"
-	alias vimfiler="vim -c \"VimFilerDouble\""
-fi
-
-# Aliases
-alias r="ranger"
-alias ag="ag --hidden --nogroup"
-alias root="sudo -E \"HOME=$HOME\" su -m"
-alias tmux="tmux -2"
-
 # Load overrides
+[[ -e ${DOT_PATH}/shell_common/aliases ]] && source ${DOT_PATH}/shell_common/aliases
 [[ -e ${RC_PATH}/aliases ]] && source ${RC_PATH}/aliases
 [[ -f ${RC_PATH}/aliases.local ]] && source ${RC_PATH}/aliases.local || touch ${RC_PATH}/aliases.local
 [[ -e ${RC_PATH}/functions ]] && source ${RC_PATH}/functions
