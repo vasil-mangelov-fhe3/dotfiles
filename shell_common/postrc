@@ -14,7 +14,7 @@ if [[ -z "${TMUX}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
 fi
 
 if [[ -z "${TMUX}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
-	if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
+	if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/auth_sock" ]; then
 		unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
 		ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
 		export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
