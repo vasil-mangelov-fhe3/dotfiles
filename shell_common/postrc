@@ -4,3 +4,16 @@ homeshick --quiet --batch --force pull
 homeshick --quiet --batch --force link
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+if [[ -z "${TMUX}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
+	if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
+		unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
+		ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
+		export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
+	fi
+fi
+
+# Start tmux on connection
+if [ "${PS1}" != "" -a "${SSH_TTY:-x}" != x -a "$(which tmux 2>/dev/null)" != "" -a "${TMUX}" = "" ]; then
+	tmux -f ~/.tmux.conf -L $(hostname -s) -A $(hostname -s)
+fi
