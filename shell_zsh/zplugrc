@@ -1,0 +1,27 @@
+# Set a different zplug path
+ZPLUG_HOME=${RC_PATH}/zplug
+ZPLUG_PLUGINS=${RC_PATH}/plugins
+ZPLUG_LOADFILE=${RC_PATH}/plugins.local
+[[ ! -f ${ZPLUG_LOADFILE} ]] && touch ${ZPLUG_LOADFILE}
+PLUGINSRC=${RC_PATH}/pluginsrc
+
+if [[ -d ${ZPLUG_HOME} ]]; then
+	source ${ZPLUG_HOME}/init.zsh
+	source ${ZPLUG_PLUGINS}
+	source ${ZPLUG_LOADFILE}
+
+	if ! zplug check; then
+		zplug install
+	fi
+
+	# source plugins and add commands to the PATH
+	zplug load
+else
+	git clone https://github.com/zplug/zplug ${ZPLUG_HOME}
+	source ${ZPLUG_HOME}/init.zsh
+	source ${ZPLUG_PLUGINS}
+	source ${ZPLUG_LOADFILE}
+	zplug install
+	zplug load
+fi
+
