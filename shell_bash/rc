@@ -44,5 +44,3 @@ shopt -s checkwinsize
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 trap _unsudo exit
-
-source ${DOT_PATH}/shell_common/rc

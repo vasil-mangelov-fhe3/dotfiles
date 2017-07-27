@@ -12,7 +12,8 @@ DOT_PATH=${HOME}/.homesick/repos/dotfiles
 RC_PATH=${DOT_PATH}/shell_zsh
 source ${DOT_PATH}/shell_common/prerc
 source ${RC_PATH}/zplugrc
-source ${RC_PATH}/commonrc
+source ${RC_PATH}/rc
+source ${DOT_PATH}/shell_common/commonrc
 source ${DOT_PATH}/shell_common/postrc
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

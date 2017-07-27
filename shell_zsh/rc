@@ -2,5 +2,3 @@
 zmodload zsh/mathfunc
 
 zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(|.|..) ]] && reply=(..)'
-
-source ${DOT_PATH}/shell_common/rc
