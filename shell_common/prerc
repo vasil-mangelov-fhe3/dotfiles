@@ -1,0 +1,17 @@
+# If not running interactively, don't do anything
+[ -z "${PS1}" ] && return
+
+export PATH=${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:${PATH}
+
+[[ -f ${HOME}/.proxy.local ]] && source ${HOME}/.proxy.local
+
+# Load homeshick
+if [ ! -d ${HOME}/.homesick ]; then
+	git clone https://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
+	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
+	fpath=(${HOME}/.homesick/repos/homeshick/completions ${fpath})
+	homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git
+	homeshick --quiet --batch clone https://github.com/NemesisRE/vimfiles.git
+	homeshick --quiet --batch --force link
+	fc-cache -fv
+fi
