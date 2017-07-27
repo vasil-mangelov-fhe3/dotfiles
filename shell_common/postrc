@@ -15,5 +15,5 @@ fi
 
 # Start tmux on connection
 if [ "${PS1}" != "" -a "${SSH_TTY:-x}" != x -a "$(which tmux 2>/dev/null)" != "" -a "${TMUX}" = "" ]; then
-	tmux -f ~/.tmux.conf -L $(hostname -s) -A $(hostname -s)
+	tmux -f ~/.tmux.conf -L $(hostname -s) new -A $(hostname -s)
 fi
