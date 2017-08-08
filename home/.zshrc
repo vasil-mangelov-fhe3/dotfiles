@@ -15,3 +15,5 @@ source ${RC_PATH}/zplugrc
 source ${RC_PATH}/rc
 source ${DOT_PATH}/shell_common/commonrc
 source ${DOT_PATH}/shell_common/postrc
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
