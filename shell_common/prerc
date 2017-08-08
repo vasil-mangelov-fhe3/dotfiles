@@ -1,7 +1,8 @@
+export PATH=${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:${PATH}
+export GOPATH=${HOME}/.local
+
 # If not running interactively, don't do anything
 [ -z "${PS1}" ] && return
-
-export PATH=${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:${PATH}
 
 [[ -f ${HOME}/.proxy.local ]] && source ${HOME}/.proxy.local
 
