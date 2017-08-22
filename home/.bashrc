@@ -7,8 +7,14 @@
 #
 ################################################
 
-DOT_PATH=${HOME}/.homesick/repos/dotfiles
-RC_PATH=${DOT_PATH}/shell_bash
+export DOT_PATH=${HOME}/.homesick/repos/dotfiles
+export RC_PATH=${DOT_PATH}/shell_bash
+export PATH=${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:${PATH}
+export GOPATH=${HOME}/.local
+
+# If not running interactively, don't do anything
+[ -z "${PS1}" ] && return
+
 source ${DOT_PATH}/shell_common/prerc
 source ${RC_PATH}/rc
 source ${DOT_PATH}/shell_common/commonrc
