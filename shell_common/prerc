@@ -10,3 +10,10 @@ if [ ! -d ${HOME}/.homesick ]; then
 	homeshick --quiet --batch --force link
 	fc-cache -fv
 fi
+
+mkdir -p ${HOME}/.local/bin
+if [[ ! -f "${HOME}/.local/bin/nvim" ]] || [[ $(find "${HOME}/.local/bin/nvim" -mtime +7 -print) ]]; then
+	curl -Lsso ${HOME}/.local/bin/nvim https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+	chmod +x ${HOME}/.local/bin/nvim
+fi
+
