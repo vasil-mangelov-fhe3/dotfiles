@@ -1,7 +1,7 @@
 [Appearance]
 BoldIntense=true
 ColorScheme=google-dark
-Font=DejaVuSansMono Nerd Font Book,10,-1,5,50,0,0,0,0,0
+Font=DejaVuSansMono Nerd Font,10,-1,5,50,0,0,0,0,0
 
 [General]
 Name=Shell
