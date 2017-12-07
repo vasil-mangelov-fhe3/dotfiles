@@ -1,48 +1,43 @@
 [global_config]
-  window_state = maximise
-  handle_size = 1
   enabled_plugins = APTURLHandler,
-  title_hide_sizetext = True
-  tab_position = bottom
+  handle_size = 1
   inactive_color_offset = 1.0
-  title_transmit_fg_color = "#c5c8c6"
-  title_transmit_bg_color = "#1d1f21"
-  title_inactive_fg_color = "#c5c8c6"
+  tab_position = bottom
+  title_hide_sizetext = True
   title_inactive_bg_color = "#969896"
-
+  title_inactive_fg_color = "#c5c8c6"
+  title_transmit_bg_color = "#1d1f21"
+  title_transmit_fg_color = "#c5c8c6"
+  window_state = maximise
 [keybindings]
-  next_tab = <Shift>Right
   full_screen = <Shift>F11
-  prev_tab = <Shift>Left
-  move_tab_right = <Primary><Shift>Right
+  help = <Primary>F1
+  hide_window = Pause
   move_tab_left = <Primary><Shift>Left
-  hide_window = <Shift>F12
-
-[profiles]
-  [[default]]
-    use_theme_colors = False
-	palette = "#1d1f21:#cc342b:#198844:#fba922:#3971ed:#a36ac7:#008596:#878787:#969896:#cc342b:#198844:#fba922:#3971ed:#a36ac7:#008596:#ffffff"
-    font = DejaVuSansMono Nerd Font Book 10
-    foreground_color = "#c5c8c6"
-    background_color = "#1d1f21"
-    cursor_color = "#c5c8c6"
-    background_image = None
-    background_darkness = 0.97
-    scrollback_lines = 5000
-    use_system_font = False
-    copy_on_selection = True
-    cursor_blink = False
-    scrollback_infinite = True
-
+  move_tab_right = <Primary><Shift>Right
+  next_tab = <Shift>Right
+  prev_tab = <Shift>Left
 [layouts]
   [[default]]
     [[[child1]]]
-      type = Terminal
       parent = window0
       profile = default
       size = 100%, 90%
+      type = Terminal
     [[[window0]]]
-      type = Window
       parent = ""
+      type = Window
 [plugins]
-
+[profiles]
+  [[default]]
+    background_color = "#1d1f21"
+    background_darkness = 0.97
+    copy_on_selection = True
+    cursor_blink = False
+    cursor_color = "#c5c8c6"
+    font = DejaVuSansMono Nerd Font Book 10
+    foreground_color = "#c5c8c6"
+    palette = "#1d1f21:#cc342b:#198844:#fba922:#3971ed:#a36ac7:#008596:#878787:#969896:#cc342b:#198844:#fba922:#3971ed:#a36ac7:#008596:#ffffff"
+    scrollback_infinite = True
+    scrollback_lines = 5000
+    use_system_font = False

@@ -10,6 +10,8 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
+export RLWRAP_HOME=${HOME}/.cache/RLWRAP
+
 # Load overrides
 [[ -e ${DOT_PATH}/shell_common/aliases ]] && source ${DOT_PATH}/shell_common/aliases
 [[ -e ${RC_PATH}/aliases ]] && source ${RC_PATH}/aliases
