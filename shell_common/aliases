@@ -1,10 +1,10 @@
 #set editor to vim/nvim
 if command -v nvim >/dev/null 2>&1; then
-	export EDITOR="TERM=screen-256color nvim"
-	export GIT_EDITOR="TERM=screen-256color nvim"
-	alias vim="TERM=screen-256color nvim"
-	alias nvim="TERM=screen-256color nvim"
-	alias vimfiler="TERM=screen-256color nvim -c \"VimFilerDouble\""
+	export EDITOR="nvim"
+	export GIT_EDITOR="nvim"
+	alias vim="nvim"
+	alias nvim="nvim"
+	alias vimfiler="nvim -c \"VimFilerDouble\""
 else
 	export EDITOR="vim"
 	export GIT_EDITOR="vim"
