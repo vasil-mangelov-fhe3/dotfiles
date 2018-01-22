@@ -3,13 +3,16 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # OH-MY-ZSH
 zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 	ZSH_CUSTOM=${RC_PATH}
+	DISABLE_AUTO_TITLE="true"
 	HYPHEN_INSENSITIVE="true"
 	DISABLE_AUTO_UPDATE="true"
-	ENABLE_CORRECTION="true"
+	ENABLE_CORRECTION="false"
 	HIST_STAMPS="dd.mm.yyyy"
 	bindkey 'OA' history-substring-search-up
 	bindkey 'OB' history-substring-search-down
-zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme, \
+
+setopt prompt_subst
+zplug "caiogondim/bullet-train.zsh", use:"bullet-train.zsh-theme", defer:3, \
 	hook-load:"
 		BULLETTRAIN_PROMPT_ORDER=(
 			time
@@ -29,6 +32,7 @@ zplug "caiogondim/bullet-train-oh-my-zsh-theme", as:theme, \
 		BULLETTRAIN_CONTEXT_DEFAULT_USER=${SUDO_USER:-$USER}
 		BULLETTRAIN_IS_SSH_CLIENT=${SSH_CLIENT+true}
 	"
+
 zplug "plugins/common-aliases", from:oh-my-zsh
 zplug "plugins/git-extras",   from:oh-my-zsh
 zplug "plugins/svn",   from:oh-my-zsh
@@ -54,10 +58,12 @@ zplug "b4b4r07/enhancd", use:init.sh, defer:1, \
 		ENHANCD_DISABLE_HOME=1
 		ENHANCD_DISABLE_DOT=1
 	"
+
 zplug "supercrabtree/k", \
 	hook-load:"
 		alias ka='k -hA'
 	"
+
 zplug "RobSis/zsh-completion-generator"
 zplug "zdharma/fast-syntax-highlighting", defer:2
 zplug "chrissicool/zsh-256color"
