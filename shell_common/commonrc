@@ -14,10 +14,11 @@ export RLWRAP_HOME=${HOME}/.cache/RLWRAP
 
 # Load overrides
 [[ -e ${DOT_PATH}/shell_common/aliases ]] && source ${DOT_PATH}/shell_common/aliases
-[[ -e ${RC_PATH}/aliases ]] && source ${RC_PATH}/aliases
-[[ -f ${RC_PATH}/aliases.local ]] && source ${RC_PATH}/aliases.local || touch ${RC_PATH}/aliases.local
+[[ -e ${RC_PATH/aliases ]] && source ${RC_PATH}/aliases
+[[ -f ${RC_LOCAL}/aliases.local ]] && source ${RC_LOCAL}/aliases.local || touch ${RC_LOCAL}/aliases.local
 [[ -e ${RC_PATH}/functions ]] && source ${RC_PATH}/functions
-[[ -f ${RC_PATH}/functions.local ]] && source ${RC_PATH}/functions.local || touch ${RC_PATH}/functions.local
+[[ -f ${RC_LOCAL}/functions.local ]] && source ${RC_LOCAL}/functions.local || touch ${RC_LOCAL}/functions.local
+[[ -f ${RC_LOCAL}/rc.local ]] && source ${RC_LOCAL}/rc.local || touch ${RC_LOCAL}/rc.local
 
 [[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
 

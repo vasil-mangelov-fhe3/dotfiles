@@ -9,6 +9,7 @@
 
 export DOT_PATH=${HOME}/.homesick/repos/dotfiles
 export RC_PATH=${DOT_PATH}/shell_bash
+export RC_LOCAL=${HOME}/.config/bash
 export PATH=${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:${PATH}
 export GOPATH=${HOME}/.local
 
