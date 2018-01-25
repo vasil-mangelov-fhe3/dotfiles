@@ -13,12 +13,12 @@ export LC_ALL=en_US.UTF-8
 export RLWRAP_HOME=${HOME}/.cache/RLWRAP
 
 # Load overrides
+[[ ! -d ${RC_LOCAL} ]] && mkdir -p ${RC_LOCAL}
 [[ -e ${DOT_PATH}/shell_common/aliases ]] && source ${DOT_PATH}/shell_common/aliases
 [[ -e ${RC_PATH}/aliases ]] && source ${RC_PATH}/aliases
 [[ -f ${RC_LOCAL}/aliases.local ]] && source ${RC_LOCAL}/aliases.local || touch ${RC_LOCAL}/aliases.local
 [[ -e ${RC_PATH}/functions ]] && source ${RC_PATH}/functions
 [[ -f ${RC_LOCAL}/functions.local ]] && source ${RC_LOCAL}/functions.local || touch ${RC_LOCAL}/functions.local
-[[ -f ${RC_LOCAL}/rc.local ]] && source ${RC_LOCAL}/rc.local || touch ${RC_LOCAL}/rc.local
 
 [[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
 
@@ -31,7 +31,7 @@ elif [[ -e ${DOT_PATH}/shell_common/dircolors-solarized/dircolors.256dark ]]; th
     eval `dircolors ${DOT_PATH}/shell_common/dircolors-solarized/dircolors.256dark`
 fi
 
-[[ -f ${RC_PATH}/rc.local ]] && source ${RC_PATH}/rc.local || touch ${RC_PATH}/rc.local
+[[ -f ${RC_LOCAL}/rc.local ]] && source ${RC_LOCAL}/rc.local || touch ${RC_LOCAL}/rc.local
 
 find ${HOME} -type l -xtype l -delete
 find ${HOME} -type d -empty -delete
