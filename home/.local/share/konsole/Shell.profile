@@ -12,7 +12,7 @@ Name=Shell
 Parent=FALLBACK/
 
 [Keyboard]
-KeyBindings=linux
+KeyBindings=default
 
 [Scrolling]
 HistoryMode=2
