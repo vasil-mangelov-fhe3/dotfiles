@@ -1,5 +1,8 @@
 [[ -f ${HOME}/.proxy.local ]] && source ${HOME}/.proxy.local
 
+mkdir -p ${HOME}/.local/bin
+mkdir -p ${RC_LOCAL}
+
 # Load homeshick
 if [ ! -d ${HOME}/.homesick ]; then
 	git clone https://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
@@ -11,7 +14,6 @@ if [ ! -d ${HOME}/.homesick ]; then
 	fc-cache -fv
 fi
 
-mkdir -p ${HOME}/.local/bin
 if [[ ! -f "${HOME}/.local/bin/nvim" ]] || [[ $(find "${HOME}/.local/bin/nvim" -mtime +7 -print) ]]; then
 	curl -Lsso ${HOME}/.local/bin/nvim https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
 	chmod +x ${HOME}/.local/bin/nvim
