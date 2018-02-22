@@ -1,17 +1,3 @@
-export TERM=screen-256color
-
-if [[ -z ${SSH_CONNECTION} && "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]]; then
-	unset SSH_AGENT_PID
-	export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-fi
-
-# You may need to manually set your language environment
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-
-export RLWRAP_HOME=${HOME}/.cache/RLWRAP
-
 # Load overrides
 [[ ! -d ${RC_LOCAL} ]] && mkdir -p ${RC_LOCAL}
 [[ -e ${DOT_PATH}/shell_common/aliases ]] && source ${DOT_PATH}/shell_common/aliases

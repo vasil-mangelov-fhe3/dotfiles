@@ -1,3 +1,19 @@
+if [[ -z ${SSH_CONNECTION} && "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]]; then
+	unset SSH_AGENT_PID
+	export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+fi
+
+export TERM=screen-256color
+# You may need to manually set your language environment
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+export PATH=${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:${PATH}
+[[ -d /snap/bin ]] && export PATH=${PATH}:/snap/bin
+export GOPATH=${HOME}/.local
+export RLWRAP_HOME=${HOME}/.cache/RLWRAP
+
 [[ -f ${HOME}/.proxy.local ]] && source ${HOME}/.proxy.local
 
 mkdir -p ${HOME}/.local/bin
