@@ -1,6 +1,8 @@
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 	source /etc/bash_completion
-elif [ -f /etc/profile.d/bash_completion.sh ]; then
+fi
+
+if [ -f /etc/profile.d/bash_completion.sh ]; then
 	source /etc/profile.d/bash_completion.sh
 fi
 
