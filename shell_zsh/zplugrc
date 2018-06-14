@@ -5,7 +5,7 @@ ZPLUG_LOADFILE=${RC_PATH}/plugins.local
 [[ ! -f ${ZPLUG_LOADFILE} ]] && touch ${ZPLUG_LOADFILE}
 PLUGINSRC=${RC_PATH}/pluginsrc
 
-if [[ -d ${ZPLUG_HOME} ]]; then
+if [[ -f ${ZPLUG_HOME}/init.zsh ]]; then
 	source ${ZPLUG_HOME}/init.zsh
 	source ${ZPLUG_PLUGINS}
 	source ${ZPLUG_LOADFILE}
@@ -17,6 +17,7 @@ if [[ -d ${ZPLUG_HOME} ]]; then
 	# source plugins and add commands to the PATH
 	zplug load
 else
+	[[ -d ${ZPLUG_HOME} ]] && rm -rf ${ZPLUG_HOME}
 	git clone https://github.com/zplug/zplug ${ZPLUG_HOME}
 	source ${ZPLUG_HOME}/init.zsh
 	source ${ZPLUG_PLUGINS}
