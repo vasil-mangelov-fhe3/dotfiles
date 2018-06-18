@@ -3,7 +3,6 @@ if command -v nvim >/dev/null 2>&1; then
 	export EDITOR="nvim"
 	export GIT_EDITOR="nvim"
 	alias vim="nvim"
-	alias nvim="nvim"
 	alias vimfiler="nvim -c \"VimFilerDouble\""
 else
 	export EDITOR="vim"
@@ -12,8 +11,9 @@ else
 fi
 
 # Aliases
-alias r="ranger"
+alias r="source ranger"
 alias ls="ls --color=auto"
+alias ll="ll -h"
 alias ag="ag --hidden --nogroup"
 alias root="sudo -E \"HOME=$HOME\" su -m"
 alias tmux="tmux -2"
