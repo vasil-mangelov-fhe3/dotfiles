@@ -66,20 +66,19 @@ zplug "supercrabtree/k", \
 
 zplug "RobSis/zsh-completion-generator"
 zplug "zdharma/fast-syntax-highlighting", defer:2, \
-	frozen:1, at:1d7d6f5, \
 	hook-load:"
-		FAST_HIGHLIGHT=(
-			chroma-git chroma/-git.ch
-			chroma-example chroma/-example.ch
-			chroma-grep chroma/-grep.ch
-			chroma-egrep chroma/-grep.ch
-			chroma-fgrep chroma/-grep.ch
-			chroma-perl chroma/-perl.ch
-			chroma-make chroma/-make.ch
-			chroma-awk chroma/-awk.ch
-			chroma-gawk chroma/-awk.ch
-			chroma-mawk chroma/-awk.ch
-		)
+		# FAST_HIGHLIGHT=(
+		# 	chroma-git chroma/-git.ch
+		# 	chroma-example chroma/-example.ch
+		# 	chroma-grep chroma/-grep.ch
+		# 	chroma-egrep chroma/-grep.ch
+		# 	chroma-fgrep chroma/-grep.ch
+		# 	chroma-perl chroma/-perl.ch
+		# 	chroma-make chroma/-make.ch
+		# 	chroma-awk chroma/-awk.ch
+		# 	chroma-gawk chroma/-awk.ch
+		# 	chroma-mawk chroma/-awk.ch
+		# )
 	"
 
 zplug "chrissicool/zsh-256color"
