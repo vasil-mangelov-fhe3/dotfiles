@@ -11,7 +11,7 @@ else
 fi
 
 # Aliases
-alias r="source ranger"
+alias r='ranger --cmd="set preview_files=true" --cmd="set use_preview_script=true"'
 alias ls="ls --color=auto"
 alias ll="ls --color=auto -lFh"
 alias la="ls --color=auto -lAFh"

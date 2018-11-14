@@ -32,3 +32,11 @@ class fzf_select(Command):
             else:
                 self.fm.select_file(fzf_file)
 
+
+class up(Command):
+    def execute(self):
+        if self.arg(1):
+            mediacmd = ["mediainfo", "--Output='Video;%Width%x%Height%'"]
+            mediacmd.extend([f.realpath for f in self.fm.thistab.get_selection()])
+            mediacmd.append(self.arg(1))
+            self.fm.execute_command(mediacmd)
