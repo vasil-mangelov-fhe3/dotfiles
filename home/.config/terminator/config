@@ -1,47 +1,61 @@
 [global_config]
-  always_on_top = True
-  borderless = True
-  enabled_plugins = InactivityWatch, CustomCommandsMenu, TerminalShot, APTURLHandler
   handle_size = 1
-  homogeneous_tabbar = False
-  inactive_color_offset = 1.0
-  scroll_tabbar = True
-  sticky = True
-  tab_position = bottom
-  title_hide_sizetext = True
-  title_inactive_bg_color = "#969896"
-  title_inactive_fg_color = "#c5c8c6"
-  title_transmit_bg_color = "#a40000"
-  title_transmit_fg_color = "#c5c8c6"
   window_state = maximise
+  borderless = True
+  tab_position = bottom
+  scroll_tabbar = True
+  homogeneous_tabbar = False
+  always_on_top = True
+  sticky = True
+  title_hide_sizetext = True
+  title_transmit_fg_color = "#c5c8c6"
+  title_transmit_bg_color = "#a40000"
+  title_inactive_fg_color = "#c5c8c6"
+  title_inactive_bg_color = "#969896"
+  inactive_color_offset = 1.0
+  enabled_plugins = InactivityWatch, CustomCommandsMenu, TerminalShot, APTURLHandler
 [keybindings]
-  broadcast_all = <Alt><Super>a
-  broadcast_group = <Alt><Super>g
-  broadcast_off = <Alt><Super>o
-  full_screen = <Shift>F11
-  go_down = <Primary><Super>Down
-  go_left = <Primary><Super>Left
+  zoom_in = None
+  zoom_out = None
+  zoom_normal = <Primary>KP_0
   go_next = <Primary><Super>Page_Down
   go_prev = <Primary><Super>Page_Up
-  go_right = <Primary><Super>Right
   go_up = <Primary><Super>Up
+  go_down = <Primary><Super>Down
+  go_left = <Primary><Super>Left
+  go_right = <Primary><Super>Right
+  resize_up = <Shift><Alt>Up
+  resize_down = <Shift><Alt>Down
+  resize_left = <Shift><Alt>Left
+  resize_right = <Shift><Alt>Right
+  move_tab_right = <Primary><Shift>Right
+  move_tab_left = <Primary><Shift>Left
+  next_tab = <Shift>Right
+  prev_tab = <Shift>Left
+  full_screen = <Shift>F11
+  hide_window = Pause
   group_all = None
   group_all_toggle = <Super>a
   group_tab = None
   group_tab_toggle = <Super>g
+  broadcast_off = <Alt><Super>o
+  broadcast_group = <Alt><Super>g
+  broadcast_all = <Alt><Super>a
   help = <Primary>F1
-  hide_window = Pause
-  move_tab_left = <Primary><Shift>Left
-  move_tab_right = <Primary><Shift>Right
-  next_tab = <Shift>Right
-  prev_tab = <Shift>Left
-  resize_down = <Shift><Alt>Down
-  resize_left = <Shift><Alt>Left
-  resize_right = <Shift><Alt>Right
-  resize_up = <Shift><Alt>Up
-  zoom_in = None
-  zoom_normal = <Primary>KP_0
-  zoom_out = None
+[profiles]
+  [[default]]
+    background_color = "#1d1f21"
+    background_darkness = 0.93
+    background_type = transparent
+    cursor_blink = False
+    cursor_color = "#c5c8c6"
+    font = DejaVuSansMono Nerd Font Book 10
+    foreground_color = "#d3dae3"
+    scrollback_lines = 5000
+    scrollback_infinite = True
+    palette = "#2e3436:#cc342b:#198844:#fba922:#3971ed:#a36ac7:#008596:#c5c8c6:#969896:#cc342b:#198844:#fba922:#3971ed:#a36ac7:#008596:#ffffff"
+    use_system_font = False
+    copy_on_selection = True
 [layouts]
   [[default]]
     [[[child1]]]
@@ -53,17 +67,3 @@
       parent = ""
       type = Window
 [plugins]
-[profiles]
-  [[default]]
-    background_color = "#1d1f21"
-    background_darkness = 0.93
-    background_type = transparent
-    copy_on_selection = True
-    cursor_blink = False
-    cursor_color = "#c5c8c6"
-    font = DejaVuSansMono Nerd Font Book 10
-    foreground_color = "#c5c8c6"
-    palette = "#1d1f21:#cc342b:#198844:#fba922:#3971ed:#a36ac7:#008596:#c5c8c6:#969896:#cc342b:#198844:#fba922:#3971ed:#a36ac7:#008596:#ffffff"
-    scrollback_infinite = True
-    scrollback_lines = 5000
-    use_system_font = False
