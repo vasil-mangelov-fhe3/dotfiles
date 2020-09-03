@@ -1,7 +1,9 @@
 source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
 fpath=(${HOME}/.homesick/repos/homeshick/completions ${fpath})
-homeshick --quiet --batch --force pull
-homeshick --quiet --batch --force link
+if [ "$(homeshick --quite refresh 1; echo ${?})" != 0 ]; then
+	homeshick --quiet --batch --force pull
+	homeshick --quiet --batch --force link
+fi
 
 if [[ -z "${TMUX}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
 	if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
