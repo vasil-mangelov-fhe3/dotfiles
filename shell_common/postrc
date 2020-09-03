@@ -1,6 +1,6 @@
 source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
 fpath=(${HOME}/.homesick/repos/homeshick/completions ${fpath})
-if [ "$(homeshick --quite refresh 1; echo ${?})" != 0 ]; then
+if [ "$(homeshick --quiet refresh 1; echo ${?})" != 0 ]; then
 	homeshick --quiet --batch --force pull
 	homeshick --quiet --batch --force link
 fi
