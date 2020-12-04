@@ -19,4 +19,4 @@ source ${RC_PATH}/rc
 source ${DOT_PATH}/shell_common/commonrc
 source ${DOT_PATH}/shell_common/postrc
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash && source ${RC_PATH}/fzf

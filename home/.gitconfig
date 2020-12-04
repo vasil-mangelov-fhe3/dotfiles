@@ -53,3 +53,7 @@
 
 [credential]
 	helper = cache --timeout=3600
+[user]
+	name = Steven Koeberich
+	email = steven.koeberich@fhe3.com
+	signingkey = EF33721DE60BDE99
