@@ -20,4 +20,3 @@ fi
 [[ -f ${RC_LOCAL}/rc.local ]] && source ${RC_LOCAL}/rc.local || touch ${RC_LOCAL}/rc.local
 
 find ${HOME} -type l -xtype l -delete
-find ${HOME} -type d -empty -delete
