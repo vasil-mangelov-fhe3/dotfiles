@@ -12,7 +12,7 @@ zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 	bindkey 'OB' history-substring-search-down
 
 setopt prompt_subst
-zplug "caiogondim/bullet-train.zsh", use:"bullet-train.zsh-theme", defer:3, \
+zplug "NemesisRE/bullet-train.zsh", use:"bullet-train.zsh-theme", defer:3, \
 	hook-load:"
 		BULLETTRAIN_PROMPT_ORDER=(
 			time
