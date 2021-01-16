@@ -1,7 +1,3 @@
-[submodule "shell_common/tmux/plugins/tpm"]
-	path = shell_common/tmux/plugins/tpm
-	url = https://github.com/tmux-plugins/tpm.git
-	branch = master
 [submodule "shell_common/dircolors-solarized"]
 	path = shell_common/dircolors-solarized
 	url = https://github.com/NemesisRE/dircolors-solarized.git
