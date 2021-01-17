@@ -1,5 +1,4 @@
 # Set a different zplug path
-echo -e '\033[1mSetup zplug\033[0m'
 ZPLUG_HOME=${RC_PATH}/zplug
 ZPLUG_PLUGINS=${RC_PATH}/plugins
 ZPLUG_LOADFILE=${RC_PATH}/plugins.local
@@ -18,6 +17,7 @@ if [[ -f ${ZPLUG_HOME}/init.zsh ]]; then
 	# source plugins and add commands to the PATH
 	zplug load
 else
+    echo -e '\033[1mSetup zplug\033[0m'
 	[[ -d ${ZPLUG_HOME} ]] && rm -rf ${ZPLUG_HOME}
 	git clone https://github.com/zplug/zplug ${ZPLUG_HOME}
 	source ${ZPLUG_HOME}/init.zsh

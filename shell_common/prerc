@@ -4,7 +4,6 @@ if [[ -z ${SSH_CONNECTION} && "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]]; then
 	export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
-export TERM=screen-256color
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
