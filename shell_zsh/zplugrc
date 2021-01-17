@@ -1,4 +1,5 @@
 # Set a different zplug path
+echo -e '\033[1mSetup zplug\033[0m'
 ZPLUG_HOME=${RC_PATH}/zplug
 ZPLUG_PLUGINS=${RC_PATH}/plugins
 ZPLUG_LOADFILE=${RC_PATH}/plugins.local

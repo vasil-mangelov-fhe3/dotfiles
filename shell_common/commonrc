@@ -1,4 +1,5 @@
 # Load overrides
+echo -e '\033[1mSourcing aliases and functions\033[0m'
 [[ ! -d ${RC_LOCAL} ]] && mkdir -p ${RC_LOCAL}
 [[ -e ${DOT_PATH}/shell_common/aliases ]] && source ${DOT_PATH}/shell_common/aliases
 [[ -e ${RC_PATH}/aliases ]] && source ${RC_PATH}/aliases
@@ -11,6 +12,7 @@
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+echo -e '\033[1mInstalling dircolors\033[0m'
 if [[ -e /etc/redhat-release ]] && [[ $(cat /etc/redhat-release | awk '{print $7}' | awk -F '.' '{print $1}') -lt 6 ]] && [[ -e ${DOT_PATH}/shell_common/dircolors-solarized/dircolors.rhel5.256dark ]]; then
     eval `dircolors ${DOT_PATH}/shell_common/dircolors-solarized/dircolors.rhel5.256dark`
 elif [[ -e ${DOT_PATH}/shell_common/dircolors-solarized/dircolors.256dark ]]; then
@@ -19,4 +21,5 @@ fi
 
 [[ -f ${RC_LOCAL}/rc.local ]] && source ${RC_LOCAL}/rc.local || touch ${RC_LOCAL}/rc.local
 
-find ${HOME} -type l -xtype l -delete
+echo -e '\033[1mSearch and delete broken symlinks\033[0m'
+find ${HOME} -xtype l -delete
