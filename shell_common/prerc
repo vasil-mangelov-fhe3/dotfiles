@@ -1,7 +1,7 @@
 echo -e '\033[1mExporting default variables\033[0m'
 if [[ -z ${SSH_CONNECTION} && "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]]; then
-	unset SSH_AGENT_PID
-	export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+    unset SSH_AGENT_PID
+    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
 # You may need to manually set your language environment
@@ -19,7 +19,9 @@ export FZF_DEFAULT_OPTS='--bind tab:down --bind btab:up --cycle'
 export FZF_DEFAULT_COMMAND="find -L"
 export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
 
+# NVIM Defaults
 export NVIM_LOG_FILE="${HOME}/.cache/vim/nvim_debug.log"
+export NVIM_RPLUGIN_MANIFESTE="${HOME}/.cache/vim/rplugin.vim"
 
 [[ -f ${HOME}/.proxy.local ]] && source ${HOME}/.proxy.local
 
@@ -28,27 +30,30 @@ mkdir -p ${RC_LOCAL}
 
 # Load homeshick
 if [ ! -d ${HOME}/.homesick ]; then
-	echo -e '\033[1mCloning homesick\033[0m'
-	git clone https://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
-	source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-	fpath=(${HOME}/.homesick/repos/homeshick/completions ${fpath})
-	echo -e '\033[1mCloning dotfiles\033[0m'
-	homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git
-	echo -e '\033[1mCloning vimfiles\033[0m'
-	homeshick --quiet --batch clone https://github.com/NemesisRE/vimfiles.git
-	echo -e '\033[1mLinking dotfiles\033[0m'
-	homeshick --quiet --batch --force link
-	fc-cache -fv
+  echo -e '\033[1mCloning homesick\033[0m'
+  git clone https://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
+  source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
+  fpath=(${HOME}/.homesick/repos/homeshick/completions ${fpath})
+  echo -e '\033[1mCloning dotfiles\033[0m'
+  homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git
+  echo -e '\033[1mCloning vimfiles\033[0m'
+  homeshick --quiet --batch clone https://github.com/NemesisRE/vimfiles.git
+  echo -e '\033[1mLinking dotfiles\033[0m'
+  homeshick --quiet --batch --force link
+  fc-cache -fv
 fi
 
 if [[ ! -f "${HOME}/.cache/vim/nvim.appimage" ]] || [[ $(find "${HOME}/.cache/vim/nvim.appimage" -mtime +7 -print) ]]; then
-	echo -e '\033[1mDownloading neovim\033[0m'
-	[[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
-	[[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
-	curl -Lsso "${HOME}/.cache/vim/nvim.appimage" "https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage"
-	cd "${HOME}/.cache/vim"
-	chmod +x "${HOME}/.cache/vim/nvim.appimage"
-	"${HOME}/.cache/vim/nvim.appimage" --appimage-extract 2>&1 >/dev/null
-	ln -sf "${HOME}/.cache/vim/squashfs-root/AppRun" "${HOME}/.local/bin/nvim"
+  echo -e '\033[1mDownloading neovim\033[0m'
+  [[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
+  [[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
+  curl -Lso "${HOME}/.cache/vim/nvim.appimage" "https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage"
+  chmod +x "${HOME}/.cache/vim/nvim.appimage"
+  local CURRENT_DIR=$(pwd)
+  cd "${HOME}/.cache/vim/"
+  "${HOME}/.cache/vim/nvim.appimage" --appimage-extract 2>&1 >/dev/null
+  cd ${CURRENT_DIR}
+  unset CURRENT_DIR
+  ln -sf "${HOME}/.cache/vim/squashfs-root/AppRun" "${HOME}/.local/bin/nvim"
 fi
 
