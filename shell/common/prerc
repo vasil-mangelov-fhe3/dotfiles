@@ -26,6 +26,7 @@ export NVIM_RPLUGIN_MANIFESTE="${HOME}/.cache/vim/rplugin.vim"
 [[ -f ${HOME}/.proxy.local ]] && source ${HOME}/.proxy.local
 
 mkdir -p ${HOME}/.local/bin
+mkdir -p ${HOME}/.cache/vim
 mkdir -p ${RC_LOCAL}
 
 # Load homeshick
@@ -56,4 +57,3 @@ if [[ ! -f "${HOME}/.cache/vim/nvim.appimage" ]] || [[ $(find "${HOME}/.cache/vi
   unset PRERC_CURRENT_DIR
   ln -sf "${HOME}/.cache/vim/squashfs-root/AppRun" "${HOME}/.local/bin/nvim"
 fi
-
