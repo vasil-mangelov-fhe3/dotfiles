@@ -1,0 +1,96 @@
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+
+# OH-MY-ZSH
+zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
+    ZSH_CUSTOM=${RC_PATH}
+    DISABLE_AUTO_TITLE="true"
+    HYPHEN_INSENSITIVE="true"
+    DISABLE_AUTO_UPDATE="true"
+    ENABLE_CORRECTION="false"
+    HIST_STAMPS="dd.mm.yyyy"
+    bindkey 'OA' history-substring-search-up
+    bindkey 'OB' history-substring-search-down
+
+setopt prompt_subst
+zplug "NemesisRE/bullet-train.zsh", use:"bullet-train.zsh-theme", defer:3, \
+    hook-load:"
+        BULLETTRAIN_PROMPT_ORDER=(
+            time
+            status
+            custom
+            cmd_exec_time
+            context
+            screen
+            perl
+            ruby
+            nvm
+            aws
+            go
+            rust
+            elixir
+            git
+            hg
+            dir
+            virtualenv
+        )
+        BULLETTRAIN_DIR_FG=black
+        BULLETTRAIN_DIR_EXTENDED=2
+        BULLETTRAIN_GIT_COLORIZE_DIRTY=true
+        BULLETTRAIN_GIT_UNTRACKED=\" %F{red}✭%F{black}\"
+        BULLETTRAIN_CONTEXT_DEFAULT_USER=${SUDO_USER:-$USER}
+        BULLETTRAIN_IS_SSH_CLIENT=${SSH_CLIENT+true}
+    "
+
+zplug "plugins/common-aliases", from:oh-my-zsh
+zplug "plugins/git-extras",   from:oh-my-zsh
+zplug "plugins/svn",   from:oh-my-zsh
+zplug "plugins/extract",   from:oh-my-zsh
+zplug "plugins/colored-man-pages",   from:oh-my-zsh
+zplug "plugins/colorize",   from:oh-my-zsh
+zplug "plugins/cp",   from:oh-my-zsh
+zplug "plugins/gpg-agent",   from:oh-my-zsh
+zplug "plugins/npm",   from:oh-my-zsh
+zplug "plugins/rvm",   from:oh-my-zsh
+zplug "plugins/pyenv",   from:oh-my-zsh
+zplug "plugins/virtualenv",   from:oh-my-zsh
+zplug "plugins/systemadmin",   from:oh-my-zsh
+zplug "plugins/z",   from:oh-my-zsh
+zplug "plugins/zsh_reload",   from:oh-my-zsh
+
+# PREZTO
+zplug "modules/utility", from:prezto
+
+# Others
+zplug "b4b4r07/enhancd", use:init.sh, defer:1, \
+    hook-load:"
+        ENHANCD_DISABLE_HOME=1
+        ENHANCD_DISABLE_DOT=1
+    "
+
+zplug "supercrabtree/k", \
+    hook-load:"
+        alias ka='k -hA'
+    "
+
+zplug "RobSis/zsh-completion-generator"
+zplug "zdharma/fast-syntax-highlighting", defer:2, \
+    hook-load:"
+        # FAST_HIGHLIGHT=(
+        #   chroma-git chroma/-git.ch
+        #   chroma-example chroma/-example.ch
+        #   chroma-grep chroma/-grep.ch
+        #   chroma-egrep chroma/-grep.ch
+        #   chroma-fgrep chroma/-grep.ch
+        #   chroma-perl chroma/-perl.ch
+        #   chroma-make chroma/-make.ch
+        #   chroma-awk chroma/-awk.ch
+        #   chroma-gawk chroma/-awk.ch
+        #   chroma-mawk chroma/-awk.ch
+        # )
+    "
+
+zplug "chrissicool/zsh-256color"
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-autosuggestions"
+zplug "hlissner/zsh-autopair"
+zplug "arzzen/calc.plugin.zsh"
