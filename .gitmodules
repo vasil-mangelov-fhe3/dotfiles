@@ -1,5 +1,5 @@
-[submodule "shell_common/dircolors-solarized"]
-	path = shell_common/dircolors-solarized
+[submodule "shell/common/dircolors-solarized"]
+	path = shell/common/dircolors-solarized
 	url = https://github.com/NemesisRE/dircolors-solarized.git
 	branch = master
 [submodule "home/.fzf"]

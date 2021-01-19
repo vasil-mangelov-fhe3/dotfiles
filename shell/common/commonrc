@@ -1,0 +1,25 @@
+# Load overrides
+echo -e '\033[1mSourcing aliases and functions\033[0m'
+[[ ! -d ${RC_LOCAL} ]] && mkdir -p ${RC_LOCAL}
+[[ -e ${DOT_PATH}/shell/common/aliases ]] && source ${DOT_PATH}/shell/common/aliases
+[[ -e ${RC_PATH}/aliases ]] && source ${RC_PATH}/aliases
+[[ -f ${RC_LOCAL}/aliases.local ]] && source ${RC_LOCAL}/aliases.local || touch ${RC_LOCAL}/aliases.local
+[[ -e ${RC_PATH}/functions ]] && source ${RC_PATH}/functions
+[[ -f ${RC_LOCAL}/functions.local ]] && source ${RC_LOCAL}/functions.local || touch ${RC_LOCAL}/functions.local
+
+[[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+echo -e '\033[1mInstalling dircolors\033[0m'
+if [[ -e /etc/redhat-release ]] && [[ $(cat /etc/redhat-release | awk '{print $7}' | awk -F '.' '{print $1}') -lt 6 ]] && [[ -e ${DOT_PATH}/shell/common/dircolors-solarized/dircolors.rhel5.256dark ]]; then
+    eval `dircolors ${DOT_PATH}/shell/common/dircolors-solarized/dircolors.rhel5.256dark`
+elif [[ -e ${DOT_PATH}/shell/common/dircolors-solarized/dircolors.256dark ]]; then
+    eval `dircolors ${DOT_PATH}/shell/common/dircolors-solarized/dircolors.256dark`
+fi
+
+[[ -f ${RC_LOCAL}/rc.local ]] && source ${RC_LOCAL}/rc.local || touch ${RC_LOCAL}/rc.local
+
+echo -e '\033[1mSearch and delete broken symlinks\033[0m'
+find ${HOME} -xtype l -delete

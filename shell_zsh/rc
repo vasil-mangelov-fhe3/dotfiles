@@ -1,4 +1,0 @@
-# Enable math functions
-zmodload zsh/mathfunc
-
-zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(|.|..) ]] && reply=(..)'

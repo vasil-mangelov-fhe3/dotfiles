@@ -1,7 +1,7 @@
 /.buildpath
 /.project
-/shell_bash/*
-/shell_zsh/*
+/shell/bash/*
+/shell/zsh/*
 /home/.local/share/gnome-shell/application_state
 /home/.local/share/gnome-shell/gnome-overrides-migrated
 /home/.local/share/gnome-shell/ignored_events

@@ -1,5 +1,0 @@
-alias reload="source ${HOME}/.bashrc"
-alias ll="ls -lFh --color"
-alias la="ls -AlFh --color"
-alias gpg_agent="/usr/bin/gpgconf --kill gpg-agent && /usr/bin/gpgconf --launch gpg-agent"
-
