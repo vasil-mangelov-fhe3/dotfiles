@@ -9,6 +9,7 @@
 
 [push]
 	default = simple
+	followTags = true
 
 [color]
 	ui = true
