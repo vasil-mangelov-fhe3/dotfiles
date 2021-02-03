@@ -10,6 +10,9 @@ if [ -f /usr/lib/node_modules/npm/lib/utils/completion.sh ]; then
 	source /usr/lib/node_modules/npm/lib/utils/completion.sh
 fi
 
+source <(${HOME}/.local/bin/kubectl completion bash)
+source <(${HOME}/.local/bin/helm completion bash)
+
 [[ -s ${HOME}/.rvm/scripts/rvm ]] && source ${HOME}/.rvm/scripts/rvm
 
 # Load PYENV if you are using it

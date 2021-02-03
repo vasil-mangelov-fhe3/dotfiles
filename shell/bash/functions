@@ -5,9 +5,9 @@ function extract {
 		# display usage if no parameters given
 		echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
 	else
-		if [ -f $1 ] ; then
+		if [ -f "$1" ] ; then
 			NAME=${1%.*}
-			mkdir $NAME && cd $NAME
+			mkdir "${NAME}" && cd "${NAME}"
 			case $1 in
 				*.tar.bz2)   tar xvjf ../$1    ;;
 				*.tar.gz)    tar xvzf ../$1    ;;
@@ -55,9 +55,9 @@ function ac() { # compress a file or folder
 }
 
 function ad() { # decompress
-	for i in ${@}; do
-		if [ -f ${i} ] ; then
-			case ${i} in
+	for i in "${@}"; do
+		if [ -f "${i}" ] ; then
+			case "${i}" in
 				*.tar)       tar xvf "${i}"     ;;
 				*.tbz2)      tar xvjf "${i}"    ;;
 				*.tgz)       tar xvzf "${i}"    ;;

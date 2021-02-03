@@ -33,4 +33,3 @@ function git_remove_submodule() {
 	fi
 }
 
-# [[ -s ${HOME}/.fzf ]] && source ${HOME}/.config/zsh/fzf_functions

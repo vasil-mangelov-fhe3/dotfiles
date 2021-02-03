@@ -11,36 +11,39 @@ zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
     bindkey 'OA' history-substring-search-up
     bindkey 'OB' history-substring-search-down
 
-setopt prompt_subst
-zplug "NemesisRE/bullet-train.zsh", use:"bullet-train.zsh-theme", defer:3, \
-    hook-load:"
-        BULLETTRAIN_PROMPT_ORDER=(
-            time
-            status
-            custom
-            cmd_exec_time
-            context
-            screen
-            perl
-            ruby
-            nvm
-            aws
-            go
-            rust
-            elixir
-            git
-            hg
-            dir
-            virtualenv
-        )
-        BULLETTRAIN_DIR_FG=black
-        BULLETTRAIN_DIR_EXTENDED=2
-        BULLETTRAIN_GIT_COLORIZE_DIRTY=true
-        BULLETTRAIN_GIT_UNTRACKED=\" %F{red}✭%F{black}\"
-        BULLETTRAIN_CONTEXT_DEFAULT_USER=${SUDO_USER:-$USER}
-        BULLETTRAIN_IS_SSH_CLIENT=${SSH_CLIENT+true}
-    "
-
+# setopt prompt_subst
+# zplug "NemesisRE/bullet-train.zsh", use:"bullet-train.zsh-theme", defer:3, \
+#     hook-load:"
+#         BULLETTRAIN_PROMPT_ORDER=(
+#             time
+#             status
+#             custom
+#             cmd_exec_time
+#             context
+#             screen
+#             perl
+#             ruby
+#             nvm
+#             aws
+#             go
+#             rust
+#             elixir
+#             git
+#             hg
+#             dir
+#             virtualenv
+#             kctx
+#         )
+#         BULLETTRAIN_DIR_FG="black"
+#         BULLETTRAIN_DIR_EXTENDED="2"
+#         BULLETTRAIN_GIT_COLORIZE_DIRTY="true"
+#         BULLETTRAIN_GIT_UNTRACKED=\" %F{red}✭%F{black}\"
+#         BULLETTRAIN_CONTEXT_DEFAULT_USER="${SUDO_USER:-$USER}"
+#         BULLETTRAIN_IS_SSH_CLIENT="${SSH_CLIENT+true}"
+#         BULLETTRAIN_KCTX_FG="black"
+#         BULLETTRAIN_KCTX_KUBECTL="true"
+#     "
+zplug "romkatv/powerlevel10k", as:theme, depth:1
 zplug "plugins/common-aliases", from:oh-my-zsh
 zplug "plugins/git-extras",   from:oh-my-zsh
 zplug "plugins/svn",   from:oh-my-zsh
@@ -65,11 +68,6 @@ zplug "b4b4r07/enhancd", use:init.sh, defer:1, \
     hook-load:"
         ENHANCD_DISABLE_HOME=1
         ENHANCD_DISABLE_DOT=1
-    "
-
-zplug "supercrabtree/k", \
-    hook-load:"
-        alias ka='k -hA'
     "
 
 zplug "RobSis/zsh-completion-generator"

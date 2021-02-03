@@ -1,20 +1,3 @@
-source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-fpath=(${HOME}/.homesick/repos/homeshick/completions ${fpath})
-homeshick --quiet check
-case ${?} in
-  86)
-    echo -e '\033[1mUpdate and install dotfiles\033[0m'
-    homeshick --quiet --batch --force pull
-    homeshick --quiet --batch --force link
-    ;;
-  85)
-    echo -e '\033[1;38;5;222mYour dotfiles are ahead of its upstream, consider pushing\033[0m'
-    ;;
-  88)
-    echo -e '\033[1;38;5;222mYour dotfiles are modified, commit or discard changes to update them\033[0m'
-    ;;
-esac
-
 if [[ -z "${TMUX}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
     if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
         unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
