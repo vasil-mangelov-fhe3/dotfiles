@@ -4,6 +4,23 @@ if [[ -z ${SSH_CONNECTION} && "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]]; then
     export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
+ARCH=$(uname -m)
+case $ARCH in
+  armv5*) ARCH="armv5";;
+  armv6*) ARCH="armv6";;
+  armv7*) ARCH="arm";;
+  aarch64) ARCH="arm64";;
+  x86) ARCH="386";;
+  x86_64) ARCH="amd64";;
+  i686) ARCH="386";;
+  i386) ARCH="386";;
+esac
+
+OS=$(echo `uname`|tr '[:upper:]' '[:lower:]')
+case "$OS" in
+  mingw*) OS='windows';;
+esac
+
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
@@ -75,7 +92,7 @@ fi
 
 if [[ ! -f "${HOME}/.local/bin/kubectl" ]] || [[ ! $(curl -L -s https://dl.k8s.io/release/stable.txt) == $(${HOME}/.local/bin/kubectl version --short --client | awk -F: '{ gsub(/ /,""); print $2}') ]]; then
   echo -e '\033[1mInstalling kubectl\033[0m'
-  curl -Ls "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o ${HOME}/.local/bin/kubectl
+  curl -Ls "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubectl
   chmod +x ${HOME}/.local/bin/kubectl
 fi
 
