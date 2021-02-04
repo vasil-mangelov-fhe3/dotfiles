@@ -49,7 +49,7 @@
     background_type = transparent
     cursor_blink = False
     cursor_color = "#c5c8c6"
-    font = DejaVuSansMono Nerd Font Book 10
+    font = DejaVuSansMono Nerd Font Mono 10
     foreground_color = "#d3dae3"
     scrollback_lines = 5000
     scrollback_infinite = True
