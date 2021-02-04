@@ -40,6 +40,9 @@ export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
 export NVIM_LOG_FILE="${HOME}/.cache/vim/nvim_debug.log"
 export NVIM_RPLUGIN_MANIFESTE="${HOME}/.cache/vim/rplugin.vim"
 
+# Timewarrior
+export TIMEWARRIORDB="${HOME}/.cache/timewarrior"
+
 [[ -f ${HOME}/.proxy.local ]] && source ${HOME}/.proxy.local
 
 mkdir -p ${HOME}/.local/bin ${HOME}/.cache/{krew,vim,helm} ${RC_LOCAL}
