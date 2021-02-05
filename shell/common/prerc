@@ -43,6 +43,10 @@ export NVIM_RPLUGIN_MANIFESTE="${HOME}/.cache/vim/rplugin.vim"
 # Timewarrior
 export TIMEWARRIORDB="${HOME}/.cache/timewarrior"
 
+# docker-compose
+export COMPOSE_PARALLEL_LIMIT=10
+export COMPOSE_HTTP_TIMEOUT=600
+
 [[ -f ${HOME}/.proxy.local ]] && source ${HOME}/.proxy.local
 
 mkdir -p ${HOME}/.local/bin ${HOME}/.cache/{krew,vim,helm} ${RC_LOCAL}
