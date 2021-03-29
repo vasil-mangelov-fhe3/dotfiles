@@ -1,0 +1,11 @@
+# Basic configuration
+set drawbox true
+set icons true
+set ignorecase true
+set mouse true
+set info size:time
+set globsearch true
+set dircounts true
+
+# key bindings
+map . set hidden!
