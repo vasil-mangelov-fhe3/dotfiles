@@ -57,3 +57,40 @@ function _nredf_set_defaults() {
   export COMPOSE_PARALLEL_LIMIT=10
   export COMPOSE_HTTP_TIMEOUT=600
 }
+
+function _nredf_install_k8s_ops() {
+  if [[ ! -f "${HOME}/.local/bin/kubectl" ]] || [[ ! $(curl -L -s https://dl.k8s.io/release/stable.txt) == $(${HOME}/.local/bin/kubectl version --short --client | awk -F: '{ gsub(/ /,""); print $2}') ]]; then
+    echo -e '\033[1mInstalling kubectl\033[0m'
+    curl -Ls "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubectl
+    chmod +x ${HOME}/.local/bin/kubectl
+  fi
+
+  if [[ ! -d "${HOME}/.krew" ]]; then
+    echo -e '\033[1mInstalling krew\033[0m'
+    curl -fsSLo ${HOME}/.cache/krew/krew.tar.gz "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz"
+    tar -zxf ${HOME}/.cache/krew/krew.tar.gz --directory ${HOME}/.cache/krew && rm -f ${HOME}/.cache/krew/krew.tar.gz
+    KREW=${HOME}/.cache/krew/krew-"$(uname | tr '[:upper:]' '[:lower:]')_$(uname -m | sed -e 's/x86_64/amd64/' -e 's/arm.*$/arm/')"
+    "$KREW" install krew 2>/dev/null
+    export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+  else
+    echo -e '\033[1mUpdating krew and plugins\033[0m'
+    export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+    kubectl krew update 2>/dev/null
+    kubectl krew upgrade 2>/dev/null
+    for KREW_PLUGIN in ctx ns doctor fuzzy images status oidc-login; do
+      kubectl krew list | grep -q ${KREW_PLUGIN} || kubectl krew install ${KREW_PLUGIN} 2>/dev/null
+    done
+  fi
+
+  if [[ ! -f "${HOME}/.local/bin/fluxctl" ]] || [[ $(find "${HOME}/.local/bin/fluxctl" -mtime +7 -print); then
+    echo -e '\033[1mInstalling·fluxctl\033[0m'
+    [[ -f "${HOME}/.local/bin/fluxctl" ]] && rm -rf "${HOME}/.local/bin/fluxctl"
+    curl -sL https://github.com/fluxcd/flux/releases/latest/download/fluxctl_${OS}_${ARCH} -o ${HOME}/.local/bin/fluxctl
+    chmod +x ${HOME}/.local/bin/fluxctl
+  fi
+
+  echo -e '\033[1mRunning get_helm\033[0m'
+  curl -fsSL -o ${HOME}/.cache/helm/get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+  chmod +x ${HOME}/.cache/helm/get_helm.sh
+  HELM_INSTALL_DIR="${HOME}/.local/bin" ${HOME}/.cache/helm/get_helm.sh --no-sudo >/dev/null
+}

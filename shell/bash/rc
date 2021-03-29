@@ -10,8 +10,9 @@ if [ -f /usr/lib/node_modules/npm/lib/utils/completion.sh ]; then
 	source /usr/lib/node_modules/npm/lib/utils/completion.sh
 fi
 
-source <(${HOME}/.local/bin/kubectl completion bash)
-source <(${HOME}/.local/bin/helm completion bash)
+[[ -f ${HOME}/.local/bin/kubectl ]] && source <(${HOME}/.local/bin/kubectl completion bash)
+[[ -f ${HOME}/.local/bin/fluxctl ]] && source <(${HOME}/.local/bin/fluxctl completion bash)
+[[ -f ${HOME}/.local/bin/helm ]] && source <(${HOME}/.local/bin/helm completion bash)
 
 [[ -s ${HOME}/.rvm/scripts/rvm ]] && source ${HOME}/.rvm/scripts/rvm
 

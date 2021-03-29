@@ -3,12 +3,8 @@ zmodload zsh/mathfunc
 
 zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(|.|..) ]] && reply=(..)'
 
-if [ $commands[kubectl] ]; then
-    source <(${HOME}/.local/bin/kubectl completion zsh)
-fi
-
-if [ $commands[helm] ]; then
-    source <(${HOME}/.local/bin/helm completion zsh)
-fi
+[[ -f ${HOME}/.local/bin/kubectl ]] && source <(${HOME}/.local/bin/kubectl completion zsh)
+[[ -f ${HOME}/.local/bin/fluxctl ]] && source <(${HOME}/.local/bin/fluxctl completion zsh)
+[[ -f ${HOME}/.local/bin/helm ]] && source <(${HOME}/.local/bin/helm completion zsh)
 
 fpath=(${HOME}/.config/completion/zsh $fpath)
