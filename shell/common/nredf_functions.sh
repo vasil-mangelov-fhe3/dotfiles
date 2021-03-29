@@ -59,6 +59,8 @@ function _nredf_set_defaults() {
 }
 
 function _nredf_install_k8s_ops() {
+  _nredf_get_sys_info
+
   if [[ ! -f "${HOME}/.local/bin/kubectl" ]] || [[ ! $(curl -L -s https://dl.k8s.io/release/stable.txt) == $(${HOME}/.local/bin/kubectl version --short --client | awk -F: '{ gsub(/ /,""); print $2}') ]]; then
     echo -e '\033[1mInstalling kubectl\033[0m'
     curl -Ls "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubectl
@@ -82,8 +84,8 @@ function _nredf_install_k8s_ops() {
     done
   fi
 
-  if [[ ! -f "${HOME}/.local/bin/fluxctl" ]] || [[ $(find "${HOME}/.local/bin/fluxctl" -mtime +7 -print); then
-    echo -e '\033[1mInstalling·fluxctl\033[0m'
+  if [[ ! -f "${HOME}/.local/bin/fluxctl" ]] || [[ ! $(curl -s https://api.github.com/repos/fluxcd/flux/releases/latest | grep -Po '"tag_name":"\K.*?(?=")') == $(${HOME}/.local/bin/fluxctl version) ]]; then
+    echo -e '\033[1mInstalling fluxctl\033[0m'
     [[ -f "${HOME}/.local/bin/fluxctl" ]] && rm -rf "${HOME}/.local/bin/fluxctl"
     curl -sL https://github.com/fluxcd/flux/releases/latest/download/fluxctl_${OS}_${ARCH} -o ${HOME}/.local/bin/fluxctl
     chmod +x ${HOME}/.local/bin/fluxctl
