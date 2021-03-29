@@ -1,51 +1,8 @@
-echo -e '\033[1mExporting default variables\033[0m'
-if [[ -z ${SSH_CONNECTION} && "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]]; then
-    unset SSH_AGENT_PID
-    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-fi
+source ${DOT_PATH}/shell/common/nredf_functions.sh
 
-ARCH=$(uname -m)
-case $ARCH in
-  armv5*) ARCH="armv5";;
-  armv6*) ARCH="armv6";;
-  armv7*) ARCH="arm";;
-  aarch64) ARCH="arm64";;
-  x86) ARCH="386";;
-  x86_64) ARCH="amd64";;
-  i686) ARCH="386";;
-  i386) ARCH="386";;
-esac
-
-OS=$(echo `uname`|tr '[:upper:]' '[:lower:]')
-case "$OS" in
-  mingw*) OS='windows';;
-esac
-
-# You may need to manually set your language environment
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-
-export PATH=${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:${PATH}
-[[ -d /snap/bin ]] && export PATH=${PATH}:/snap/bin
-export GOPATH=${HOME}/.local
-export RLWRAP_HOME=${HOME}/.cache/RLWRAP
-
-# FZF Defaults
-export FZF_DEFAULT_OPTS='--bind tab:down --bind btab:up --cycle'
-export FZF_DEFAULT_COMMAND="find -L"
-export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
-
-# NVIM Defaults
-export NVIM_LOG_FILE="${HOME}/.cache/vim/nvim_debug.log"
-export NVIM_RPLUGIN_MANIFESTE="${HOME}/.cache/vim/rplugin.vim"
-
-# Timewarrior
-export TIMEWARRIORDB="${HOME}/.cache/timewarrior"
-
-# docker-compose
-export COMPOSE_PARALLEL_LIMIT=10
-export COMPOSE_HTTP_TIMEOUT=600
+_nredf_set_ssh_agent
+_nredf_get_sys_info
+_nredf_set_defaults
 
 [[ -f ${HOME}/.proxy.local ]] && source ${HOME}/.proxy.local
 
@@ -95,6 +52,12 @@ if [[ ! -f "${HOME}/.cache/vim/nvim.appimage" ]] || [[ $(find "${HOME}/.cache/vi
   cd ${PRERC_CURRENT_DIR}
   unset PRERC_CURRENT_DIR
   ln -sf "${HOME}/.cache/vim/squashfs-root/AppRun" "${HOME}/.local/bin/nvim"
+fi
+
+if [[ ! -f "${HOME}/.local/bin/lf" ]]; then
+  echo -e '\033[1mInstalling lf\033[0m'
+  curl -Ls "https://github.com/gokcehan/lf/releases/download/latest/lf-linux-${ARCH}.tar.gz" | tar xz - -C ${HOME}/.local/bin/
+  chmod +x ${HOME}/.local/bin/lf
 fi
 
 if [[ ! -f "${HOME}/.local/bin/kubectl" ]] || [[ ! $(curl -L -s https://dl.k8s.io/release/stable.txt) == $(${HOME}/.local/bin/kubectl version --short --client | awk -F: '{ gsub(/ /,""); print $2}') ]]; then
