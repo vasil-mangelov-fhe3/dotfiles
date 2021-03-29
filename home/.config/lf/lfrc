@@ -1,11 +1,65 @@
 # Basic configuration
+set shell bash
 set drawbox true
 set icons true
 set ignorecase true
-set mouse true
+set mouse false
 set info size:time
 set globsearch true
 set dircounts true
+set ratios 1:3:4
 
 # key bindings
 map . set hidden!
+map <enter> open
+
+cmap <up>   cmd-history-prev
+cmap <down> cmd-history-next
+
+map <m-1> open
+map <m-2> updir
+map <m-3> edit
+map <m-up> up
+map <m-down> down
+
+# ===========
+#  Functions
+# ===========
+cmd on-cd &{{
+	# Display git repository status in your prompt
+	. /usr/share/git/completion/git-prompt.sh
+	GIT_PS1_SHOWDIRTYSTATE=1
+	GIT_PS1_SHOWSTASHSTATE=1
+	GIT_PS1_SHOWUNTRACKEDFILES=1
+	GIT_PS1_SHOWUPSTREAM="auto verbose"
+
+	git="$(__git_ps1 [%s])" || true
+	PS1="\033[01;32m%u@%h \033[01;34m%d\033[0m\033[1m%f \033[01;33m$git"
+	lf -remote "send $id set promptfmt \"$PS1\""
+}}
+on-cd # Ensure on-cd runs on startup
+
+# Define a custom 'open' command
+# This command is called when current file is not a directory. You may want to
+# use either file extensions and/or mime types here. Below uses an editor for
+# text files and a file opener for the rest.
+cmd open ${{
+    case "$(file --mime-type "$f" -b)" in
+        text/*) "$EDITOR" $fx;;
+        *) for f in $fx; do setsid $OPENER "$f" &> /dev/null & done;;
+    esac
+}}
+
+cmd sudoerr &{{
+	cmd="$1"
+	shift
+
+	IFS=" \n"
+	for arg in "$@"
+	do
+		err="$(sudo $cmd "$arg" 2>&1)"
+		[ $? -ne 0 ] && lf -remote "send $id echoerr $err" && exit
+	done
+
+	lf -remote "send $id reload"
+}}
