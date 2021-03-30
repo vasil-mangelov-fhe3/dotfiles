@@ -68,7 +68,7 @@ function _nredf_set_defaults() {
 }
 
 function _nredf_install_nvim() {
-  if [[ ! -f "${HOME}/.cache/vim/nvim.appimage" ]] || [[ ! "$(${HOME}/.local/bin/nvim --version)" == "$(curl -sH 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/neovim/neovim/releases/tags/nightly | grep -Po '"name":"\K.*?(?=")' | head -1)" ]]; then
+  if [[ ! -f "${HOME}/.cache/vim/nvim.appimage" ]] || [[ "$(${HOME}/.local/bin/nvim --version | head -1)" != "$(curl -sH 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/neovim/neovim/releases/tags/nightly | grep -Po '"name":"\K.*?(?=")' | head -1)" ]]; then
     echo -e '\033[1mDownloading neovim\033[0m'
     [[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
     [[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
@@ -86,7 +86,7 @@ function _nredf_install_nvim() {
 function _nredf_install_lf() {
   _nredf_get_sys_info
 
-  if [[ ! -f "${HOME}/.local/bin/lf" ]] || [[ ! "$(_nredf_github_latest_release gokcehan lf)" == "$(${HOME}/.local/bin/lf -version)" ]]; then
+  if [[ ! -f "${HOME}/.local/bin/lf" ]] || [[ "$(_nredf_github_latest_release gokcehan lf)" != "$(${HOME}/.local/bin/lf -version)" ]]; then
     echo -e '\033[1mInstalling lf\033[0m'
     curl -Ls "https://github.com/gokcehan/lf/releases/latest/download/lf-linux-${ARCH}.tar.gz" | tar xfz -C ${HOME}/.local/bin/
     chmod +x ${HOME}/.local/bin/lf
@@ -96,7 +96,7 @@ function _nredf_install_lf() {
 function _nredf_install_k8s_ops() {
   _nredf_get_sys_info
 
-  if [[ ! -f "${HOME}/.local/bin/kubectl" ]] || [[ ! $(curl -L -s https://dl.k8s.io/release/stable.txt) == $(${HOME}/.local/bin/kubectl version --short --client | awk -F: '{ gsub(/ /,""); print $2}') ]]; then
+  if [[ ! -f "${HOME}/.local/bin/kubectl" ]] || [[ $(curl -L -s https://dl.k8s.io/release/stable.txt) != $(${HOME}/.local/bin/kubectl version --short --client | awk -F: '{ gsub(/ /,""); print $2}') ]]; then
     echo -e '\033[1mInstalling kubectl\033[0m'
     curl -Ls "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubectl
     chmod +x ${HOME}/.local/bin/kubectl
