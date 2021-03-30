@@ -30,6 +30,15 @@ function _nredf_get_sys_info() {
   export ARCH OS
 }
 
+function _nredf_github_latest_release() {
+  local GHUSER=${1}
+  local GHREPO=${2}
+
+  GH_LATEST_RELEASE=$(curl -s https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest | grep -Po '"tag_name":"\K.*?(?=")')
+
+  echo ${GH_LATEST_RELEASE}
+}
+
 function _nredf_set_defaults() {
   # You may need to manually set your language environment
   export LANG=en_US.UTF-8
@@ -58,6 +67,32 @@ function _nredf_set_defaults() {
   export COMPOSE_HTTP_TIMEOUT=600
 }
 
+function _nredf_install_nvim() {
+  if [[ ! -f "${HOME}/.cache/vim/nvim.appimage" ]] || [[ ! "$(${HOME}/.local/bin/nvim --version)" == "$(curl -sH 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/neovim/neovim/releases/tags/nightly | grep -Po '"name":"\K.*?(?=")' | head -1)" ]]; then
+    echo -e '\033[1mDownloading neovim\033[0m'
+    [[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
+    [[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
+    curl -Lso "${HOME}/.cache/vim/nvim.appimage" "https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage"
+    chmod +x "${HOME}/.cache/vim/nvim.appimage"
+    PRERC_CURRENT_DIR=$(pwd)
+    cd "${HOME}/.cache/vim/"
+    "${HOME}/.cache/vim/nvim.appimage" --appimage-extract 2>&1 >/dev/null
+    cd ${PRERC_CURRENT_DIR}
+    unset PRERC_CURRENT_DIR
+    ln -sf "${HOME}/.cache/vim/squashfs-root/AppRun" "${HOME}/.local/bin/nvim"
+  fi
+}
+
+function _nredf_install_lf() {
+  _nredf_get_sys_info
+
+  if [[ ! -f "${HOME}/.local/bin/lf" ]] || [[ ! "$(_nredf_github_latest_release gokcehan lf)" == "$(${HOME}/.local/bin/lf -version)" ]]; then
+    echo -e '\033[1mInstalling lf\033[0m'
+    curl -Ls "https://github.com/gokcehan/lf/releases/latest/download/lf-linux-${ARCH}.tar.gz" | tar xfz -C ${HOME}/.local/bin/
+    chmod +x ${HOME}/.local/bin/lf
+  fi
+}
+
 function _nredf_install_k8s_ops() {
   _nredf_get_sys_info
 
@@ -84,9 +119,9 @@ function _nredf_install_k8s_ops() {
     done
   fi
 
-  if [[ ! -f "${HOME}/.local/bin/fluxctl" ]] || [[ ! $(curl -s https://api.github.com/repos/fluxcd/flux/releases/latest | grep -Po '"tag_name":"\K.*?(?=")') == $(${HOME}/.local/bin/fluxctl version) ]]; then
+  if [[ ! -f "${HOME}/.local/bin/fluxctl" ]] || [[ ! "$(_nredf_github_latest_release fluxcd flux)" == "$(${HOME}/.local/bin/fluxctl version)" ]]; then
     echo -e '\033[1mInstalling fluxctl\033[0m'
-    [[ -f "${HOME}/.local/bin/fluxctl" ]] && rm -rf "${HOME}/.local/bin/fluxctl"
+    [[ -f "${HOME}/.local/bin/fluxctl" ]] && rm -f "${HOME}/.local/bin/fluxctl"
     curl -sL https://github.com/fluxcd/flux/releases/latest/download/fluxctl_${OS}_${ARCH} -o ${HOME}/.local/bin/fluxctl
     chmod +x ${HOME}/.local/bin/fluxctl
   fi
@@ -96,3 +131,4 @@ function _nredf_install_k8s_ops() {
   chmod +x ${HOME}/.cache/helm/get_helm.sh
   HELM_INSTALL_DIR="${HOME}/.local/bin" ${HOME}/.cache/helm/get_helm.sh --no-sudo >/dev/null
 }
+
