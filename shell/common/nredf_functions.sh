@@ -68,7 +68,7 @@ function _nredf_set_defaults() {
 }
 
 function _nredf_install_nvim() {
-  if [[ ! -f "${HOME}/.cache/vim/nvim.appimage" ]] || [[ "$(${HOME}/.local/bin/nvim --version | head -1)" != "$(curl -sH 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/neovim/neovim/releases/tags/nightly | grep -Po '"name":"\K.*?(?=")' | head -1)" ]]; then
+  if [[ ! -f "${HOME}/.local/bin/nvim" ]] || [[ "$(${HOME}/.local/bin/nvim --version | head -1)" != "$(curl -sH 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/neovim/neovim/releases/tags/nightly | grep -Po '"name":"\K.*?(?=")' | head -1)" ]]; then
     echo -e '\033[1mDownloading neovim\033[0m'
     [[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
     [[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
@@ -76,7 +76,7 @@ function _nredf_install_nvim() {
     chmod +x "${HOME}/.cache/vim/nvim.appimage"
     PRERC_CURRENT_DIR=$(pwd)
     cd "${HOME}/.cache/vim/"
-    "${HOME}/.cache/vim/nvim.appimage" --appimage-extract 2>&1 >/dev/null
+    ${HOME}/.cache/vim/nvim.appimage --appimage-extract &>/dev/null
     cd ${PRERC_CURRENT_DIR}
     unset PRERC_CURRENT_DIR
     ln -sf "${HOME}/.cache/vim/squashfs-root/AppRun" "${HOME}/.local/bin/nvim"
@@ -88,7 +88,7 @@ function _nredf_install_lf() {
 
   if [[ ! -f "${HOME}/.local/bin/lf" ]] || [[ "$(_nredf_github_latest_release gokcehan lf)" != "$(${HOME}/.local/bin/lf -version)" ]]; then
     echo -e '\033[1mInstalling lf\033[0m'
-    curl -Ls "https://github.com/gokcehan/lf/releases/latest/download/lf-linux-${ARCH}.tar.gz" | tar xfz -C ${HOME}/.local/bin/
+    curl -Ls "https://github.com/gokcehan/lf/releases/latest/download/lf-linux-${ARCH}.tar.gz" | tar xzf - -C ${HOME}/.local/bin/
     chmod +x ${HOME}/.local/bin/lf
   fi
 }

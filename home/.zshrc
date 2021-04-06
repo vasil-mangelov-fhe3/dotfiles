@@ -21,7 +21,7 @@ source ${RC_PATH}/rc
 source ${DOT_PATH}/shell/common/commonrc
 source ${DOT_PATH}/shell/common/postrc
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh && source ${RC_PATH}/fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh && source ${DOT_PATH}/shell/common/fzf
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
