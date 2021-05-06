@@ -137,7 +137,7 @@ function _nredf_install_k8s_ops() {
   if [[ ! -f "${HOME}/.local/bin/k9s" ]] || [[ ! "$(_nredf_github_latest_release derailed k9s)" == "$(${HOME}/.local/bin/k9s version)" ]]; then
     echo -e '\033[1mInstalling k9s\033[0m'
     [[ -f "${HOME}/.local/bin/k9s" ]] && rm -f "${HOME}/.local/bin/k9s"
-    curl -Ls "https://github.com/derailed/k9s/releases/latest/download/k9s-${OS^}-${ARCH}.tar.gz" | tar xzf - k9s -C ${HOME}/.local/bin/
+    curl -Ls "https://github.com/derailed/k9s/releases/latest/download/k9s-${OS^}-$(uname -m).tar.gz" | tar xzf - -C ${HOME}/.local/bin/ k9s
     chmod +x ${HOME}/.local/bin/k9s
   fi
 }
