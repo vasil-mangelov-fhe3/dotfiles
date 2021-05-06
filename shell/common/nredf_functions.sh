@@ -134,10 +134,10 @@ function _nredf_install_k8s_ops() {
   chmod +x ${HOME}/.cache/helm/get_helm.sh
   HELM_INSTALL_DIR="${HOME}/.local/bin" ${HOME}/.cache/helm/get_helm.sh --no-sudo >/dev/null
 
-  if [[ ! -f "${HOME}/.local/bin/k9s" ]] || [[ ! "$(_nredf_github_latest_release derailed k9s)" == "$(${HOME}/.local/bin/k9s version)" ]]; then
+  if [[ ! -f "${HOME}/.local/bin/k9s" ]] || [[ ! "$(_nredf_github_latest_release derailed k9s)" == "$(${HOME}/.local/bin/k9s version | grep Version | awk '{print $2}')" ]]; then
     echo -e '\033[1mInstalling k9s\033[0m'
     [[ -f "${HOME}/.local/bin/k9s" ]] && rm -f "${HOME}/.local/bin/k9s"
-    curl -Ls "https://github.com/derailed/k9s/releases/latest/download/k9s-${OS^}-$(uname -m).tar.gz" | tar xzf - -C ${HOME}/.local/bin/ k9s
+    curl -Ls "https://github.com/derailed/k9s/releases/latest/download/k9s_$(uname)_$(uname -m).tar.gz" | tar xzf - -C ${HOME}/.local/bin/ k9s
     chmod +x ${HOME}/.local/bin/k9s
   fi
 }
