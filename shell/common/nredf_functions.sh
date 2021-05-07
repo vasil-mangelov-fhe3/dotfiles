@@ -141,5 +141,13 @@ function _nredf_install_k8s_ops() {
     curl -Ls "https://github.com/derailed/k9s/releases/latest/download/k9s_$(uname)_$(uname -m).tar.gz" | tar xzf - -C ${HOME}/.local/bin/ k9s
     chmod +x ${HOME}/.local/bin/k9s
   fi
+
+  local SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
+  if [[ "${SHELL_NAME}" =~ "bash|zsh" ]]; then
+    [[ -f ${HOME}/.local/bin/kubectl ]] && source <(${HOME}/.local/bin/kubectl completion ${SHELL_NAME})
+    [[ -f ${HOME}/.local/bin/fluxctl ]] && source <(${HOME}/.local/bin/fluxctl completion ${SHELL_NAME})
+    [[ -f ${HOME}/.local/bin/helm ]] && source <(${HOME}/.local/bin/helm completion ${SHELL_NAME})
+  fi
+
 }
 
