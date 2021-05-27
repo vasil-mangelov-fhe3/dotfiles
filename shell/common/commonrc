@@ -7,8 +7,6 @@ echo -e '\033[1mSourcing aliases and functions\033[0m'
 [[ -e ${RC_PATH}/functions ]] && source ${RC_PATH}/functions
 [[ -f ${RC_LOCAL}/functions.local ]] && source ${RC_LOCAL}/functions.local || touch ${RC_LOCAL}/functions.local
 
-[[ -s ${HOME}/.fzf ]] && ${HOME}/.fzf/install --all >/dev/null
-
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 

@@ -67,6 +67,20 @@ function _nredf_set_defaults() {
   export COMPOSE_HTTP_TIMEOUT=600
 }
 
+function _nredf_install_fzf() {
+  if [[ ! -f "${HOME}/.local/bin/fzf" ]] || [[ "$(_nredf_github_latest_release junegunn fzf)" != "$(${HOME}/.local/bin/fzf --version | awk '{print $1}')" ]]; then
+    echo -e '\033[1mInstalling fzf\033[0m'
+    [[ -d ${HOME}.fzf ]] && rm -rf ${HOME}/.fzf
+    curl -Ls "https://github.com/junegunn/fzf/releases/latest/download/fzf-$(_nredf_github_latest_release·junegunn·fzf)-${OS}-${ARCH}.tar.gz" | tar xzf - -C ${HOME}/.local/bin/
+    curl -Ls "https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux" -o ${HOME}/.local/bin/fzf-tmux
+    [[ ! -d ${HOME}/.config/fzf ]] && /bin/mkdir ${HOME}/.config/fzf
+    for FZF_FILE in completion.bash completion.zsh key-bindings.bash key-bindings.zsh key-bindings.fish; do
+      curl -Ls "https://raw.githubusercontent.com/junegunn/fzf/master/shell/${FZF_FILE}" -o ${HOME}/.config/fzf/${FZF_FILE}
+    done
+    chmod +x ${HOME}/.local/bin/fzf ${HOME}/.local/bin/fzf-tmux
+  fi
+}
+
 function _nredf_install_nvim() {
   _nredf_get_sys_info
 
@@ -104,6 +118,12 @@ function _nredf_install_k8s_ops() {
     echo -e '\033[1mInstalling kubectl\033[0m'
     curl -Ls "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubectl
     chmod +x ${HOME}/.local/bin/kubectl
+  fi
+
+  if [[ ! -f "${HOME}/.local/bin/kubeadm" ]] || [[ $(curl -L -s https://dl.k8s.io/release/stable.txt) != $(${HOME}/.local/bin/kubeadm version -o short) ]]; then
+    echo -e '\033[1mInstalling kubeadm\033[0m'
+    curl -Ls "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubeadm
+    chmod +x ${HOME}/.local/bin/kubeadm
   fi
 
   if [[ ! -d "${HOME}/.krew" ]]; then

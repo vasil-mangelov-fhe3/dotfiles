@@ -18,5 +18,3 @@ source ${DOT_PATH}/shell/common/prerc
 source ${RC_PATH}/rc
 source ${DOT_PATH}/shell/common/commonrc
 source ${DOT_PATH}/shell/common/postrc
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash && source ${DOT_PATH}/shell/common/fzf

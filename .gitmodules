@@ -2,7 +2,3 @@
 	path = shell/common/dircolors-solarized
 	url = https://github.com/NemesisRE/dircolors-solarized.git
 	branch = master
-[submodule "home/.fzf"]
-	path = home/.fzf
-	url = https://github.com/junegunn/fzf.git
-	branch = master

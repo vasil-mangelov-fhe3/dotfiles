@@ -40,6 +40,7 @@ else
   esac
 fi
 
+_nredf_install_fzf
 _nredf_install_nvim
 _nredf_install_lf
 [[ -f "${HOME}/.local/bin/kubectl" ]] && _nredf_install_k8s_ops
