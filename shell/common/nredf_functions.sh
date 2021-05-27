@@ -70,10 +70,9 @@ function _nredf_set_defaults() {
 function _nredf_install_fzf() {
   _nredf_get_sys_info
   local VERSION=$(_nredf_github_latest_release junegunn fzf)
+  local SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
 
-  [[ "${VERSION}" == "" ]] && return 1
-
-  if [[ ! -f "${HOME}/.local/bin/fzf" ]] || [[ "${VERSION}" != "$(${HOME}/.local/bin/fzf --version | awk '{print $1}')" ]]; then
+  if [[ ! -f "${HOME}/.local/bin/fzf" ]] || [[ "${VERSION}" != "" ]] && [[ "${VERSION}" != "$(${HOME}/.local/bin/fzf --version | awk '{print $1}')" ]]; then
     echo -e '\033[1mInstalling fzf\033[0m'
     [[ -d ${HOME}/.fzf ]] && rm -rf ${HOME}/.fzf
     [[ -f ${HOME}/.fzf.bash ]] && rm -f ${HOME}/.fzf.bash
@@ -86,6 +85,11 @@ function _nredf_install_fzf() {
     done
     chmod +x ${HOME}/.local/bin/fzf ${HOME}/.local/bin/fzf-tmux
   fi
+
+  if [[ "${SHELL_NAME}" =~ "bash|zsh" ]]; then
+    [[ -f ${HOME}/.config/fzf/completion.${SHELL_NAME} ]] && source ${HOME}/.config/fzf/completion.${SHELL_NAME}
+    [[ -f ${HOME}/.config/fzf/key-bindings.${SHELL_NAME} ]] && source ${HOME}/.config/fzf/key-bindings.${SHELL_NAME}
+  fi
 }
 
 function _nredf_install_nvim() {
@@ -93,10 +97,9 @@ function _nredf_install_nvim() {
   local VERSION=$(curl -sH 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/neovim/neovim/releases/tags/nightly | grep -Po '"name":"\K.*?(?=")' | head -1)
   local SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
 
-  [[ "${VERSION}" == "" ]] && return 1
   [[ "${OS}" != "linux" ]] && return 1
 
-  if [[ ! -f "${HOME}/.local/bin/nvim" ]] || [[ ${VERSION} != $(${HOME}/.local/bin/nvim --version | head -1) ]]; then
+  if [[ ! -f "${HOME}/.local/bin/nvim" ]] || [[ "${VERSION}" != "" ]] && [[ ${VERSION} != $(${HOME}/.local/bin/nvim --version | head -1) ]]; then
     echo -e '\033[1mDownloading neovim\033[0m'
     [[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
     [[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
@@ -115,14 +118,14 @@ function _nredf_install_lf() {
   _nredf_get_sys_info
 
   local VERSION=$(_nredf_github_latest_release gokcehan lf)
-  [[ "${VERSION}" == "" ]] && return 1
 
-  if [[ ! -f "${HOME}/.local/bin/lf" ]] || [[ "${VERSION}" != "$(${HOME}/.local/bin/lf -version)" ]]; then
+  if [[ ! -f "${HOME}/.local/bin/lf" ]] || [[ "${VERSION}" != "" ]] && [[ "${VERSION}" != "$(${HOME}/.local/bin/lf -version)" ]]; then
     echo -e '\033[1mInstalling lf\033[0m'
     curl -Ls "https://github.com/gokcehan/lf/releases/latest/download/lf-${OS}-${ARCH}.tar.gz" | tar xzf - -C ${HOME}/.local/bin/
     chmod +x ${HOME}/.local/bin/lf
-    export LF_ICONS="tw=:st=:ow=:dt=:di=:fi=:ln=:or=:ex=:*.c=:*.cc=:*.clj=:*.coffee=:*.cpp=:*.css=:*.d=:*.dart=:*.erl=:*.exs=:*.fs=:*.go=:*.h=:*.hh=:*.hpp=:*.hs=:*.html=:*.java=:*.jl=:*.js=:*.json=:*.lua=:*.md=:*.php=:*.pl=:*.pro=:*.py=:*.rb=:*.rs=:*.scala=:*.ts=:*.vim=:*.cmd=:*.ps1=:*.sh=:*.bash=:*.zsh=:*.fish=:*.tar=:*.tgz=:*.arc=:*.arj=:*.taz=:*.lha=:*.lz4=:*.lzh=:*.lzma=:*.tlz=:*.txz=:*.tzo=:*.t7z=:*.zip=:*.z=:*.dz=:*.gz=:*.lrz=:*.lz=:*.lzo=:*.xz=:*.zst=:*.tzst=:*.bz2=:*.bz=:*.tbz=:*.tbz2=:*.tz=:*.deb=:*.rpm=:*.jar=:*.war=:*.ear=:*.sar=:*.rar=:*.alz=:*.ace=:*.zoo=:*.cpio=:*.7z=:*.rz=:*.cab=:*.wim=:*.swm=:*.dwm=:*.esd=:*.jpg=:*.jpeg=:*.mjpg=:*.mjpeg=:*.gif=:*.bmp=:*.pbm=:*.pgm=:*.ppm=:*.tga=:*.xbm=:*.xpm=:*.tif=:*.tiff=:*.png=:*.svg=:*.svgz=:*.mng=:*.pcx=:*.mov=:*.mpg=:*.mpeg=:*.m2v=:*.mkv=:*.webm=:*.ogm=:*.mp4=:*.m4v=:*.mp4v=:*.vob=:*.qt=:*.nuv=:*.wmv=:*.asf=:*.rm=:*.rmvb=:*.flc=:*.avi=:*.fli=:*.flv=:*.gl=:*.dl=:*.xcf=:*.xwd=:*.yuv=:*.cgm=:*.emf=:*.ogv=:*.ogx=:*.aac=:*.au=:*.flac=:*.m4a=:*.mid=:*.midi=:*.mka=:*.mp3=:*.mpc=:*.ogg=:*.ra=:*.wav=:*.oga=:*.opus=:*.spx=:*.xspf=:*.pdf=:*.nix=:"
   fi
+
+  export LF_ICONS="tw=:st=:ow=:dt=:di=:fi=:ln=:or=:ex=:*.c=:*.cc=:*.clj=:*.coffee=:*.cpp=:*.css=:*.d=:*.dart=:*.erl=:*.exs=:*.fs=:*.go=:*.h=:*.hh=:*.hpp=:*.hs=:*.html=:*.java=:*.jl=:*.js=:*.json=:*.lua=:*.md=:*.php=:*.pl=:*.pro=:*.py=:*.rb=:*.rs=:*.scala=:*.ts=:*.vim=:*.cmd=:*.ps1=:*.sh=:*.bash=:*.zsh=:*.fish=:*.tar=:*.tgz=:*.arc=:*.arj=:*.taz=:*.lha=:*.lz4=:*.lzh=:*.lzma=:*.tlz=:*.txz=:*.tzo=:*.t7z=:*.zip=:*.z=:*.dz=:*.gz=:*.lrz=:*.lz=:*.lzo=:*.xz=:*.zst=:*.tzst=:*.bz2=:*.bz=:*.tbz=:*.tbz2=:*.tz=:*.deb=:*.rpm=:*.jar=:*.war=:*.ear=:*.sar=:*.rar=:*.alz=:*.ace=:*.zoo=:*.cpio=:*.7z=:*.rz=:*.cab=:*.wim=:*.swm=:*.dwm=:*.esd=:*.jpg=:*.jpeg=:*.mjpg=:*.mjpeg=:*.gif=:*.bmp=:*.pbm=:*.pgm=:*.ppm=:*.tga=:*.xbm=:*.xpm=:*.tif=:*.tiff=:*.png=:*.svg=:*.svgz=:*.mng=:*.pcx=:*.mov=:*.mpg=:*.mpeg=:*.m2v=:*.mkv=:*.webm=:*.ogm=:*.mp4=:*.m4v=:*.mp4v=:*.vob=:*.qt=:*.nuv=:*.wmv=:*.asf=:*.rm=:*.rmvb=:*.flc=:*.avi=:*.fli=:*.flv=:*.gl=:*.dl=:*.xcf=:*.xwd=:*.yuv=:*.cgm=:*.emf=:*.ogv=:*.ogx=:*.aac=:*.au=:*.flac=:*.m4a=:*.mid=:*.midi=:*.mka=:*.mp3=:*.mpc=:*.ogg=:*.ra=:*.wav=:*.oga=:*.opus=:*.spx=:*.xspf=:*.pdf=:*.nix=:"
 }
 
 function _nredf_install_k8s_ops() {
@@ -139,9 +142,7 @@ function _nredf_install_kubectl() {
   local VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt)
   local SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
 
-  [[ "${VERSION}" == "" ]] && return 1
-
-  if [[ ! -f "${HOME}/.local/bin/kubectl" ]] || [[ ${VERSION} != $(${HOME}/.local/bin/kubectl version --short --client | awk '{print $3}') ]]; then
+  if [[ ! -f "${HOME}/.local/bin/kubectl" ]] || [[ "${VERSION}" != "" ]] && [[ ${VERSION} != $(${HOME}/.local/bin/kubectl version --short --client | awk '{print $3}') ]]; then
     echo -e '\033[1mInstalling kubectl\033[0m'
     [[ -f "${HOME}/.local/bin/kubectl" ]] && rm -f "${HOME}/.local/bin/kubectl"
     curl -Ls "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubectl
@@ -158,9 +159,7 @@ function _nredf_install_krew() {
 
   local VERSION=$(_nredf_github_latest_release kubernetes-sigs krew)
 
-  [[ "${VERSION}" == "" ]] && return 1
-
-  if [[ ! -d "${HOME}/.krew" ]] || [[ ${VERSION} != $(${HOME}/.local/bin/kubectl krew version | awk '/^GitTag/{print $2}') ]]; then
+  if [[ ! -d "${HOME}/.krew" ]] || [[ "${VERSION}" != "" ]] && [[ ${VERSION} != $(${HOME}/.local/bin/kubectl krew version | awk '/^GitTag/{print $2}') ]]; then
     echo -e '\033[1mInstalling krew\033[0m'
     curl -fsSLo ${HOME}/.cache/krew/krew.tar.gz "https://github.com/kubernetes-sigs/krew/releases/download/${VERSION}/krew.tar.gz"
     tar -zxf ${HOME}/.cache/krew/krew.tar.gz --directory ${HOME}/.cache/krew && rm -f ${HOME}/.cache/krew/krew.tar.gz
@@ -182,9 +181,7 @@ function _nredf_install_kubeadm() {
   local VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt)
   local SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
 
-  [[ "${VERSION}" == "" ]] && return 1
-
-  if [[ ! -f "${HOME}/.local/bin/kubeadm" ]] || [[ ${VERSION} != $(${HOME}/.local/bin/kubeadm version --short --client | awk '{print $3}') ]]; then
+  if [[ ! -f "${HOME}/.local/bin/kubeadm" ]] || [[ "${VERSION}" != "" ]] && [[ ${VERSION} != $(${HOME}/.local/bin/kubeadm version --short --client | awk '{print $3}') ]]; then
     echo -e '\033[1mInstalling kubeadm\033[0m'
     [[ -f "${HOME}/.local/bin/kubeadm" ]] && rm -f "${HOME}/.local/bin/kubeadm"
     curl -Ls "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubeadm
@@ -201,9 +198,7 @@ function _nredf_install_fluxcd() {
   local VERSION=$(_nredf_github_latest_release fluxcd flux)
   local SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
 
-  [[ "${VERSION}" == "" ]] && return 1
-
-  if [[ ! -f "${HOME}/.local/bin/fluxctl" ]] || [[ ! "${VERSION}" == "$(${HOME}/.local/bin/fluxctl version)" ]]; then
+  if [[ ! -f "${HOME}/.local/bin/fluxctl" ]] || [[ "${VERSION}" != "" ]] && [[ "${VERSION}" != "$(${HOME}/.local/bin/fluxctl version)" ]]; then
     echo -e '\033[1mInstalling fluxctl\033[0m'
     [[ -f "${HOME}/.local/bin/fluxctl" ]] && rm -f "${HOME}/.local/bin/fluxctl"
     curl -sL https://github.com/fluxcd/flux/releases/latest/download/fluxctl_${OS}_${ARCH} -o ${HOME}/.local/bin/fluxctl
@@ -220,9 +215,7 @@ function _nredf_install_helm() {
   local VERSION=$(_nredf_github_latest_release helm helm)
   local SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
 
-  [[ "${VERSION}" == "" ]] && return 1
-
-  if [[ ! -f "${HOME}/.local/bin/helm" ]] || [[ ! "${VERSION}" == "$(${HOME}/.local/bin/helm version --template='{{ .Version }}')" ]]; then
+  if [[ ! -f "${HOME}/.local/bin/helm" ]] || [[ "${VERSION}" != "" ]] && [[ "${VERSION}" != "$(${HOME}/.local/bin/helm version --template='{{ .Version }}')" ]]; then
     echo -e '\033[1mRunning get_helm\033[0m'
     [[ -f "${HOME}/.local/bin/helm" ]] && rm -f "${HOME}/.local/bin/helm"
     curl -sL https://get.helm.sh/helm-${VERSION}-${OS}-${ARCH}.tar.gz | tar xzf - -C ${HOME}/.local/bin/
@@ -238,9 +231,7 @@ function _nredf_install_k9s() {
   _nredf_get_sys_info
   local VERSION=$(_nredf_github_latest_release derailed k9s)
 
-  [[ "${VERSION}" == "" ]] && return 1
-
-  if [[ ! -f "${HOME}/.local/bin/k9s" ]] || [[ ! "${VERSION}" == "$(${HOME}/.local/bin/k9s version | grep Version | awk '{print $2}' | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")" ]]; then
+  if [[ ! -f "${HOME}/.local/bin/k9s" ]] || [[ "${VERSION}" != "" ]] && [[ "${VERSION}" != "$(${HOME}/.local/bin/k9s version | grep Version | awk '{print $2}' | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")" ]]; then
     echo -e '\033[1mInstalling k9s\033[0m'
     [[ -f "${HOME}/.local/bin/k9s" ]] && rm -f "${HOME}/.local/bin/k9s"
     curl -Ls "https://github.com/derailed/k9s/releases/latest/download/k9s_$(uname)_$(uname -m).tar.gz" | tar xzf - -C ${HOME}/.local/bin/ k9s

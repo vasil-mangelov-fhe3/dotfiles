@@ -4,6 +4,3 @@ zmodload zsh/mathfunc
 zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(|.|..) ]] && reply=(..)'
 
 fpath=(${HOME}/.config/completion/zsh $fpath)
-
-[[ -f ${HOME}/.config/fzf/completion.zsh ]] && source ${HOME}/.config/fzf/completion.zsh
-[[ -f ${HOME}/.config/fzf/key-bindings.zsh ]] && source ${HOME}/.config/fzf/key-bindings.zsh
