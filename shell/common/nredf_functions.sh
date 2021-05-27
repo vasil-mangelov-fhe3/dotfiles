@@ -124,7 +124,7 @@ function _nredf_install_k8s_ops() {
     chmod +x ${HOME}/.local/bin/kubectl
   fi
 
-  if [[ ! -f "${HOME}/.local/bin/kubeadm" ]] || [[ $(curl -L -s https://dl.k8s.io/release/stable.txt) != $(${HOME}/.local/bin/kubeadm version -o short) ]]; then
+  if [[ ! -f "${HOME}/.local/bin/kubeadm" ]] || [[ $(curl -L -s https://dl.k8s.io/release/stable.txt) != $(${HOME}/.local/bin/kubeadm version --short --client | awk -F: '{ gsub(/ /,""); print $2}') ]]; then
     echo -e '\033[1mInstalling kubeadm\033[0m'
     curl -Ls "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubeadm
     chmod +x ${HOME}/.local/bin/kubeadm
