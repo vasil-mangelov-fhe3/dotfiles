@@ -68,10 +68,14 @@ function _nredf_set_defaults() {
 }
 
 function _nredf_install_fzf() {
-  if [[ ! -f "${HOME}/.local/bin/fzf" ]] || [[ "$(_nredf_github_latest_release junegunn fzf)" != "$(${HOME}/.local/bin/fzf --version | awk '{print $1}')" ]]; then
+  _nredf_get_sys_info
+  local VERSION=$(_nredf_github_latest_release junegunn fzf)
+  if [[ ! -f "${HOME}/.local/bin/fzf" ]] || [[ "${VERSION}" != "$(${HOME}/.local/bin/fzf --version | awk '{print $1}')" ]]; then
     echo -e '\033[1mInstalling fzf\033[0m'
-    [[ -d ${HOME}.fzf ]] && rm -rf ${HOME}/.fzf
-    curl -Ls "https://github.com/junegunn/fzf/releases/latest/download/fzf-$(_nredf_github_latest_release junegunn fzf)-${OS}-${ARCH}.tar.gz" | tar xzf - -C ${HOME}/.local/bin/
+    [[ -d ${HOME}/.fzf ]] && rm -rf ${HOME}/.fzf
+    [[ -f ${HOME}/.fzf.bash ]] && rm -f ${HOME}/.fzf.bash
+    [[ -f ${HOME}/.fzf.zsh ]] && rm -f ${HOME}/.fzf.zsh
+    curl -Ls "https://github.com/junegunn/fzf/releases/download/${VERSION}/fzf-${VERSION}-${OS}_${ARCH}.tar.gz" | tar xzf - -C ${HOME}/.local/bin/
     curl -Ls "https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux" -o ${HOME}/.local/bin/fzf-tmux
     [[ ! -d ${HOME}/.config/fzf ]] && /bin/mkdir ${HOME}/.config/fzf
     for FZF_FILE in completion.bash completion.zsh key-bindings.bash key-bindings.zsh key-bindings.fish; do
