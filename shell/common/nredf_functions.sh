@@ -96,7 +96,7 @@ function _nredf_install_nvim() {
   [[ "${VERSION}" == "" ]] && return 1
   [[ "${OS}" != "linux" ]] && return 1
 
-  if [[ ! -f "${HOME}/.local/bin/nvim" ]] || [[ "$(${HOME}/.local/bin/nvim --version | head -1)" != "$(curl -sH 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/neovim/neovim/releases/tags/nightly | grep -Po '"name":"\K.*?(?=")' | head -1)" ]]; then
+  if [[ ! -f "${HOME}/.local/bin/nvim" ]] || [[ ${VERSION} != $(${HOME}/.local/bin/nvim --version | head -1) ]]; then
     echo -e '\033[1mDownloading neovim\033[0m'
     [[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
     [[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
@@ -141,7 +141,7 @@ function _nredf_install_kubectl() {
 
   [[ "${VERSION}" == "" ]] && return 1
 
-  if [[ ! -f "${HOME}/.local/bin/kubectl" ]] || [[ ${VERSION} != $(${HOME}/.local/bin/kubectl version --short --client | awk -F: '{ gsub(/ /,""); print $2}') ]]; then
+  if [[ ! -f "${HOME}/.local/bin/kubectl" ]] || [[ ${VERSION} != $(${HOME}/.local/bin/kubectl version --short --client | awk '{print $3}') ]]; then
     echo -e '\033[1mInstalling kubectl\033[0m'
     curl -Ls "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubectl
     chmod +x ${HOME}/.local/bin/kubectl
@@ -155,21 +155,21 @@ function _nredf_install_kubectl() {
 function _nredf_install_krew() {
   [[ ! -f "${HOME}/.local/bin/kubectl" ]] && return 1
 
-  local VERSION=$(_nredf_github_latest_release gokcehan lf)
+  local VERSION=$(_nredf_github_latest_release kubernetes-sigs krew)
 
   [[ "${VERSION}" == "" ]] && return 1
 
   if [[ ! -d "${HOME}/.krew" ]] || [[ ${VERSION} != $(${HOME}/.local/bin/kubectl krew version | awk '/^GitTag/{print $2}') ]]; then
     echo -e '\033[1mInstalling krew\033[0m'
-    curl -fsSLo ${HOME}/.cache/krew/krew.tar.gz "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz"
+    curl -fsSLo ${HOME}/.cache/krew/krew.tar.gz "https://github.com/kubernetes-sigs/krew/releases/download/${VERSION}/krew.tar.gz"
     tar -zxf ${HOME}/.cache/krew/krew.tar.gz --directory ${HOME}/.cache/krew && rm -f ${HOME}/.cache/krew/krew.tar.gz
     KREW=${HOME}/.cache/krew/krew-"$(uname | tr '[:upper:]' '[:lower:]')_$(uname -m | sed -e 's/x86_64/amd64/' -e 's/arm.*$/arm/')"
     "$KREW" install krew 2>/dev/null
-    export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
   fi
 
-  echo -e '\033[1mUpdating krew plugins\033[0m'
   export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+  echo -e '\033[1mUpdating krew plugins\033[0m'
   kubectl krew upgrade 2>/dev/null
   for KREW_PLUGIN in ctx ns doctor fuzzy images status oidc-login; do
     kubectl krew list | grep -q ${KREW_PLUGIN} || kubectl krew install ${KREW_PLUGIN} 2>/dev/null
@@ -183,7 +183,7 @@ function _nredf_install_kubeadm() {
 
   [[ "${VERSION}" == "" ]] && return 1
 
-  if [[ ! -f "${HOME}/.local/bin/kubeadm" ]] || [[ ${VERSION} != $(${HOME}/.local/bin/kubeadm version --short --client | awk -F: '{ gsub(/ /,""); print $2}') ]]; then
+  if [[ ! -f "${HOME}/.local/bin/kubeadm" ]] || [[ ${VERSION} != $(${HOME}/.local/bin/kubeadm version --short --client | awk '{print $3}') ]]; then
     echo -e '\033[1mInstalling kubeadm\033[0m'
     curl -Ls "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubeadm
     chmod +x ${HOME}/.local/bin/kubeadm
