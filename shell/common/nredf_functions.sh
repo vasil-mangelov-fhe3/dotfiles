@@ -143,6 +143,7 @@ function _nredf_install_kubectl() {
 
   if [[ ! -f "${HOME}/.local/bin/kubectl" ]] || [[ ${VERSION} != $(${HOME}/.local/bin/kubectl version --short --client | awk '{print $3}') ]]; then
     echo -e '\033[1mInstalling kubectl\033[0m'
+    [[ -f "${HOME}/.local/bin/kubectl" ]] && rm -f "${HOME}/.local/bin/kubectl"
     curl -Ls "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubectl
     chmod +x ${HOME}/.local/bin/kubectl
   fi
@@ -185,6 +186,7 @@ function _nredf_install_kubeadm() {
 
   if [[ ! -f "${HOME}/.local/bin/kubeadm" ]] || [[ ${VERSION} != $(${HOME}/.local/bin/kubeadm version --short --client | awk '{print $3}') ]]; then
     echo -e '\033[1mInstalling kubeadm\033[0m'
+    [[ -f "${HOME}/.local/bin/kubeadm" ]] && rm -f "${HOME}/.local/bin/kubeadm"
     curl -Ls "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubeadm
     chmod +x ${HOME}/.local/bin/kubeadm
   fi
