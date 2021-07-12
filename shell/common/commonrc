@@ -25,3 +25,10 @@ if [[ "${OS}" == "linux" ]]; then
   echo -e '\033[1mSearch and delete broken symlinks\033[0m'
   find ${HOME} -type l ! -exec test -e {} \; -delete
 fi
+
+_nredf_install_fzf
+_nredf_install_nvim
+_nredf_install_lf
+_nredf_install_lazygit
+[[ -f "${HOME}/.local/bin/kubectl" ]] && _nredf_install_k8s_ops
+

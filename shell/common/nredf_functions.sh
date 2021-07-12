@@ -22,7 +22,7 @@ function _nredf_get_sys_info() {
     i386) ARCH="386";;
   esac
 
-  OS=$(echo `uname`|tr '[:upper:]' '[:lower:]')
+  OS=$(uname|tr '[:upper:]' '[:lower:]')
   case "${OS}" in
     mingw*) OS='windows';;
   esac
@@ -34,9 +34,9 @@ function _nredf_github_latest_release() {
   local GHUSER=${1}
   local GHREPO=${2}
 
-  GH_LATEST_RELEASE=$(curl -s https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest | grep -Po '"tag_name":"\K.*?(?=")')
+  GH_LATEST_RELEASE=$(curl -s "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest" | grep -Po '"tag_name":"\K.*?(?=")')
 
-  echo ${GH_LATEST_RELEASE}
+  echo "${GH_LATEST_RELEASE}"
 }
 
 function _nredf_set_defaults() {
@@ -74,22 +74,24 @@ function _nredf_install_fzf() {
 
   if [[ ! -f "${HOME}/.local/bin/fzf" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/fzf --version | awk '{print $1}')" ]]; then
     echo -e '\033[1mInstalling fzf\033[0m'
-    [[ -d ${HOME}/.fzf ]] && rm -rf ${HOME}/.fzf
-    [[ -f ${HOME}/.fzf.bash ]] && rm -f ${HOME}/.fzf.bash
-    [[ -f ${HOME}/.fzf.zsh ]] && rm -f ${HOME}/.fzf.zsh
-    curl -Ls "https://github.com/junegunn/fzf/releases/download/${VERSION}/fzf-${VERSION}-${OS}_${ARCH}.tar.gz" | tar xzf - -C ${HOME}/.local/bin/
-    curl -Ls "https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux" -o ${HOME}/.local/bin/fzf-tmux
-    [[ ! -d ${HOME}/.config/fzf ]] && /bin/mkdir ${HOME}/.config/fzf
+    [[ -d ${HOME}/.fzf ]] && rm -rf "${HOME}/.fzf"
+    [[ -f ${HOME}/.fzf.bash ]] && rm -f "${HOME}/.fzf.bash"
+    [[ -f ${HOME}/.fzf.zsh ]] && rm -f "${HOME}/.fzf.zsh"
+    curl -Ls "https://github.com/junegunn/fzf/releases/download/${VERSION}/fzf-${VERSION}-${OS}_${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/"
+    curl -Ls "https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux" -o "${HOME}/.local/bin/fzf-tmux"
+    [[ ! -d ${HOME}/.config/fzf ]] && /bin/mkdir "${HOME}/.config/fzf"
     for FZF_FILE in completion.bash completion.zsh key-bindings.bash key-bindings.zsh key-bindings.fish; do
-      curl -Ls "https://raw.githubusercontent.com/junegunn/fzf/master/shell/${FZF_FILE}" -o ${HOME}/.config/fzf/${FZF_FILE}
+      curl -Ls "https://raw.githubusercontent.com/junegunn/fzf/master/shell/${FZF_FILE}" -o "${HOME}/.config/fzf/${FZF_FILE}"
     done
     chmod +x ${HOME}/.local/bin/fzf ${HOME}/.local/bin/fzf-tmux
   fi
 
-  if [[ "${SHELL_NAME}" =~ "bash|zsh" ]]; then
-    [[ -f ${HOME}/.config/fzf/completion.${SHELL_NAME} ]] && source ${HOME}/.config/fzf/completion.${SHELL_NAME}
-    [[ -f ${HOME}/.config/fzf/key-bindings.${SHELL_NAME} ]] && source ${HOME}/.config/fzf/key-bindings.${SHELL_NAME}
+  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f ${HOME}/.config/fzf/completion.${SHELL_NAME} ]] && source "${HOME}/.config/fzf/completion.${SHELL_NAME}"
+    [[ -f ${HOME}/.config/fzf/key-bindings.${SHELL_NAME} ]] && source "${HOME}/.config/fzf/key-bindings.${SHELL_NAME}"
   fi
+
+  [[ -f "${DOT_PATH}/shell/common/fzf" ]] && source "${DOT_PATH}/shell/common/fzf"
 }
 
 function _nredf_install_nvim() {
@@ -108,7 +110,7 @@ function _nredf_install_nvim() {
     PRERC_CURRENT_DIR=$(pwd)
     cd "${HOME}/.cache/vim/"
     ${HOME}/.cache/vim/nvim.appimage --appimage-extract &>/dev/null
-    cd ${PRERC_CURRENT_DIR}
+    cd "${PRERC_CURRENT_DIR}"
     unset PRERC_CURRENT_DIR
     ln -sf "${HOME}/.cache/vim/squashfs-root/AppRun" "${HOME}/.local/bin/nvim"
   fi
@@ -128,10 +130,23 @@ function _nredf_install_lf() {
   export LF_ICONS="tw=:st=:ow=:dt=:di=:fi=:ln=:or=:ex=:*.c=:*.cc=:*.clj=:*.coffee=:*.cpp=:*.css=:*.d=:*.dart=:*.erl=:*.exs=:*.fs=:*.go=:*.h=:*.hh=:*.hpp=:*.hs=:*.html=:*.java=:*.jl=:*.js=:*.json=:*.lua=:*.md=:*.php=:*.pl=:*.pro=:*.py=:*.rb=:*.rs=:*.scala=:*.ts=:*.vim=:*.cmd=:*.ps1=:*.sh=:*.bash=:*.zsh=:*.fish=:*.tar=:*.tgz=:*.arc=:*.arj=:*.taz=:*.lha=:*.lz4=:*.lzh=:*.lzma=:*.tlz=:*.txz=:*.tzo=:*.t7z=:*.zip=:*.z=:*.dz=:*.gz=:*.lrz=:*.lz=:*.lzo=:*.xz=:*.zst=:*.tzst=:*.bz2=:*.bz=:*.tbz=:*.tbz2=:*.tz=:*.deb=:*.rpm=:*.jar=:*.war=:*.ear=:*.sar=:*.rar=:*.alz=:*.ace=:*.zoo=:*.cpio=:*.7z=:*.rz=:*.cab=:*.wim=:*.swm=:*.dwm=:*.esd=:*.jpg=:*.jpeg=:*.mjpg=:*.mjpeg=:*.gif=:*.bmp=:*.pbm=:*.pgm=:*.ppm=:*.tga=:*.xbm=:*.xpm=:*.tif=:*.tiff=:*.png=:*.svg=:*.svgz=:*.mng=:*.pcx=:*.mov=:*.mpg=:*.mpeg=:*.m2v=:*.mkv=:*.webm=:*.ogm=:*.mp4=:*.m4v=:*.mp4v=:*.vob=:*.qt=:*.nuv=:*.wmv=:*.asf=:*.rm=:*.rmvb=:*.flc=:*.avi=:*.fli=:*.flv=:*.gl=:*.dl=:*.xcf=:*.xwd=:*.yuv=:*.cgm=:*.emf=:*.ogv=:*.ogx=:*.aac=:*.au=:*.flac=:*.m4a=:*.mid=:*.midi=:*.mka=:*.mp3=:*.mpc=:*.ogg=:*.ra=:*.wav=:*.oga=:*.opus=:*.spx=:*.xspf=:*.pdf=:*.nix=:"
 }
 
+function _nredf_install_lazygit() {
+  _nredf_get_sys_info
+
+  local VERSION=$(_nredf_github_latest_release jesseduffield lazygit)
+
+  if [[ ! -f "${HOME}/.local/bin/lazygit" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/lazygit -version)" ]]; then
+    echo -e '\033[1mInstalling lazygit\033[0m'
+    curl -Ls "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${VERSION#v}_${OS}_$(uname -m).tar.gz" | tar xzf - -C ${HOME}/.local/bin/
+    chmod +x ${HOME}/.local/bin/lazygit
+  fi
+}
+
 function _nredf_install_k8s_ops() {
   _nredf_install_kubectl
   _nredf_install_krew
   _nredf_install_kubeadm
+  _nredf_install_kubeseal
   _nredf_install_fluxcd
   _nredf_install_helm
   _nredf_install_k9s
@@ -149,7 +164,7 @@ function _nredf_install_kubectl() {
     chmod +x ${HOME}/.local/bin/kubectl
   fi
 
-  if [[ "${SHELL_NAME}" =~ "bash|zsh" ]]; then
+  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
     [[ -f ${HOME}/.local/bin/kubectl ]] && source <(${HOME}/.local/bin/kubectl completion ${SHELL_NAME})
   fi
 }
@@ -159,6 +174,8 @@ function _nredf_install_krew() {
 
   local VERSION=$(_nredf_github_latest_release kubernetes-sigs krew)
 
+  export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
   if [[ ! -d "${HOME}/.krew" ]] || [[ "${VERSION}" != "" && ${VERSION} != $(${HOME}/.local/bin/kubectl krew version | awk '/^GitTag/{print $2}') ]]; then
     echo -e '\033[1mInstalling krew\033[0m'
     curl -fsSLo ${HOME}/.cache/krew/krew.tar.gz "https://github.com/kubernetes-sigs/krew/releases/download/${VERSION}/krew.tar.gz"
@@ -167,11 +184,9 @@ function _nredf_install_krew() {
     "$KREW" install krew 2>/dev/null
   fi
 
-  export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-
   echo -e '\033[1mUpdating krew plugins\033[0m'
   kubectl krew upgrade 2>/dev/null
-  for KREW_PLUGIN in ctx ns doctor fuzzy images status oidc-login; do
+  for KREW_PLUGIN in ctx ns doctor fuzzy konfig images status oidc-login get-all; do
     kubectl krew list | grep -q ${KREW_PLUGIN} || kubectl krew install ${KREW_PLUGIN} 2>/dev/null
   done
 }
@@ -181,15 +196,27 @@ function _nredf_install_kubeadm() {
   local VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt)
   local SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
 
-  if [[ ! -f "${HOME}/.local/bin/kubeadm" ]] || [[ "${VERSION}" != "" && ${VERSION} != $(${HOME}/.local/bin/kubeadm version --short --client | awk '{print $3}') ]]; then
+  if [[ ! -f "${HOME}/.local/bin/kubeadm" ]] || [[ "${VERSION}" != "" && ${VERSION} != $(${HOME}/.local/bin/kubeadm version -o short) ]]; then
     echo -e '\033[1mInstalling kubeadm\033[0m'
     [[ -f "${HOME}/.local/bin/kubeadm" ]] && rm -f "${HOME}/.local/bin/kubeadm"
-    curl -Ls "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubectl" -o ${HOME}/.local/bin/kubeadm
+    curl -Ls "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubeadm" -o ${HOME}/.local/bin/kubeadm
     chmod +x ${HOME}/.local/bin/kubeadm
   fi
 
-  if [[ "${SHELL_NAME}" =~ "bash|zsh" ]]; then
+  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
     [[ -f ${HOME}/.local/bin/kubeadm ]] && source <(${HOME}/.local/bin/kubeadm completion ${SHELL_NAME})
+  fi
+}
+
+function _nredf_install_kubeseal() {
+  _nredf_get_sys_info
+  local VERSION=$(_nredf_github_latest_release bitnami-labs sealed-secrets)
+
+  if [[ ! -f "${HOME}/.local/bin/kubeseal" ]] || [[ "${VERSION}" != "" && ${VERSION} != $(${HOME}/.local/bin/kubeseal --version | awk '{print $3}') ]]; then
+    echo -e '\033[1mInstalling kubeseal\033[0m'
+    [[ -f "${HOME}/.local/bin/kubeseal" ]] && rm -f "${HOME}/.local/bin/kubeseal"
+    curl -Ls "https://github.com/bitnami-labs/sealed-secrets/releases/latest/download/kubeseal-${OS}-${ARCH}" -o ${HOME}/.local/bin/kubeseal
+    chmod +x ${HOME}/.local/bin/kubeseal
   fi
 }
 
@@ -205,7 +232,7 @@ function _nredf_install_fluxcd() {
     chmod +x ${HOME}/.local/bin/fluxctl
   fi
 
-  if [[ "${SHELL_NAME}" =~ "bash|zsh" ]]; then
+  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
     [[ -f ${HOME}/.local/bin/fluxctl ]] && source <(${HOME}/.local/bin/fluxctl completion ${SHELL_NAME})
   fi
 }
@@ -215,14 +242,15 @@ function _nredf_install_helm() {
   local VERSION=$(_nredf_github_latest_release helm helm)
   local SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
 
-  if [[ ! -f "${HOME}/.local/bin/helm" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/helm version --template='{{ .Version }}')" ]]; then
-    echo -e '\033[1mRunning get_helm\033[0m'
+  if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/helm" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/helm version --template='{{ .Version }}')" ]]; then
+    echo -e '\033[1mInstalling helm\033[0m'
     [[ -f "${HOME}/.local/bin/helm" ]] && rm -f "${HOME}/.local/bin/helm"
-    curl -sL https://get.helm.sh/helm-${VERSION}-${OS}-${ARCH}.tar.gz | tar xzf - -C ${HOME}/.local/bin/
+    echo "curl -sL https://get.helm.sh/helm-${VERSION}-${OS}-${ARCH}.tar.gz | tar xzf - -C ${HOME}/.cache/helm"
+    mv ${HOME}/.cache/helm/**/helm ${HOME}/.local/bin/helm
     chmod +x ${HOME}/.local/bin/helm
   fi
 
-  if [[ "${SHELL_NAME}" =~ "bash|zsh" ]]; then
+  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
     [[ -f ${HOME}/.local/bin/helm ]] && source <(${HOME}/.local/bin/helm completion ${SHELL_NAME})
   fi
 }
