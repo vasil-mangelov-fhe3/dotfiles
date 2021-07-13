@@ -135,11 +135,13 @@ function _nredf_install_lazygit() {
 
   local VERSION=$(_nredf_github_latest_release jesseduffield lazygit)
 
-  if [[ ! -f "${HOME}/.local/bin/lazygit" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/lazygit -version)" ]]; then
+  if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/lazygit" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(${HOME}/.local/bin/lazygit -v | awk '{print $6}' | awk -F= '{gsub(/,$/,""); print $2}')" ]]; then
     echo -e '\033[1mInstalling lazygit\033[0m'
-    curl -Ls "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${VERSION#v}_${OS}_$(uname -m).tar.gz" | tar xzf - -C ${HOME}/.local/bin/
+    curl -Ls "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${VERSION#v}_${OS}_$(uname -m).tar.gz" | tar xzf - -C ${HOME}/.local/bin/ lazygit
     chmod +x ${HOME}/.local/bin/lazygit
   fi
+
+  alias lg=lazygit
 }
 
 function _nredf_install_k8s_ops() {
