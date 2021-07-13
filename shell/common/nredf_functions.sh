@@ -69,6 +69,9 @@ function _nredf_set_defaults() {
   # docker-compose
   export COMPOSE_PARALLEL_LIMIT=10
   export COMPOSE_HTTP_TIMEOUT=600
+
+  # k9s config directory
+  export K9SCONFIG="${HOME}/.config/k9s"
 }
 
 function _nredf_install_fzf() {
