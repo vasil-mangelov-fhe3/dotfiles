@@ -1,0 +1,64 @@
+plugin:
+  #get all resources in a namespace using the krew get-all plugin
+  get-all:
+    shortCut: g
+    confirm: false
+    description: get-all
+    scopes:
+    - all
+    command: sh
+    background: false
+    args:
+    - -c
+    - "kubectl get-all -n $NAMESPACE | less"
+
+  # Issues a helm delete --purge for the resource associated with the selected pod
+  helm-purge:
+    shortCut: Ctrl-P
+    description: Helm Purge
+    scopes:
+    - po
+    command: kubectl
+    background: true
+    args:
+    - purge
+    - $NAMESPACE
+    - $NAME
+
+  # Leverage stern (https://github.com/wercker/stern) to output logs.
+  stern:
+    shortCut: Ctrl-L
+    confirm: false
+    description: "Logs <Stern>"
+    scopes:
+      - pods
+    command: stern
+    background: false
+    args:
+      - --tail
+      - 50
+      - $FILTER
+      - -n
+      - $NAMESPACE
+      - --context
+      - $CONTEXT
+
+# Suspends/Resumes a cronjob
+  toggleCronjob:
+    shortCut: Ctrl-S
+    confirm: true
+    scopes:
+      - cj
+    description: Toggle to suspend or resume a running cronjob
+    command: kubectl
+    background: true
+    args:
+      - patch
+      - cronjobs
+      - $NAME
+      - -n
+      - $NAMESPACE
+      - --context
+      - $CONTEXT
+      - -p
+      - '{"spec" : {"suspend" : $!COL-SUSPEND }}'

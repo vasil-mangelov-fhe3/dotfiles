@@ -1,0 +1,132 @@
+k9s:
+  # Represents ui poll intervals. Default 2secs
+  refreshRate: 2
+  # Number of retries once the connection to the api-server is lost. Default 15.
+  maxConnRetry: 5
+  # Enable mouse support. Default false
+  enableMouse: true
+  # Set to true to hide K9s header. Default false
+  headless: false
+  # Set to true to hide K9s crumbs. Default false
+  crumbsless: false
+  # Indicates whether modification commands like delete/kill/edit are disabled. Default is false
+  readOnly: false
+  # Toggles icons display as not all terminal support these chars.
+  noIcons: false
+  # Logs configuration
+  logger:
+    tail: 100
+    buffer: 5000
+    sinceSeconds: 60
+    fullScreenLogs: false
+    textWrap: false
+    showTime: true
+  currentContext: b2k-website-k8s-main2
+  currentCluster: b2k-website-k8s-main2
+  clusters:
+    b2k-website-k8s-main1:
+      namespace:
+        active: ""
+        favorites:
+        - default
+      view:
+        active: policy/v1beta1/poddisruptionbudgets
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+    b2k-website-k8s-main2:
+      namespace:
+        active: ""
+        favorites:
+        - gitops-system
+        - default
+        - kube-system
+        - sealed-secrets
+        - cert-manager
+        - keycloak
+        - kafka
+        - all
+      view:
+        active: pod
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+    ct-cola-k8s-main1:
+      namespace:
+        active: ""
+        favorites:
+        - all
+        - default
+      view:
+        active: pod
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+    fhe3-vi-k8s-main1-lab:
+      namespace:
+        active: ""
+        favorites:
+        - default
+      view:
+        active: pod
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+    fhe3-vi-k8s-main2:
+      namespace:
+        active: ""
+        favorites:
+        - all
+        - default
+      view:
+        active: servicemonitor
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+  thresholds:
+    cpu:
+      critical: 90
+      warn: 70
+    memory:
+      critical: 90
+      warn: 70

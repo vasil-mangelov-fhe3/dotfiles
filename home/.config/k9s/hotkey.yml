@@ -1,0 +1,57 @@
+hotKey:
+  F1:
+    shortCut:     F1
+    description:  Viewing Pods
+    command:      pods
+  F2:
+    shortCut:     F2
+    description:  Viewing Namespaces
+    command:      namespaces
+  F3:
+    shortCut:     F3
+    description:  Viewing Helmreleases
+    command:      helmreleases
+  F4:
+    shortCut:     F4
+    description:  Viewing Deployments
+    command:      deployments
+  F5:
+    shortCut:     F5
+    description:  Viewing Statefullsets
+    command:      statefullsets
+  F6:
+    shortCut:     F6
+    description:  Viewing Services
+    command:      services
+  F7:
+    shortCut:     F7
+    description:  Viewing Endpoints
+    command:      endpoints
+  F8:
+    shortCut:     F8
+    description:  Viewing Ingresses
+    command:      ingresses
+  F9:
+    shortCut:     F9
+    description:  Viewing Secrets
+    command:      secrets
+  shift-F9:
+    shortCut:     shift-F9
+    description:  Viewing SealedSecrets
+    command:      sealedsecrets
+  F10:
+    shortCut:     F10
+    description:  Viewing Events
+    command:      events
+  F11:
+    shortCut:     F11
+    description:  Viewing Persistentvolumes
+    command:      persistentvolumes
+  shift-F11:
+    shortCut:     shift-F11
+    description:  Viewing Persistentvolumesclaims
+    command:      persistentvolumesclaims
+  F12:
+    shortCut:     F12
+    description:  Viewing ServiceAccounts
+    command:      serviceaccounts
