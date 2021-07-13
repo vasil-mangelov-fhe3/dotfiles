@@ -7,4 +7,4 @@
 /home/.local/share/gnome-shell/ignored_events
 /home/.local/share/gnome-shell/notifications
 
-/home/.config/k9s/config.yml
+home/.config/k9s/config.yml

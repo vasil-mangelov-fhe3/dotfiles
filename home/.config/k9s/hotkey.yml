@@ -17,8 +17,8 @@ hotKey:
     command:      deployments
   F5:
     shortCut:     F5
-    description:  Viewing Statefullsets
-    command:      statefullsets
+    description:  Viewing Statefulsets
+    command:      statefulsets
   F6:
     shortCut:     F6
     description:  Viewing Services
@@ -36,7 +36,7 @@ hotKey:
     description:  Viewing Secrets
     command:      secrets
   shift-F9:
-    shortCut:     shift-F9
+    shortCut:     Shift-F9
     description:  Viewing SealedSecrets
     command:      sealedsecrets
   F10:
@@ -48,7 +48,7 @@ hotKey:
     description:  Viewing Persistentvolumes
     command:      persistentvolumes
   shift-F11:
-    shortCut:     shift-F11
+    shortCut:     Shift-F11
     description:  Viewing Persistentvolumesclaims
     command:      persistentvolumesclaims
   F12:
