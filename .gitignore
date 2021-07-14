@@ -1,8 +1,8 @@
 /.buildpath
 /.project
-/shell/bash/*
-/shell/zsh/*
 /home/.local/share/gnome-shell/application_state
 /home/.local/share/gnome-shell/gnome-overrides-migrated
 /home/.local/share/gnome-shell/ignored_events
 /home/.local/share/gnome-shell/notifications
+/shell/common/tmux/plugins/*
+/shell/zsh/zplug
