@@ -183,6 +183,7 @@ function _nredf_install_krew() {
   [[ ! -f "${HOME}/.local/bin/kubectl" ]] && return 1
 
   local VERSION=$(_nredf_github_latest_release kubernetes-sigs krew)
+  local KREW_PLUGINS=()
 
   export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
@@ -196,8 +197,25 @@ function _nredf_install_krew() {
   fi
 
   echo -e '\033[1mUpdating krew plugins\033[0m'
+  kubectl krew update 2>/dev/null
   kubectl krew upgrade 2>/dev/null
-  for KREW_PLUGIN in ctx ns doctor fuzzy konfig images status oidc-login get-all; do
+
+  KREW_PLUGINS+=("ctx")
+  KREW_PLUGINS+=("ns")
+  KREW_PLUGINS+=("doctor")
+  KREW_PLUGINS+=("fuzzy")
+  KREW_PLUGINS+=("konfig")
+  KREW_PLUGINS+=("images")
+  KREW_PLUGINS+=("status")
+  KREW_PLUGINS+=("oidc-login")
+  KREW_PLUGINS+=("get-all")
+  KREW_PLUGINS+=("resource-capacity")
+  KREW_PLUGINS+=("deprecations")
+  KREW_PLUGINS+=("df-pv")
+  KREW_PLUGINS+=("outdated")
+  KREW_PLUGINS+=("sniff")
+
+  for KREW_PLUGIN in "${KREW_PLUGINS[@]}"; do
     kubectl krew list | grep -q ${KREW_PLUGIN} || kubectl krew install ${KREW_PLUGIN} 2>/dev/null
   done
 }
