@@ -160,6 +160,7 @@ function _nredf_install_k8s_ops() {
   _nredf_install_flux
   _nredf_install_helm
   _nredf_install_k9s
+  _nredf_install_velero
 }
 
 function _nredf_install_kubectl() {
@@ -183,8 +184,8 @@ function _nredf_install_krew() {
   [[ ! -f "${HOME}/.local/bin/kubectl" ]] && return 1
 
   local VERSION=$(_nredf_github_latest_release kubernetes-sigs krew)
-  local KREW_PLUGINS=()
 
+  export KREW_PLUGINS=()
   export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
   if [[ ! -d "${HOME}/.krew" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/kubectl krew version | awk '/^GitTag/{print $2}')" ]]; then
@@ -291,8 +292,7 @@ function _nredf_install_helm() {
   if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/helm" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/helm version --template='{{ .Version }}')" ]]; then
     echo -e '\033[1mInstalling helm\033[0m'
     [[ -f "${HOME}/.local/bin/helm" ]] && rm -f "${HOME}/.local/bin/helm"
-    curl -Lso - "https://get.helm.sh/helm-${VERSION}-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.cache/helm"
-    mv "${HOME}/.cache/helm/${OS}-${ARCH}/helm" "${HOME}/.local/bin/helm"
+    curl -Lso - "https://get.helm.sh/helm-${VERSION}-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" --strip-components=1 --wildcards --no-anchored '*helm'
     chmod +x "${HOME}/.local/bin/helm"
   fi
 
@@ -310,5 +310,22 @@ function _nredf_install_k9s() {
     [[ -f "${HOME}/.local/bin/k9s" ]] && rm -f "${HOME}/.local/bin/k9s"
     curl -Lso - "https://github.com/derailed/k9s/releases/latest/download/k9s_$(uname)_$(uname -m).tar.gz" | tar xzf - -C "${HOME}/.local/bin/" k9s
     chmod +x "${HOME}/.local/bin/k9s"
+  fi
+}
+
+function _nredf_install_velero() {
+  _nredf_get_sys_info
+  local VERSION=$(_nredf_github_latest_release vmware-tanzu velero)
+  local SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
+
+  if [[ ! -f "${HOME}/.local/bin/velero" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/velero version | grep Version | awk '{print $2}' | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")" ]]; then
+    echo -e '\033[1mInstalling velero\033[0m'
+    [[ -f "${HOME}/.local/bin/velero" ]] && rm -f "${HOME}/.local/bin/velero"
+    curl -Lso - "https://github.com/vmware-tanzu/velero/releases/latest/download/velero-${VERSION}-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" --strip-components=1 --wildcards --no-anchored '*velero'
+    chmod +x "${HOME}/.local/bin/velero"
+  fi
+
+  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${HOME}/.local/bin/velero" ]] && source <("${HOME}/.local/bin/velero" completion "${SHELL_NAME}")
   fi
 }
