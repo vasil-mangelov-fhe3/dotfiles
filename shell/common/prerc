@@ -1,4 +1,5 @@
 source ${DOT_PATH}/shell/common/nredf_functions.sh
+export COMMON_RC_LOCAL=${HOME}/.config/shell
 
 _nredf_set_ssh_agent
 _nredf_get_sys_info
@@ -6,7 +7,7 @@ _nredf_set_defaults
 
 [[ -f ${HOME}/.proxy.local ]] && source ${HOME}/.proxy.local
 
-mkdir -p ${HOME}/.local/bin ${HOME}/.cache/{krew,vim,helm} ${RC_LOCAL}
+mkdir -p ${HOME}/.local/bin ${HOME}/.cache/{krew,vim,helm} ${RC_LOCAL} ${COMMON_RC_LOCAL}
 
 # Load homeshick
 if [ ! -d ${HOME}/.homesick ]; then

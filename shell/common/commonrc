@@ -6,6 +6,7 @@ echo -e '\033[1mSourcing aliases and functions\033[0m'
 [[ -f ${RC_LOCAL}/aliases.local ]] && source ${RC_LOCAL}/aliases.local || touch ${RC_LOCAL}/aliases.local
 [[ -e ${RC_PATH}/functions ]] && source ${RC_PATH}/functions
 [[ -f ${RC_LOCAL}/functions.local ]] && source ${RC_LOCAL}/functions.local || touch ${RC_LOCAL}/functions.local
+[[ -f ${COMMON_RC_LOCAL}/rc.local ]] && source ${COMMON_RC_LOCAL}/rc.local || touch ${COMMON_RC_LOCAL}/rc.local
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"

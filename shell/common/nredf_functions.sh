@@ -144,7 +144,7 @@ function _nredf_install_lazygit() {
 
   if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/lazygit" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(${HOME}/.local/bin/lazygit -v | awk '{print $6}' | awk -F= '{gsub(/,$/,""); print $2}')" ]]; then
     echo -e '\033[1mInstalling lazygit\033[0m'
-    curl -Lso - "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${VERSION#v}_${OS}_$(uname -m).tar.gz" | tar xzf - -C "${HOME}/.local/bin/ lazygit"
+    curl -Lso - "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${VERSION#v}_${OS}_$(uname -m).tar.gz" | tar xzf - -C "${HOME}/.local/bin/" lazygit
     chmod +x "${HOME}/.local/bin/lazygit"
   fi
 
