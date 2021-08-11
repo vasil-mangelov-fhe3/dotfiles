@@ -318,7 +318,7 @@ function _nredf_install_velero() {
   local VERSION=$(_nredf_github_latest_release vmware-tanzu velero)
   local SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
 
-  if [[ ! -f "${HOME}/.local/bin/velero" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/velero version | grep Version | awk '{print $2}' | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")" ]]; then
+  if [[ ! -f "${HOME}/.local/bin/velero" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/velero version --client-only | grep Version | awk '{print $2}')" ]]; then
     echo -e '\033[1mInstalling velero\033[0m'
     [[ -f "${HOME}/.local/bin/velero" ]] && rm -f "${HOME}/.local/bin/velero"
     curl -Lso - "https://github.com/vmware-tanzu/velero/releases/latest/download/velero-${VERSION}-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" --strip-components=1 --wildcards --no-anchored '*velero'
