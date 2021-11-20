@@ -103,16 +103,16 @@ function _nredf_install_fzf() {
 
 function _nredf_install_nvim() {
   _nredf_get_sys_info
-  local VERSION=$(curl -sH 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/neovim/neovim/releases/tags/nightly | grep -Po '"name":"\K.*?(?=")' | head -1)
+  local VERSION=$(_nredf_github_latest_release neovim neovim)
   local SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
 
   [[ "${OS}" != "linux" ]] && return 1
 
-  if [[ ! -f "${HOME}/.local/bin/nvim" ]] || [[ "${VERSION}" != "" && ${VERSION} != "$(${HOME}/.local/bin/nvim --version | head -1)" ]]; then
+  if [[ ! -f "${HOME}/.local/bin/nvim" ]] || [[ "${VERSION}" != "" && ${VERSION} != "$(${HOME}/.local/bin/nvim --version | head -1 | awk '{print $2}')" ]]; then
     echo -e '\033[1mDownloading neovim\033[0m'
     [[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
     [[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
-    curl -Lso "${HOME}/.cache/vim/nvim.appimage" "https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage"
+    curl -Lso "${HOME}/.cache/vim/nvim.appimage" "https://github.com/neovim/neovim/releases/download/${VERSION}/nvim.appimage"
     chmod +x "${HOME}/.cache/vim/nvim.appimage"
     PRERC_CURRENT_DIR=$(pwd)
     cd "${HOME}/.cache/vim/"
