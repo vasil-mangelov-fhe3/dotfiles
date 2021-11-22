@@ -33,10 +33,16 @@ function _nredf_get_sys_info() {
 function _nredf_github_latest_release() {
   local GHUSER=${1}
   local GHREPO=${2}
+  local CACHEFILE="${XDG_CACHE_HOME}/nredf/nredf_github_latest_release-${GHUSER}-${GHREPO}"
 
-  GH_LATEST_RELEASE=$(curl -s "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest" | grep -Po '"tag_name":"\K.*?(?=")')
+  if [[ ! -d "${XDG_CACHE_HOME}/nredf" ]]; then
+    mkdir -p "${XDG_CACHE_HOME}/nredf"
+  fi
 
-  echo "${GH_LATEST_RELEASE}"
+  if [[ ! -f "${CACHEFILE}" || $(date -r ${CACHEFILE} +%s) -le $(($(date +%s) - 3600 )) ]]; then
+    curl -s "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest" | grep -Po '"tag_name":"\K.*?(?=")' > ${CACHEFILE}
+  fi
+  echo "$(cat "${CACHEFILE}")"
 }
 
 function _nredf_set_defaults() {
@@ -158,11 +164,11 @@ function _nredf_install_btop() {
 
   if [[ "${OS}" == "linux" ]]; then
     case ${UNAMEM} in
-      armv5*) exit;;
-      armv6*) exit;;
+      armv5*) return;;
+      armv6*) return;;
       armv7*) LIBC="musleabihf";;
-      x86) exit;;
-      i386) exit;;
+      x86) return;;
+      i386) return;;
     esac
   elif [[ "${OS}" == "macos" ]]; then
     LIBC="monterey"
