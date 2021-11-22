@@ -10,8 +10,8 @@ function _nredf_set_ssh_agent() {
 }
 
 function _nredf_get_sys_info() {
-  ARCH=$(uname -m)
-  case ${ARCH} in
+  UNAMEM=$(uname -m)
+  case ${UNAMEM} in
     armv5*) ARCH="armv5";;
     armv6*) ARCH="armv6";;
     armv7*) ARCH="arm";;
@@ -144,11 +144,35 @@ function _nredf_install_lazygit() {
 
   if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/lazygit" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(${HOME}/.local/bin/lazygit -v | awk '{print $6}' | awk -F= '{gsub(/,$/,""); print $2}')" ]]; then
     echo -e '\033[1mInstalling lazygit\033[0m'
-    curl -Lso - "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${VERSION#v}_${OS}_$(uname -m).tar.gz" | tar xzf - -C "${HOME}/.local/bin/" lazygit
+    curl -Lso - "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${VERSION#v}_${OS}_${UNAMEM}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" lazygit
     chmod +x "${HOME}/.local/bin/lazygit"
   fi
 
   alias lg=lazygit
+}
+
+function _nredf_install_btop() {
+  _nredf_get_sys_info
+  local VERSION=$(_nredf_github_latest_release aristocratos btop)
+  local LIBC="musl"
+
+  if [[ "${OS}" == "linux" ]]; then
+    case ${UNAMEM} in
+      armv5*) exit;;
+      armv6*) exit;;
+      armv7*) LIBC="musleabihf";;
+      x86) exit;;
+      i386) exit;;
+    esac
+  elif [[ "${OS}" == "macos" ]]; then
+    LIBC="monterey"
+  fi
+
+  if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/btop" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(${HOME}/.local/bin/btop -v | awk '{print $3}')" ]]; then
+    echo -e '\033[1mInstalling btop\033[0m'
+    curl -Lso - "https://github.com/aristocratos/btop/releases/latest/download/btop-${VERSION#v}-${UNAMEM}-${OS}-${LIBC}.tbz" | tar xjf - -C "${HOME}/.local/bin/" --strip-components=1 --wildcards --no-anchored '*btop'
+    chmod +x "${HOME}/.local/bin/btop"
+  fi
 }
 
 function _nredf_install_k8s_ops() {
@@ -308,7 +332,7 @@ function _nredf_install_k9s() {
   if [[ ! -f "${HOME}/.local/bin/k9s" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/k9s version | grep Version | awk '{print $2}' | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")" ]]; then
     echo -e '\033[1mInstalling k9s\033[0m'
     [[ -f "${HOME}/.local/bin/k9s" ]] && rm -f "${HOME}/.local/bin/k9s"
-    curl -Lso - "https://github.com/derailed/k9s/releases/latest/download/k9s_$(uname)_$(uname -m).tar.gz" | tar xzf - -C "${HOME}/.local/bin/" k9s
+    curl -Lso - "https://github.com/derailed/k9s/releases/latest/download/k9s_$(uname)_${UNAMEM}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" k9s
     chmod +x "${HOME}/.local/bin/k9s"
   fi
 }
