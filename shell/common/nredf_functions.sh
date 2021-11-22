@@ -182,7 +182,6 @@ function _nredf_install_btop() {
 }
 
 function _nredf_install_ctop() {
-  set -x
   _nredf_get_sys_info
 
   local VERSION=$(_nredf_github_latest_release bcicen ctop)
@@ -194,7 +193,6 @@ function _nredf_install_ctop() {
   fi
 
   alias ctop='TERM="${TERM/#tmux/screen}" ctop'
-  set +x
 }
 
 function _nredf_install_k8s_ops() {
