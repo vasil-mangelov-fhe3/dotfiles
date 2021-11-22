@@ -181,6 +181,22 @@ function _nredf_install_btop() {
   fi
 }
 
+function _nredf_install_ctop() {
+  set -x
+  _nredf_get_sys_info
+
+  local VERSION=$(_nredf_github_latest_release bcicen ctop)
+
+  if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/ctop" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(${HOME}/.local/bin/ctop -v | awk '{sub(",",""); print $3}')" ]]; then
+    echo -e '\033[1mInstalling ctop\033[0m'
+    curl -Ls "https://github.com/bcicen/ctop/releases/latest/download/ctop-${VERSION#v}-${OS}-${ARCH}" -o "${HOME}/.local/bin/ctop"
+    chmod +x "${HOME}/.local/bin/ctop"
+  fi
+
+  alias ctop='TERM="${TERM/#tmux/screen}" ctop'
+  set +x
+}
+
 function _nredf_install_k8s_ops() {
   _nredf_install_kubectl
   _nredf_install_krew

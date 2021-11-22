@@ -32,5 +32,6 @@ _nredf_install_nvim
 _nredf_install_lf
 _nredf_install_lazygit
 _nredf_install_btop
+_nredf_install_ctop
 [[ -f "${HOME}/.local/bin/kubectl" ]] && _nredf_install_k8s_ops
 
