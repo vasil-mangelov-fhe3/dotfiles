@@ -85,7 +85,7 @@ function _nredf_install_fzf() {
   local VERSION=$(_nredf_github_latest_release junegunn fzf)
   local SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
 
-  if [[ ! -f "${HOME}/.local/bin/fzf" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/fzf --version | awk '{print $1}')" ]]; then
+  if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/fzf" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/fzf --version | awk '{print $1}')" ]]; then
     echo -e '\033[1mInstalling fzf\033[0m'
     [[ -d ${HOME}/.fzf ]] && rm -rf "${HOME}/.fzf"
     [[ -f ${HOME}/.fzf.bash ]] && rm -f "${HOME}/.fzf.bash"
@@ -114,7 +114,7 @@ function _nredf_install_nvim() {
 
   [[ "${OS}" != "linux" ]] && return 1
 
-  if [[ ! -f "${HOME}/.local/bin/nvim" ]] || [[ "${VERSION}" != "" && ${VERSION} != "$(${HOME}/.local/bin/nvim --version | head -1 | awk '{print $2}')" ]]; then
+  if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/nvim" ]] || [[ "${VERSION}" != "" && ${VERSION} != "$(${HOME}/.local/bin/nvim --version | head -1 | awk '{print $2}')" ]]; then
     echo -e '\033[1mDownloading neovim\033[0m'
     [[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
     [[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
@@ -134,7 +134,7 @@ function _nredf_install_lf() {
 
   local VERSION=$(_nredf_github_latest_release gokcehan lf)
 
-  if [[ ! -f "${HOME}/.local/bin/lf" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/lf -version)" ]]; then
+  if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/lf" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/lf -version)" ]]; then
     echo -e '\033[1mInstalling lf\033[0m'
     curl -Lso - "https://github.com/gokcehan/lf/releases/latest/download/lf-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/"
     chmod +x "${HOME}/.local/bin/lf"
@@ -184,6 +184,10 @@ function _nredf_install_btop() {
 function _nredf_install_ctop() {
   _nredf_get_sys_info
 
+  if command -v docker >/dev/null 2>&1; then
+    return 0
+  fi
+
   local VERSION=$(_nredf_github_latest_release bcicen ctop)
 
   if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/ctop" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(${HOME}/.local/bin/ctop -v | awk '{sub(",",""); print $3}')" ]]; then
@@ -193,6 +197,18 @@ function _nredf_install_ctop() {
   fi
 
   alias ctop='TERM="${TERM/#tmux/screen}" ctop'
+}
+
+function _nredf_install_drone() {
+  _nredf_get_sys_info
+
+  local VERSION=$(_nredf_github_latest_release harness drone-cli)
+
+  if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/drone" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(${HOME}/.local/bin/drone -v | awk '{print $3}')" ]]; then
+    echo -e '\033[1mInstalling drone\033[0m'
+    curl -Lso - "https://github.com/harness/drone-cli/releases/latest/download/drone_${OS}_${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/"
+    chmod +x "${HOME}/.local/bin/drone"
+  fi
 }
 
 function _nredf_install_k8s_ops() {
