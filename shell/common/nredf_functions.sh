@@ -153,8 +153,6 @@ function _nredf_install_lazygit() {
     curl -Lso - "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${VERSION#v}_${OS}_${UNAMEM}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" lazygit
     chmod +x "${HOME}/.local/bin/lazygit"
   fi
-
-  alias lg=lazygit
 }
 
 function _nredf_install_btop() {
@@ -195,8 +193,6 @@ function _nredf_install_ctop() {
     curl -Ls "https://github.com/bcicen/ctop/releases/latest/download/ctop-${VERSION#v}-${OS}-${ARCH}" -o "${HOME}/.local/bin/ctop"
     chmod +x "${HOME}/.local/bin/ctop"
   fi
-
-  alias ctop='TERM="${TERM/#tmux/screen}" ctop'
 }
 
 function _nredf_install_drone() {
