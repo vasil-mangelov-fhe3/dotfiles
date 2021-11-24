@@ -16,3 +16,17 @@ if [[ "${OS}" == "linux" ]] && command -pv tmux &>/dev/null; then
         tmux -f ~/.tmux.conf -L $(hostname -s) new-session -s $(hostname -s)
     fi
 fi
+
+# Commented until proper mouse support is added
+# https://github.com/zellij-org/zellij/issues/175
+#if command -v zellij &>/dev/null; then
+#    if [[ -z "${ZELLIJ}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
+#        if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
+#            unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
+#            ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
+#            export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
+#        fi
+#    fi
+#
+#    [[ -z "${ZELLIJ}" ]] && zellij attach -c $(hostname -s)
+#fi
