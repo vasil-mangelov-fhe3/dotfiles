@@ -118,7 +118,7 @@ function _nredf_install_nvim() {
     echo -e '\033[1mDownloading neovim\033[0m'
     [[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
     [[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
-    curl -Lso "${HOME}/.cache/vim/nvim.appimage" "https://github.com/neovim/neovim/releases/download/${VERSION}/nvim.appimage"
+    curl -Lfso "${HOME}/.cache/vim/nvim.appimage" "https://github.com/neovim/neovim/releases/download/${VERSION}/nvim.appimage"
     chmod +x "${HOME}/.cache/vim/nvim.appimage"
     PRERC_CURRENT_DIR=$(pwd)
     cd "${HOME}/.cache/vim/"
@@ -136,7 +136,7 @@ function _nredf_install_lf() {
 
   if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/lf" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/lf -version)" ]]; then
     echo -e '\033[1mInstalling lf\033[0m'
-    curl -Lso - "https://github.com/gokcehan/lf/releases/latest/download/lf-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/"
+    curl -Lfso - "https://github.com/gokcehan/lf/releases/latest/download/lf-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/"
     chmod +x "${HOME}/.local/bin/lf"
   fi
 
@@ -150,7 +150,7 @@ function _nredf_install_lazygit() {
 
   if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/lazygit" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(${HOME}/.local/bin/lazygit -v | awk '{print $6}' | awk -F= '{gsub(/,$/,""); print $2}')" ]]; then
     echo -e '\033[1mInstalling lazygit\033[0m'
-    curl -Lso - "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${VERSION#v}_${OS}_${UNAMEM}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" lazygit
+    curl -Lfso - "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${VERSION#v}_${OS}_${UNAMEM}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" lazygit
     chmod +x "${HOME}/.local/bin/lazygit"
   fi
 }
@@ -174,7 +174,7 @@ function _nredf_install_btop() {
 
   if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/btop" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(${HOME}/.local/bin/btop -v | awk '{print $3}')" ]]; then
     echo -e '\033[1mInstalling btop\033[0m'
-    curl -Lso - "https://github.com/aristocratos/btop/releases/latest/download/btop-${VERSION#v}-${UNAMEM}-${OS}-${LIBC}.tbz" | tar xjf - -C "${HOME}/.local/bin/" --strip-components=1 --wildcards --no-anchored '*btop'
+    curl -Lfso - "https://github.com/aristocratos/btop/releases/latest/download/btop-${VERSION#v}-${UNAMEM}-${OS}-${LIBC}.tbz" | tar xjf - -C "${HOME}/.local/bin/" --strip-components=1 --wildcards --no-anchored '*btop'
     chmod +x "${HOME}/.local/bin/btop"
   fi
 }
@@ -190,7 +190,7 @@ function _nredf_install_ctop() {
 
   if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/ctop" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(${HOME}/.local/bin/ctop -v | awk '{sub(",",""); print $3}')" ]]; then
     echo -e '\033[1mInstalling ctop\033[0m'
-    curl -Ls "https://github.com/bcicen/ctop/releases/latest/download/ctop-${VERSION#v}-${OS}-${ARCH}" -o "${HOME}/.local/bin/ctop"
+    curl -Lfso "${HOME}/.local/bin/ctop" "https://github.com/bcicen/ctop/releases/latest/download/ctop-${VERSION#v}-${OS}-${ARCH}"
     chmod +x "${HOME}/.local/bin/ctop"
   fi
 }
@@ -202,7 +202,7 @@ function _nredf_install_drone() {
 
   if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/drone" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(${HOME}/.local/bin/drone -v | awk '{print $3}')" ]]; then
     echo -e '\033[1mInstalling drone\033[0m'
-    curl -Lso - "https://github.com/harness/drone-cli/releases/latest/download/drone_${OS}_${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/"
+    curl -Lfso - "https://github.com/harness/drone-cli/releases/latest/download/drone_${OS}_${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/"
     chmod +x "${HOME}/.local/bin/drone"
   fi
 }
@@ -227,7 +227,7 @@ function _nredf_install_kubectl() {
   if [[ ! -f "${HOME}/.local/bin/kubectl" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/kubectl version --short --client | awk '{print $3}')" ]]; then
     echo -e '\033[1mInstalling kubectl\033[0m'
     [[ -f "${HOME}/.local/bin/kubectl" ]] && rm -f "${HOME}/.local/bin/kubectl"
-    curl -Ls "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubectl" -o "${HOME}/.local/bin/kubectl"
+    curl -Lfso "${HOME}/.local/bin/kubectl" "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubectl"
     chmod +x "${HOME}/.local/bin/kubectl"
   fi
 
@@ -246,7 +246,7 @@ function _nredf_install_krew() {
 
   if [[ ! -d "${HOME}/.krew" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/kubectl krew version | awk '/^GitTag/{print $2}')" ]]; then
     echo -e '\033[1mInstalling krew\033[0m'
-    curl -fsSLo "${HOME}/.cache/krew/krew.tar.gz" "https://github.com/kubernetes-sigs/krew/releases/download/${VERSION}/krew.tar.gz"
+    curl -LfsSo "${HOME}/.cache/krew/krew.tar.gz" "https://github.com/kubernetes-sigs/krew/releases/download/${VERSION}/krew.tar.gz"
     tar -zxf "${HOME}/.cache/krew/krew.tar.gz" --directory "${HOME}/.cache/krew"
     rm -f "${HOME}/.cache/krew/krew.tar.gz"
     KREW="${HOME}/.cache/krew/krew-"$(uname | tr '[:upper:]' '[:lower:]')_$(uname -m | sed -e 's/x86_64/amd64/' -e 's/arm.*$/arm/')""
@@ -285,7 +285,7 @@ function _nredf_install_kubeadm() {
   if [[ ! -f "${HOME}/.local/bin/kubeadm" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/kubeadm version -o short)" ]]; then
     echo -e '\033[1mInstalling kubeadm\033[0m'
     [[ -f "${HOME}/.local/bin/kubeadm" ]] && rm -f "${HOME}/.local/bin/kubeadm"
-    curl -Ls "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubeadm" -o "${HOME}/.local/bin/kubeadm"
+    curl -Lfso "${HOME}/.local/bin/kubeadm" "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubeadm"
     chmod +x "${HOME}/.local/bin/kubeadm"
   fi
 
@@ -301,7 +301,7 @@ function _nredf_install_kubeseal() {
   if [[ ! -f "${HOME}/.local/bin/kubeseal" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/kubeseal --version | awk '{print $3}')" ]]; then
     echo -e '\033[1mInstalling kubeseal\033[0m'
     [[ -f "${HOME}/.local/bin/kubeseal" ]] && rm -f "${HOME}/.local/bin/kubeseal"
-    curl -Ls "https://github.com/bitnami-labs/sealed-secrets/releases/latest/download/kubeseal-${OS}-${ARCH}" -o "${HOME}/.local/bin/kubeseal"
+    curl -Lfso "${HOME}/.local/bin/kubeseal" "https://github.com/bitnami-labs/sealed-secrets/releases/latest/download/kubeseal-${OS}-${ARCH}"
     chmod +x "${HOME}/.local/bin/kubeseal"
   fi
 }
@@ -314,7 +314,7 @@ function _nredf_install_fluxctl() {
   if [[ ! -f "${HOME}/.local/bin/fluxctl" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/fluxctl version)" ]]; then
     echo -e '\033[1mInstalling fluxctl\033[0m'
     [[ -f "${HOME}/.local/bin/fluxctl" ]] && rm -f "${HOME}/.local/bin/fluxctl"
-    curl -sL "https://github.com/fluxcd/flux/releases/latest/download/fluxctl_${OS}_${ARCH}" -o "${HOME}/.local/bin/fluxctl"
+    curl -Lfso "${HOME}/.local/bin/fluxctl" "https://github.com/fluxcd/flux/releases/latest/download/fluxctl_${OS}_${ARCH}"
     chmod +x "${HOME}/.local/bin/fluxctl"
   fi
 
@@ -331,7 +331,7 @@ function _nredf_install_flux() {
   if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/flux" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(${HOME}/.local/bin/flux --version | awk '{print $3}')" ]]; then
     echo -e '\033[1mInstalling flux\033[0m'
     [[ -f "${HOME}/.local/bin/flux" ]] && rm -f "${HOME}/.local/bin/flux"
-    curl -Lso - "https://github.com/fluxcd/flux2/releases/latest/download/flux_${VERSION#v}_${OS}_${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/"
+    curl -Lfso - "https://github.com/fluxcd/flux2/releases/latest/download/flux_${VERSION#v}_${OS}_${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/"
     chmod +x "${HOME}/.local/bin/flux"
   fi
 
@@ -348,7 +348,7 @@ function _nredf_install_helm() {
   if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/helm" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/helm version --template='{{ .Version }}')" ]]; then
     echo -e '\033[1mInstalling helm\033[0m'
     [[ -f "${HOME}/.local/bin/helm" ]] && rm -f "${HOME}/.local/bin/helm"
-    curl -Lso - "https://get.helm.sh/helm-${VERSION}-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" --strip-components=1 --wildcards --no-anchored '*helm'
+    curl -Lfso - "https://get.helm.sh/helm-${VERSION}-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" --strip-components=1 --wildcards --no-anchored '*helm'
     chmod +x "${HOME}/.local/bin/helm"
   fi
 
@@ -364,7 +364,7 @@ function _nredf_install_k9s() {
   if [[ ! -f "${HOME}/.local/bin/k9s" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/k9s version | grep Version | awk '{print $2}' | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")" ]]; then
     echo -e '\033[1mInstalling k9s\033[0m'
     [[ -f "${HOME}/.local/bin/k9s" ]] && rm -f "${HOME}/.local/bin/k9s"
-    curl -Lso - "https://github.com/derailed/k9s/releases/latest/download/k9s_$(uname)_${UNAMEM}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" k9s
+    curl -Lfso - "https://github.com/derailed/k9s/releases/latest/download/k9s_$(uname)_${UNAMEM}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" k9s
     chmod +x "${HOME}/.local/bin/k9s"
   fi
 }
@@ -377,7 +377,7 @@ function _nredf_install_velero() {
   if [[ ! -f "${HOME}/.local/bin/velero" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(${HOME}/.local/bin/velero version --client-only | grep Version | awk '{print $2}')" ]]; then
     echo -e '\033[1mInstalling velero\033[0m'
     [[ -f "${HOME}/.local/bin/velero" ]] && rm -f "${HOME}/.local/bin/velero"
-    curl -Lso - "https://github.com/vmware-tanzu/velero/releases/latest/download/velero-${VERSION}-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" --strip-components=1 --wildcards --no-anchored '*velero'
+    curl -Lfso - "https://github.com/vmware-tanzu/velero/releases/latest/download/velero-${VERSION}-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${HOME}/.local/bin/" --strip-components=1 --wildcards --no-anchored '*velero'
     chmod +x "${HOME}/.local/bin/velero"
   fi
 
