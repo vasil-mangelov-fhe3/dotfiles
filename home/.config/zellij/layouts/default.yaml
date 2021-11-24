@@ -1,0 +1,40 @@
+---
+template:
+  direction: Horizontal
+  parts:
+    - direction: Vertical
+      borderless: false
+      split_size:
+        Fixed: 2
+      run:
+        plugin:
+          location: "zellij:status-bar"
+    - direction: Vertical
+      body: true
+    - direction: Vertical
+      borderless: true
+      split_size:
+        Fixed: 1
+      run:
+        plugin:
+          location: "zellij:tab-bar"
+tabs:
+  - name: "Monitor" # Monitor
+    direction: Horizontal
+    parts:
+      - direction: Horizontal
+        borderless: true
+        split_size:
+          Fixed: 25
+        run:
+          command: {cmd: btop, args: ["-p","1"]}
+      - direction: Vertical
+        parts:
+          - direction: Horizontal
+          - direction: Horizontal
+            split_size:
+              Fixed: 70
+            run:
+              command: {cmd: btop, args: ["-p","2"]}
+  - name: "Tab 1" # tab 1
+    direction: Horizontal
