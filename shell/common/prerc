@@ -4,40 +4,4 @@ export COMMON_RC_LOCAL="${HOME}/.config/shell"
 _nredf_set_ssh_agent
 _nredf_get_sys_info
 _nredf_set_defaults
-
-[[ -f "${HOME}/.proxy.local" ]] && source "${HOME}/.proxy.local"
-
-mkdir -p "${HOME}/.local/bin" "${HOME}/.cache/{krew,vim,helm}" "${RC_LOCAL}" "${COMMON_RC_LOCAL}"
-
-# Load homeshick
-if [ ! -d "${HOME}/.homesick" ]; then
-  echo -e '\033[1mCloning homesick\033[0m'
-  git clone https://github.com/andsens/homeshick.git "${HOME}/.homesick/repos/homeshick"
-  source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-  fpath=("${HOME}/.homesick/repos/homeshick/completions ${fpath}")
-  echo -e '\033[1mCloning dotfiles\033[0m'
-  homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git
-  echo -e '\033[1mCloning vimfiles\033[0m'
-  homeshick --quiet --batch clone https://github.com/NemesisRE/vimfiles.git
-  echo -e '\033[1mLinking dotfiles\033[0m'
-  homeshick --quiet --batch --force link
-  fc-cache -fv
-else
-  source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-  fpath=("${HOME}/.homesick/repos/homeshick/completions" "${fpath[@]}")
-  homeshick --quiet check
-  case ${?} in
-  86)
-    echo -e '\033[1mUpdate and install dotfiles\033[0m'
-    homeshick --quiet --batch --force pull
-    homeshick --quiet --batch --force link
-    ;;
-  85)
-    echo -e '\033[1;38;5;222mYour dotfiles are ahead of its upstream, consider pushing\033[0m'
-    ;;
-  88)
-    echo -e '\033[1;38;5;222mYour dotfiles are modified, commit or discard changes to update them\033[0m'
-    ;;
-  esac
-fi
-
+_nredf_sync_dotfiles

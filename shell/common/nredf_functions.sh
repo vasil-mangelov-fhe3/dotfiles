@@ -73,6 +73,7 @@ function _nredf_github_download_latest() {
 }
 
 function _nredf_set_defaults() {
+  [[ -f "${HOME}/.proxy.local" ]] && source "${HOME}/.proxy.local"
   # You may need to manually set your language environment
   export LANG=en_US.UTF-8
   export LANGUAGE=en_US.UTF-8
@@ -82,10 +83,10 @@ function _nredf_set_defaults() {
   export XDG_CACHE_HOME="${HOME}/.cache"
   export XDG_DATA_HOME="${HOME}/.local/share"
 
-  export PATH=${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:${PATH}
-  [[ -d /snap/bin ]] && export PATH=${PATH}:/snap/bin
-  export GOPATH=${HOME}/.local
-  export RLWRAP_HOME=${HOME}/.cache/RLWRAP
+  export PATH="${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:${PATH}"
+  [[ -d /snap/bin ]] && export PATH="${PATH}:/snap/bin"
+  export GOPATH="${HOME}/.local"
+  export RLWRAP_HOME="${XDG_CACHE_HOME}/RLWRAP"
 
   # FZF Defaults
   export FZF_DEFAULT_OPTS='--bind tab:down --bind btab:up --cycle'
@@ -93,18 +94,64 @@ function _nredf_set_defaults() {
   export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
 
   #  NVIM Defaults
-  export NVIM_LOG_FILE="${HOME}/.cache/vim/nvim_debug.log"
-  export NVIM_RPLUGIN_MANIFESTE="${HOME}/.cache/vim/rplugin.vim"
+  export NVIM_LOG_FILE="${XDG_CACHE_HOME}/vim/nvim_debug.log"
+  export NVIM_RPLUGIN_MANIFESTE="${XDG_CACHE_HOME}/vim/rplugin.vim"
 
   # Timewarrior
-  export TIMEWARRIORDB="${HOME}/.cache/timewarrior"
+  export TIMEWARRIORDB="${XDG_CACHE_HOME}/timewarrior"
 
   # docker-compose
   export COMPOSE_PARALLEL_LIMIT=10
   export COMPOSE_HTTP_TIMEOUT=600
 
   # k9s config directory
-  export K9SCONFIG="${HOME}/.config/k9s"
+  export K9SCONFIG="${XDG_CONFIG_HOME}/k9s"
+
+  # readline config
+  export INPUTRC="${XDG_CONFIG_HOME}/readline/inputrc"
+
+  # screen config
+  export SCREENRC="${XDG_CONFIG_HOME}/screen/screenrc"
+
+  # wget config
+  export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
+}
+
+
+function _nredf_sync_dotfiles() {
+  # Load homeshick
+if [ ! -d "${HOME}/.homesick" ]; then
+  echo -e '\033[1mCloning homesick\033[0m'
+  git clone https://github.com/andsens/homeshick.git "${HOME}/.homesick/repos/homeshick"
+  source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
+  fpath=("${HOME}/.homesick/repos/homeshick/completions ${fpath[@]}")
+  echo -e '\033[1mCloning dotfiles\033[0m'
+  homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git
+  echo -e '\033[1mCloning vimfiles\033[0m'
+  homeshick --quiet --batch clone https://github.com/NemesisRE/vimfiles.git
+  echo -e '\033[1mLinking dotfiles\033[0m'
+  homeshick --quiet --batch --force link
+  fc-cache -fv
+  exec ${SHELL}
+else
+  source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
+  fpath=("${HOME}/.homesick/repos/homeshick/completions" "${fpath[@]}")
+  homeshick --quiet check
+  case ${?} in
+  86)
+    echo -e '\033[1mUpdate and install dotfiles\033[0m'
+    homeshick --quiet --batch --force pull
+    homeshick --quiet --batch --force link
+    exec ${SHELL}
+    ;;
+  85)
+    echo -e '\033[1;38;5;222mYour dotfiles are ahead of its upstream, consider pushing\033[0m'
+    ;;
+  88)
+    echo -e '\033[1;38;5;222mYour dotfiles are modified, commit or discard changes to update them\033[0m'
+    ;;
+  esac
+fi
 }
 
 function _nredf_install_fzf() {
