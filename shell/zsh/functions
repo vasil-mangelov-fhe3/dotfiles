@@ -1,9 +1,10 @@
 #!/bin/bash
 
 function _exit_shell() {
-	if [[ ${EUID} -eq 0 && -n ${SUDO_USER} && ${HOME} = $(eval echo ~${SUDO_USER}) ]]; then
-		local SUDO_GROUP=$(id -g -n ${SUDO_USER})
-		chown -R ${SUDO_USER}:${SUDO_GROUP} ${HOME}
+	if [[ "${EUID}" -eq 0 && -n "${SUDO_USER}" && "${HOME}" = $(eval echo "~${SUDO_USER}") ]]; then
+		local SUDO_GROUP
+    SUDO_GROUP=$(id -g -n "${SUDO_USER}")
+		chown -R "${SUDO_USER}":"${SUDO_GROUP}" "${HOME}"
 		exit
 	else
 		exit
@@ -15,7 +16,7 @@ function grep_invalid_utf8 () {
 }
 
 function fix_invalid_utf8 () {
-	find | grep-invalid-utf8 | rename 'BEGIN {binmode STDIN, ":encoding(latin1)"; use Encode;}$_=encode("utf8", $_)'
+	find . | grep-invalid-utf8 | rename 'BEGIN {binmode STDIN, ":encoding(latin1)"; use Encode;}$_=encode("utf8", $_)'
 }
 
 function git_remove_submodule() {
@@ -24,8 +25,8 @@ function git_remove_submodule() {
 	if git submodule status "${SUBMODULE_NAME}" >/dev/null 2>&1; then
 		git submodule deinit -f "${SUBMODULE_NAME}"
 		git rm --cached "${SUBMODULE_NAME}"
-		rm -rf .git/modules/${SUBMODULE_NAME}
-		rm -rf ${SUBMODULE_NAME}
+		rm -rf .git/modules/"${SUBMODULE_NAME}"
+		rm -rf "${SUBMODULE_NAME}"
 		git config -f .gitmodules --remove-section "submodule.${SUBMODULE_NAME}"
 	else
 		[ $# -gt 0 ] && echo "fatal: Submodule '${SUBMODULE_NAME}' not found" 1>&2

@@ -7,24 +7,24 @@
 
 _fzf_complete_ssh() {
   _fzf_complete '+m' "$@" < <(
-    cat <(cat ~/.ssh/hosts 2> /dev/null | awk '{ print $1 " " $1 }') \
+    cat <(awk '{ print $1 " " $1 }' ~/.ssh/hosts) \
         <(grep -oE '^[[a-z0-9.,:-]+' ~/.ssh/known_hosts | tr ',' '\n' | tr -d '[' | awk '{ print $1 " " $1 }') \
-        <(cat ~/.ssh/config /etc/ssh/ssh_config 2> /dev/null | grep -i '^host' | grep -v '*' | awk '{for (i = 2; i <= NF; i++) print $1 " " $i}') \
+        <(grep -i '^host' ~/.ssh/config /etc/ssh/ssh_config | grep -v '\*' | awk '{for (i = 2; i <= NF; i++) print $1 " " $i}') \
         <(grep -v '^\s*\(#\|$\)' /etc/hosts | grep -Fv '0.0.0.0') | awk '{if (length($2) > 0) {print $2}}' | sort -u)
 }
 
 _fzf_complete_scp() {
   _fzf_complete '+m' "$@" < <(
-    cat <(cat ~/.ssh/hosts 2> /dev/null | awk '{ print $1 " " $1 }') \
-        <(cat ~/.ssh/config /etc/ssh/ssh_config 2> /dev/null | grep -i '^host' | grep -v '*' | awk '{for (i = 2; i <= NF; i++) print $1 " " $i}') \
+    cat <(awk '{ print $1 " " $1 }' ~/.ssh/hosts) \
+        <(grep -i '^host' ~/.ssh/config /etc/ssh/ssh_config | grep -v '\*' | awk '{for (i = 2; i <= NF; i++) print $1 " " $i}') \
         <(grep -oE '^[[a-z0-9.,:-]+' ~/.ssh/known_hosts | tr ',' '\n' | tr -d '[' | awk '{ print $1 " " $1 }') \
         <(grep -v '^\s*\(#\|$\)' /etc/hosts | grep -Fv '0.0.0.0') | awk '{if (length($2) > 0) {print $2}}' | sort -u)
 }
 
 _fzf_complete_ping() {
   _fzf_complete '+m' "$@" < <(
-    cat <(cat ~/.ssh/hosts 2> /dev/null | awk '{ print $1 " " $1 }') \
-        <(cat ~/.ssh/config /etc/ssh/ssh_config 2> /dev/null | grep -i '^host' | grep -v '*' | awk '{for (i = 2; i <= NF; i++) print $1 " " $i}') \
+    cat <(awk '{ print $1 " " $1 }' ~/.ssh/hosts) \
+        <(grep -i '^host' ~/.ssh/config /etc/ssh/ssh_config | grep -v '\*' | awk '{for (i = 2; i <= NF; i++) print $1 " " $i}') \
         <(grep -oE '^[[a-z0-9.,:-]+' ~/.ssh/known_hosts | tr ',' '\n' | tr -d '[' | awk '{ print $1 " " $1 }') \
         <(grep -v '^\s*\(#\|$\)' /etc/hosts | grep -Fv '0.0.0.0') | awk '{if (length($2) > 0) {print $2}}' | sort -u)
 }

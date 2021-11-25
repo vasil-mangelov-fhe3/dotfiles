@@ -3,4 +3,4 @@ zmodload zsh/mathfunc
 
 zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(|.|..) ]] && reply=(..)'
 
-fpath=(${HOME}/.config/completion/zsh $fpath)
+fpath=("${HOME}/.config/completion/zsh" "${fpath[@]}")

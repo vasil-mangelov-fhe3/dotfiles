@@ -1,20 +1,20 @@
-source ${DOT_PATH}/shell/common/nredf_functions.sh
-export COMMON_RC_LOCAL=${HOME}/.config/shell
+source "${DOT_PATH}/shell/common/nredf_functions.sh"
+export COMMON_RC_LOCAL="${HOME}/.config/shell"
 
 _nredf_set_ssh_agent
 _nredf_get_sys_info
 _nredf_set_defaults
 
-[[ -f ${HOME}/.proxy.local ]] && source ${HOME}/.proxy.local
+[[ -f "${HOME}/.proxy.local" ]] && source "${HOME}/.proxy.local"
 
-mkdir -p ${HOME}/.local/bin ${HOME}/.cache/{krew,vim,helm} ${RC_LOCAL} ${COMMON_RC_LOCAL}
+mkdir -p "${HOME}/.local/bin" "${HOME}/.cache/{krew,vim,helm}" "${RC_LOCAL}" "${COMMON_RC_LOCAL}"
 
 # Load homeshick
-if [ ! -d ${HOME}/.homesick ]; then
+if [ ! -d "${HOME}/.homesick" ]; then
   echo -e '\033[1mCloning homesick\033[0m'
-  git clone https://github.com/andsens/homeshick.git ${HOME}/.homesick/repos/homeshick
+  git clone https://github.com/andsens/homeshick.git "${HOME}/.homesick/repos/homeshick"
   source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-  fpath=(${HOME}/.homesick/repos/homeshick/completions ${fpath})
+  fpath=("${HOME}/.homesick/repos/homeshick/completions ${fpath}")
   echo -e '\033[1mCloning dotfiles\033[0m'
   homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git
   echo -e '\033[1mCloning vimfiles\033[0m'
@@ -24,7 +24,7 @@ if [ ! -d ${HOME}/.homesick ]; then
   fc-cache -fv
 else
   source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-  fpath=(${HOME}/.homesick/repos/homeshick/completions ${fpath})
+  fpath=("${HOME}/.homesick/repos/homeshick/completions" "${fpath[@]}")
   homeshick --quiet check
   case ${?} in
   86)

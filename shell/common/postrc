@@ -1,6 +1,6 @@
 if [[ "${OS}" == "linux" ]] && command -pv tmux &>/dev/null; then
-    if [[ -z "${TMUX}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
-        if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
+    if [[ -z "${TMUX}" ]] && [[ -n "${SSH_TTY}" ]]; then
+        if [ -n "${SSH_AUTH_SOCK}" ] && [ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
             unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
             ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
             export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
@@ -8,12 +8,12 @@ if [[ "${OS}" == "linux" ]] && command -pv tmux &>/dev/null; then
     fi
 
     # Start tmux on connection
-    if [ "${PS1}" != "" -a "$(tmux -L $(hostname -s) has-session -t $(hostname -s) &>/dev/null; echo $?)" = 0 -a "${SSH_TTY:-x}" != x -a "$(which tmux 2>/dev/null)" != "" -a "${TMUX}" = "" ]; then
+    if [[ "${PS1}" != "" ]] && [[ "$(tmux -L "$(hostname -s)" has-session -t "$(hostname -s)" &>/dev/null; echo $?)" = 0 ]] && [[ "${SSH_TTY:-x}" != x ]] && [[ "$(which tmux 2>/dev/null)" != "" ]] && [[ "${TMUX}" = "" ]]; then
         echo -e '\033[1mAttach to running tmux session\033[0m'
-        tmux -L $(hostname -s) attach-session -t $(hostname -s)
-    elif [ "${PS1}" != "" -a "${SSH_TTY:-x}" != x -a "$(which tmux 2>/dev/null)" != "" -a "${TMUX}" = "" ]; then
+        tmux -L "$(hostname -s)" attach-session -t "$(hostname -s)"
+    elif [[ "${PS1}" != "" ]] && [[ "${SSH_TTY:-x}" != x ]] && [[ "$(which tmux 2>/dev/null)" != "" ]] && [[ "${TMUX}" = "" ]]; then
         echo -e '\033[1mStart new tmux session\033[0m'
-        tmux -f ~/.tmux.conf -L $(hostname -s) new-session -s $(hostname -s)
+        tmux -f ~/.tmux.conf -L "$(hostname -s)" new-session -s "$(hostname -s)"
     fi
 fi
 
@@ -21,12 +21,12 @@ fi
 # https://github.com/zellij-org/zellij/issues/175
 #if command -v zellij &>/dev/null; then
 #    if [[ -z "${ZELLIJ}" ]] && [[ ! -z "${SSH_TTY}" ]]; then
-#        if [ ! -z "${SSH_AUTH_SOCK}" -a "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
+#        if [[ ! -z "${SSH_AUTH_SOCK}" ]] && [[ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]]; then
 #            unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
 #            ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
 #            export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
 #        fi
 #    fi
 #
-#    [[ -z "${ZELLIJ}" ]] && zellij attach -c $(hostname -s)
+#    [[ -z "${ZELLIJ}" ]] && zellij attach -c "$(hostname -s)"
 #fi
