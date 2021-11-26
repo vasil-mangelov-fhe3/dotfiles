@@ -14,10 +14,19 @@ if [[ -f "${ZPLUG_HOME}/init.zsh" ]]; then
 		zplug install
 	fi
 
+  if [[ ! -f "${XDG_CACHE_HOME}/nredf/zplug_last_update" ]]; then
+    if [[ $(date -r "${XDG_CACHE_HOME}/nredf/zplug_last_update" +%s) -le $(( $(date +%s) - 86400 )) ]]; then
+      zplug update
+      touch ${XDG_CACHE_HOME}/nredf/zplug_last_update
+    fi
+  else
+    touch ${XDG_CACHE_HOME}/nredf/zplug_last_update
+  fi
+
 	# source plugins and add commands to the PATH
 	zplug load
 else
-    echo -e '\033[1mSetup zplug\033[0m'
+  echo -e '\033[1mSetup zplug\033[0m'
 	[[ -d "${ZPLUG_HOME}" ]] && rm -rf "${ZPLUG_HOME}"
 	git clone https://github.com/zplug/zplug "${ZPLUG_HOME}"
 	source "${ZPLUG_HOME}/init.zsh"
