@@ -1,13 +1,12 @@
 [[ ! -d "${XDG_STATE_HOME}/zsh" ]] && mkdir -p "${XDG_STATE_HOME}/zsh"
 [[ ! -d "${XDG_CACHE_HOME}/zsh" ]] && mkdir -p "${XDG_CACHE_HOME}/zsh"
+fpath=("${HOME}/.config/completion/zsh" "${fpath[@]}")
+
+source "${RC_PATH}/zplugrc"
 export HISTFILE="${XDG_STATE_HOME}"/zsh/history
 compinit -d "${XDG_CACHE_HOME}/zsh/zcompdump-${ZSH_VERSION}"
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME}/zsh/zcompcache"
 zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(|.|..) ]] && reply=(..)'
-source "${RC_PATH}/zplugrc"
 
 # Enable math functions
 zmodload zsh/mathfunc
-
-
-fpath=("${HOME}/.config/completion/zsh" "${fpath[@]}")
