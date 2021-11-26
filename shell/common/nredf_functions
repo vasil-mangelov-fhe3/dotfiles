@@ -48,11 +48,7 @@ function _nredf_github_latest_release() {
   local GHREPO=${2}
   local CACHEFILE="${XDG_CACHE_HOME}/nredf/GHVersionCache/nredf_github_latest_release-${GHUSER}-${GHREPO}"
 
-  if [[ ! -d "${XDG_CACHE_HOME}/nredf/GHVersionCache" ]]; then
-    mkdir -p "${XDG_CACHE_HOME}/nredf/GHVersionCache"
-  fi
-
-  if [[ ! -f "${CACHEFILE}" || $(date -r "${CACHEFILE}" +%s) -le $(($(date +%s) - 3600 )) ]]; then
+  if [[ ! -s "${CACHEFILE}" || $(date -r "${CACHEFILE}" +%s) -le $(($(date +%s) - 3600 )) ]]; then
     curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest" | grep -Po '"tag_name":"\K.*?(?=")' > "${CACHEFILE}"
   fi
   cat "${CACHEFILE}"
@@ -63,16 +59,14 @@ function _nredf_github_download_latest() {
   local GHREPO=${2}
   local GHFILE=${3}
 
-  if [[ ! -d "${XDG_CACHE_HOME}/nredf/Download" ]]; then
-    mkdir -p "${XDG_CACHE_HOME}/nredf/Download"
-  fi
-
+  echo -e "\033[1mDownloading latest release from ${GHUSER}/${GHREPO}\033[0m"
   curl -Lfso "${XDG_CACHE_HOME}/nredf/Download/${GHFILE}" "https://github.com/${GHUSER}/${GHREPO}/releases/latest/download/${GHFILE}"
 
   return ${?}
 }
 
 function _nredf_set_defaults() {
+  echo -e '\033[1mSetting defaults\033[0m'
   [[ -f "${HOME}/.proxy.local" ]] && source "${HOME}/.proxy.local"
 
   export COMMON_RC_LOCAL="${HOME}/.config/shell"
@@ -88,7 +82,7 @@ function _nredf_set_defaults() {
   export XDG_CACHE_HOME="${HOME}/.cache"
   export XDG_DATA_HOME="${HOME}/.local/share"
   export XDG_STATE_HOME="${HOME}/.local/state"
-  for XDG_PATH in "${XDG_CONFIG_HOME}" "${HOME}/.local/bin" "${XDG_CACHE_HOME}" "${XDG_CACHE_HOME}/nredf" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}"; do
+  for XDG_PATH in "${XDG_CONFIG_HOME}" "${HOME}/.local/bin" "${XDG_CACHE_HOME}" "${XDG_CACHE_HOME}/nredf/GHVersionCache" "${XDG_CACHE_HOME}/nredf/Download" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}"; do
     [[ ! -d "${XDG_PATH}" ]] && mkdir -p "${XDG_PATH}"
   done
 
@@ -161,16 +155,17 @@ function _nredf_set_local() {
 
 function _nredf_sync_dotfiles() {
   # Load homeshick
+  echo -e '\033[1mChecking dotfiles\033[0m'
   if [ ! -d "${HOME}/.homesick" ]; then
-    echo -e '\033[1mCloning homesick\033[0m'
+    echo -e '\033[1m  Cloning homesick\033[0m'
     git clone https://github.com/andsens/homeshick.git "${HOME}/.homesick/repos/homeshick"
     source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
     fpath=("${HOME}/.homesick/repos/homeshick/completions ${fpath[@]}")
-    echo -e '\033[1mCloning dotfiles\033[0m'
+    echo -e '\033[1m  Cloning dotfiles\033[0m'
     homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git
-    echo -e '\033[1mCloning vimfiles\033[0m'
+    echo -e '\033[1m  Cloning vimfiles\033[0m'
     homeshick --quiet --batch clone https://github.com/NemesisRE/vimfiles.git
-    echo -e '\033[1mLinking dotfiles\033[0m'
+    echo -e '\033[1m  Linking dotfiles\033[0m'
     homeshick --quiet --batch --force link
     fc-cache -fv
     exec ${SHELL}
@@ -180,20 +175,20 @@ function _nredf_sync_dotfiles() {
     homeshick --quiet check
     case ${?} in
     86)
-      echo -e '\033[Pulling dotfiles\033[0m'
+      echo -e '\033[  Pulling dotfiles\033[0m'
       homeshick --batch --force pull
-      echo -e '\033[1mLinking dotfiles\033[0m'
+      echo -e '\033[1m  Linking dotfiles\033[0m'
       homeshick --batch --force link
       exec ${SHELL}
       ;;
     85)
-      echo -e '\033[1;38;5;222mYour dotfiles are ahead of its upstream, consider pushing\033[0m'
-      echo -e '\033[1mLinking dotfiles\033[0m'
+      echo -e '\033[1;38;5;222m  Your dotfiles are ahead of its upstream, consider pushing\033[0m'
+      echo -e '\033[1m  Linking dotfiles\033[0m'
       homeshick --batch --force link
       ;;
     88)
-      echo -e '\033[1;38;5;222mYour dotfiles are modified, commit or discard changes to update them\033[0m'
-      echo -e '\033[1mLinking dotfiles\033[0m'
+      echo -e '\033[1;38;5;222m  Your dotfiles are modified, commit or discard changes to update them\033[0m'
+      echo -e '\033[1m  Linking dotfiles\033[0m'
       homeshick --batch --force link
       ;;
     esac
@@ -436,16 +431,16 @@ function _nredf_install_ripgrep() {
   local GHUSER
   local GHREPO
   local BINARY
-  local BINARY_VERSION
+  local VERSION_CMD
 
   GHUSER="BurntSushi"
   GHREPO="ripgrep"
   BINARY="rg"
   VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
-  BINARY_VERSION="--version | awk '/ripgrep/{print $2}'"
+  VERSION_CMD="--version | awk '/ripgrep/{print \$2}'"
 
-  if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${HOME}/.local/bin/${BINARY}" "${BINARY_VERSION}")" ]]; then
-    echo -e "\033[1mInstalling ${GHREPO}\033[0m"
+  if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${HOME}/.local/bin/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m\n"
     _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "ripgrep-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz"
     tar -xzf "${XDG_CACHE_HOME}/nredf/Download/ripgrep-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${XDG_CACHE_HOME}/nredf/Download/"
     cp "${XDG_CACHE_HOME}/nredf/Download/ripgrep-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${HOME}/.local/bin/"
