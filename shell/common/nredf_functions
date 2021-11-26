@@ -180,16 +180,21 @@ function _nredf_sync_dotfiles() {
     homeshick --quiet check
     case ${?} in
     86)
-      echo -e '\033[1mUpdate and install dotfiles\033[0m'
-      homeshick --quiet --batch --force pull
-      homeshick --quiet --batch --force link
+      echo -e '\033[Pulling dotfiles\033[0m'
+      homeshick --batch --force pull
+      echo -e '\033[1mLinking dotfiles\033[0m'
+      homeshick --batch --force link
       exec ${SHELL}
       ;;
     85)
       echo -e '\033[1;38;5;222mYour dotfiles are ahead of its upstream, consider pushing\033[0m'
+      echo -e '\033[1mLinking dotfiles\033[0m'
+      homeshick --batch --force link
       ;;
     88)
       echo -e '\033[1;38;5;222mYour dotfiles are modified, commit or discard changes to update them\033[0m'
+      echo -e '\033[1mLinking dotfiles\033[0m'
+      homeshick --batch --force link
       ;;
     esac
   fi
