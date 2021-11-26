@@ -1,3 +1,5 @@
+source "${RC_PATH}/zplugrc"
+
 # Enable math functions
 zmodload zsh/mathfunc
 

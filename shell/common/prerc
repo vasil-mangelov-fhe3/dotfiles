@@ -1,7 +1,0 @@
-source "${DOT_PATH}/shell/common/nredf_functions.sh"
-export COMMON_RC_LOCAL="${HOME}/.config/shell"
-
-_nredf_set_ssh_agent
-_nredf_get_sys_info
-_nredf_set_defaults
-_nredf_sync_dotfiles

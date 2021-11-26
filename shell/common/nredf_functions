@@ -74,6 +74,11 @@ function _nredf_github_download_latest() {
 
 function _nredf_set_defaults() {
   [[ -f "${HOME}/.proxy.local" ]] && source "${HOME}/.proxy.local"
+
+  export COMMON_RC_LOCAL="${HOME}/.config/shell"
+  export RC_PATH="${DOT_PATH}/shell/${SHELL_NAME}"
+  export RC_LOCAL="${HOME}/.config/${SHELL_NAME}"
+
   # You may need to manually set your language environment
   export LANG=en_US.UTF-8
   export LANGUAGE=en_US.UTF-8
@@ -87,6 +92,14 @@ function _nredf_set_defaults() {
   [[ -d /snap/bin ]] && export PATH="${PATH}:/snap/bin"
   export GOPATH="${HOME}/.local"
   export RLWRAP_HOME="${XDG_CACHE_HOME}/RLWRAP"
+  [[ -s "${HOME}/.rvm/scripts/rvm" ]] && source "${HOME}/.rvm/scripts/rvm"
+
+  # Load PYENV if you are using it
+  if [[ -s ${HOME}/.pyenv ]]; then
+    export PYENV_ROOT="${HOME}/.pyenv"
+    export PATH="${PYENV_ROOT}/bin:${PATH}"
+    eval "$(pyenv init -)"
+  fi
 
   # FZF Defaults
   export FZF_DEFAULT_OPTS='--bind tab:down --bind btab:up --cycle'
@@ -115,43 +128,101 @@ function _nredf_set_defaults() {
 
   # wget config
   export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
+
+  # make less more friendly for non-text input files, see lesspipe(1)
+  [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+  if command -v dircolors &>/dev/null; then
+    [[ -e "${XDG_CONFIG_HOME}/dircolors" ]] && eval "$(dircolors ${XDG_CONFIG_HOME}/dircolors)"
+  fi
 }
 
+function _nredf_set_local() {
+  echo -e '\033[1mSourcing local aliases and functions\033[0m'
+  [[ ! -d "${RC_LOCAL}" ]] && mkdir -p "${RC_LOCAL}"
+  [[ -e "${DOT_PATH}/shell/common/aliases" ]] && source "${DOT_PATH}/shell/common/aliases"
+  [[ -e "${RC_PATH}/aliases" ]] && source "${RC_PATH}/aliases"
+  [[ -f "${RC_LOCAL}/aliases.local" ]] && source "${RC_LOCAL}/aliases.local" || touch "${RC_LOCAL}/aliases.local"
+  [[ -e "${RC_PATH}/functions" ]] && source "${RC_PATH}/functions"
+  [[ -f "${RC_LOCAL}/functions.local" ]] && source "${RC_LOCAL}/functions.local" || touch "${RC_LOCAL}/functions.local"
+  [[ -f "${COMMON_RC_LOCAL}/rc.local" ]] && source "${COMMON_RC_LOCAL}/rc.local" || touch "${COMMON_RC_LOCAL}/rc.local"
+  [[ -f "${RC_LOCAL}/rc.local" ]] && source "${RC_LOCAL}/rc.local" || touch "${RC_LOCAL}/rc.local"
+}
 
 function _nredf_sync_dotfiles() {
   # Load homeshick
-if [ ! -d "${HOME}/.homesick" ]; then
-  echo -e '\033[1mCloning homesick\033[0m'
-  git clone https://github.com/andsens/homeshick.git "${HOME}/.homesick/repos/homeshick"
-  source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-  fpath=("${HOME}/.homesick/repos/homeshick/completions ${fpath[@]}")
-  echo -e '\033[1mCloning dotfiles\033[0m'
-  homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git
-  echo -e '\033[1mCloning vimfiles\033[0m'
-  homeshick --quiet --batch clone https://github.com/NemesisRE/vimfiles.git
-  echo -e '\033[1mLinking dotfiles\033[0m'
-  homeshick --quiet --batch --force link
-  fc-cache -fv
-  exec ${SHELL}
-else
-  source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-  fpath=("${HOME}/.homesick/repos/homeshick/completions" "${fpath[@]}")
-  homeshick --quiet check
-  case ${?} in
-  86)
-    echo -e '\033[1mUpdate and install dotfiles\033[0m'
-    homeshick --quiet --batch --force pull
+  if [ ! -d "${HOME}/.homesick" ]; then
+    echo -e '\033[1mCloning homesick\033[0m'
+    git clone https://github.com/andsens/homeshick.git "${HOME}/.homesick/repos/homeshick"
+    source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
+    fpath=("${HOME}/.homesick/repos/homeshick/completions ${fpath[@]}")
+    echo -e '\033[1mCloning dotfiles\033[0m'
+    homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git
+    echo -e '\033[1mCloning vimfiles\033[0m'
+    homeshick --quiet --batch clone https://github.com/NemesisRE/vimfiles.git
+    echo -e '\033[1mLinking dotfiles\033[0m'
     homeshick --quiet --batch --force link
+    fc-cache -fv
     exec ${SHELL}
-    ;;
-  85)
-    echo -e '\033[1;38;5;222mYour dotfiles are ahead of its upstream, consider pushing\033[0m'
-    ;;
-  88)
-    echo -e '\033[1;38;5;222mYour dotfiles are modified, commit or discard changes to update them\033[0m'
-    ;;
-  esac
-fi
+  else
+    source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
+    fpath=("${HOME}/.homesick/repos/homeshick/completions" "${fpath[@]}")
+    homeshick --quiet check
+    case ${?} in
+    86)
+      echo -e '\033[1mUpdate and install dotfiles\033[0m'
+      homeshick --quiet --batch --force pull
+      homeshick --quiet --batch --force link
+      exec ${SHELL}
+      ;;
+    85)
+      echo -e '\033[1;38;5;222mYour dotfiles are ahead of its upstream, consider pushing\033[0m'
+      ;;
+    88)
+      echo -e '\033[1;38;5;222mYour dotfiles are modified, commit or discard changes to update them\033[0m'
+      ;;
+    esac
+  fi
+}
+
+function _nredf_cleanup_dotfiles() {
+  if [[ "${OS}" == "linux" ]]; then
+    echo -e '\033[1mSearch and delete broken symlinks\033[0m'
+    find "${HOME}" -type l ! -exec test -e {} \; -delete
+  fi
+}
+
+function _nredf_remote_multiplexer() {
+  if [[ "${OS}" == "linux" ]] && [[ -n "${SSH_TTY}" ]] && [[ "${PS1}" != "" ]] && command -pv tmux &>/dev/null; then
+    if [[ -z "${TMUX}" ]]; then
+      if [ -n "${SSH_AUTH_SOCK}" ] && [ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
+          unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
+          ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
+          export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
+      fi
+            # Start tmux on connection
+      if [[ "$(tmux -L "$(hostname -s)" has-session -t "$(hostname -s)" &>/dev/null; echo $?)" = 0 ]]; then
+          echo -e '\033[1mAttach to running tmux session\033[0m'
+          tmux -L "$(hostname -s)" attach-session -t "$(hostname -s)"
+      elif [[ "$(which tmux 2>/dev/null)" != "" ]] && [[ "${TMUX}" = "" ]]; then
+          echo -e '\033[1mStart new tmux session\033[0m'
+          tmux -f ~/.tmux.conf -L "$(hostname -s)" new-session -s "$(hostname -s)"
+      fi
+    fi
+  fi
+
+  # Will replace tmux when proper mouse support is added
+  # https://github.com/zellij-org/zellij/issues/175
+  #if [[ ! -z "${SSH_TTY}" ]] && command -v zellij &>/dev/null; then
+  #  if [[ -z "${ZELLIJ}" ]]; then
+  #    if [[ ! -z "${SSH_AUTH_SOCK}" ]] && [[ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]]; then
+  #        unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
+  #        ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
+  #        export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
+  #    fi
+  #    zellij attach -c "$(hostname -s)"
+  #  fi
+  #fi
 }
 
 function _nredf_install_fzf() {
