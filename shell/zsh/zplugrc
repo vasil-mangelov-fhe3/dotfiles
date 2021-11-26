@@ -14,7 +14,7 @@ if [[ -f "${ZPLUG_HOME}/init.zsh" ]]; then
 		zplug install
 	fi
 
-  if [[ ! -f "${XDG_CACHE_HOME}/nredf/zplug_last_update" ]]; then
+  if [[ -f "${XDG_CACHE_HOME}/nredf/zplug_last_update" ]]; then
     if [[ $(date -r "${XDG_CACHE_HOME}/nredf/zplug_last_update" +%s) -le $(( $(date +%s) - 86400 )) ]]; then
       zplug update
       touch ${XDG_CACHE_HOME}/nredf/zplug_last_update
