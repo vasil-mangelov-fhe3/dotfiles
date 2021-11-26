@@ -87,6 +87,10 @@ function _nredf_set_defaults() {
   export XDG_CONFIG_HOME="${HOME}/.config"
   export XDG_CACHE_HOME="${HOME}/.cache"
   export XDG_DATA_HOME="${HOME}/.local/share"
+  export XDG_STATE_HOME="${HOME}/.local/state"
+  for XDG_PATH in "${XDG_CONFIG_HOME}" "${HOME}/.local/bin" "${XDG_CACHE_HOME}" "${XDG_CACHE_HOME}/nredf" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}"; do
+    [[ ! -d "${XDG_PATH}" ]] && mkdir -p "${XDG_PATH}"
+  done
 
   export PATH="${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:${PATH}"
   [[ -d /snap/bin ]] && export PATH="${PATH}:/snap/bin"
@@ -106,7 +110,9 @@ function _nredf_set_defaults() {
   export FZF_DEFAULT_COMMAND="find -L"
   export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
 
-  #  NVIM Defaults
+  #  VIM/NVIM Defaults
+  export GVIMINIT='let $MYGVIMRC="$XDG_CONFIG_HOME/vim/gvimrc" | source $MYGVIMRC'
+  export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
   export NVIM_LOG_FILE="${XDG_CACHE_HOME}/vim/nvim_debug.log"
   export NVIM_RPLUGIN_MANIFESTE="${XDG_CACHE_HOME}/vim/rplugin.vim"
 
@@ -128,6 +134,10 @@ function _nredf_set_defaults() {
 
   # wget config
   export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
+
+  export XAUTHORITY="${XDG_RUNTIME_DIR}/Xauthority"
+
+  export _Z_DATA="${XDG_DATA_HOME}/z"
 
   # make less more friendly for non-text input files, see lesspipe(1)
   [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
