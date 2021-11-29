@@ -4,22 +4,24 @@ source "${DOT_PATH}/shell/common/nredf_functions"
 _nredf_get_sys_info
 _nredf_set_defaults
 _nredf_set_ssh_agent
-_nredf_sync_dotfiles
+[[ -z ${SUDO_COMMAND} ]] && _nredf_sync_dotfiles
 
 # run shell exclusive things
 source "${RC_PATH}/rc"
 
 _nredf_set_local
-_nredf_cleanup_dotfiles
+[[ -z ${SUDO_COMMAND} ]] && _nredf_cleanup_dotfiles
 
-_nredf_install_fzf
-_nredf_install_nvim
-_nredf_install_lf
-_nredf_install_lazygit
-_nredf_install_btop
-_nredf_install_ctop
-_nredf_install_zellij
-[[ -f "${HOME}/.local/bin/drone" ]] &&_nredf_install_drone
-[[ -f "${HOME}/.local/bin/kubectl" ]] && _nredf_install_k8s_ops
+if [[ -z ${SUDO_COMMAND} ]]; then
+  _nredf_install_fzf
+  _nredf_install_nvim
+  _nredf_install_lf
+  _nredf_install_lazygit
+  _nredf_install_btop
+  _nredf_install_ctop
+  _nredf_install_zellij
+  [[ -f "${HOME}/.local/bin/drone" ]] &&_nredf_install_drone
+  [[ -f "${HOME}/.local/bin/kubectl" ]] && _nredf_install_k8s_ops
+fi
 
 _nredf_remote_multiplexer
