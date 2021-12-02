@@ -175,7 +175,7 @@ function _nredf_sync_dotfiles() {
     homeshick --quiet check
     case ${?} in
     86)
-      echo -e '\033[  Pulling dotfiles\033[0m'
+      echo -e '\033[1m  Pulling dotfiles\033[0m'
       homeshick --batch --force pull
       echo -e '\033[1m  Linking dotfiles\033[0m'
       homeshick --batch --force link
