@@ -59,7 +59,6 @@ function _nredf_github_download_latest() {
   local GHREPO=${2}
   local GHFILE=${3}
 
-  echo -e "\033[1mDownloading latest release from ${GHUSER}/${GHREPO}\033[0m"
   curl -Lfso "${XDG_CACHE_HOME}/nredf/Download/${GHFILE}" "https://github.com/${GHUSER}/${GHREPO}/releases/latest/download/${GHFILE}"
 
   return ${?}
