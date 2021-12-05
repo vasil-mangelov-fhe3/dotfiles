@@ -20,6 +20,7 @@ if [[ -z ${SUDO_COMMAND} ]]; then
   _nredf_install_btop
   _nredf_install_ctop
   _nredf_install_zellij
+  _nredf_install_ripgrep
   [[ -f "${HOME}/.local/bin/drone" ]] &&_nredf_install_drone
   [[ -f "${HOME}/.local/bin/kubectl" ]] && _nredf_install_k8s_ops
 fi
