@@ -49,7 +49,7 @@ function _nredf_github_latest_release() {
   local CACHEFILE="${XDG_CACHE_HOME}/nredf/GHVersionCache/nredf_github_latest_release-${GHUSER}-${GHREPO}"
 
   if [[ ! -s "${CACHEFILE}" || $(date -r "${CACHEFILE}" +%s) -le $(($(date +%s) - 3600 )) ]]; then
-    curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest" | grep -Po '"tag_name":"\K.*?(?=")' > "${CACHEFILE}"
+    curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest" | grep -Po '"tag_name":\s*"\K.*?(?=")' > "${CACHEFILE}"
   fi
   cat "${CACHEFILE}"
 }
