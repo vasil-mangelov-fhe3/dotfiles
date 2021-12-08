@@ -101,7 +101,7 @@ function _nredf_set_defaults() {
   # FZF Defaults
   export FZF_DEFAULT_OPTS='--bind tab:down --bind btab:up --cycle'
   if command -v fd &>/dev/null; then
-    export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git --color=always'
+    export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git --color=always --ansi'
   else
     export FZF_DEFAULT_COMMAND="find -L"
   fi
