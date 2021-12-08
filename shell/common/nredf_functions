@@ -440,9 +440,38 @@ function _nredf_install_ripgrep() {
 
   if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${HOME}/.local/bin/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m\n"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "ripgrep-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz"
-    tar -xzf "${XDG_CACHE_HOME}/nredf/Download/ripgrep-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${XDG_CACHE_HOME}/nredf/Download/"
-    cp "${XDG_CACHE_HOME}/nredf/Download/ripgrep-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${HOME}/.local/bin/"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz"
+    tar -xzf "${XDG_CACHE_HOME}/nredf/Download/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${XDG_CACHE_HOME}/nredf/Download/"
+    cp "${XDG_CACHE_HOME}/nredf/Download/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${HOME}/.local/bin/"
+    if [[ -f "${HOME}/.local/bin/${BINARY}" ]]; then
+      chmod +x "${HOME}/.local/bin/${BINARY}"
+    else
+      return 1
+    fi
+  fi
+}
+
+function _nredf_install_fd() {
+  _nredf_get_sys_info
+  local VERSION
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local VERSION_CMD
+
+  GHUSER="sharkdp"
+  GHREPO="fd"
+  BINARY="fd"
+  VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION_CMD="--version | awk '/fd/{print \$2}'"
+
+  if [[ "${VERSION}" != "" && ! -f "${HOME}/.local/bin/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${HOME}/.local/bin/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m\n"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz"
+    tar -xzf "${XDG_CACHE_HOME}/nredf/Download/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${XDG_CACHE_HOME}/nredf/Download/"
+    cp "${XDG_CACHE_HOME}/nredf/Download/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${HOME}/.local/bin/"
+    cp "${XDG_CACHE_HOME}/nredf/Download/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/autocomplete/_fd" "${HOME}/.config/completion/zsh/_fd.zsh"
+    cp "${XDG_CACHE_HOME}/nredf/Download/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/autocomplete/fd.bash" "${HOME}/.config/completion/bash/fd.bash"
     if [[ -f "${HOME}/.local/bin/${BINARY}" ]]; then
       chmod +x "${HOME}/.local/bin/${BINARY}"
     else
