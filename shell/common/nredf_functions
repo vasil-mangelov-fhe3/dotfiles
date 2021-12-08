@@ -100,7 +100,11 @@ function _nredf_set_defaults() {
 
   # FZF Defaults
   export FZF_DEFAULT_OPTS='--bind tab:down --bind btab:up --cycle'
-  export FZF_DEFAULT_COMMAND="find -L"
+  if command -v fd &>/dev/null; then
+    export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git --color=always'
+  else
+    export FZF_DEFAULT_COMMAND="find -L"
+  fi
   export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
 
   #  VIM/NVIM Defaults
