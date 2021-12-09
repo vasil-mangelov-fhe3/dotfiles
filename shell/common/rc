@@ -22,6 +22,9 @@ if [[ -z ${SUDO_COMMAND} ]]; then
   _nredf_install_zellij
   _nredf_install_ripgrep
   _nredf_install_fd
+  _nredf_install_duf
+  _nredf_install_diskus
+  _nredf_install_dust
   [[ -f "${HOME}/.local/bin/drone" ]] &&_nredf_install_drone
   [[ -f "${HOME}/.local/bin/kubectl" ]] && _nredf_install_k8s_ops
 fi

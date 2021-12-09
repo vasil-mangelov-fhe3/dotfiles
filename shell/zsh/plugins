@@ -2,16 +2,17 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
 # OH-MY-ZSH
 zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
-    ZSH_CUSTOM=${RC_PATH}
-    DISABLE_AUTO_TITLE="true"
-    HYPHEN_INSENSITIVE="true"
-    DISABLE_AUTO_UPDATE="true"
-    ENABLE_CORRECTION="false"
-    HIST_STAMPS="dd.mm.yyyy"
-    bindkey 'OA' history-substring-search-up
-    bindkey 'OB' history-substring-search-down
+  ZSH_CUSTOM=${RC_PATH}
+  DISABLE_AUTO_TITLE="true"
+  HYPHEN_INSENSITIVE="true"
+  DISABLE_AUTO_UPDATE="true"
+  ENABLE_CORRECTION="false"
+  HIST_STAMPS="dd.mm.yyyy"
+  bindkey 'OA' history-substring-search-up
+  bindkey 'OB' history-substring-search-down
 
-zplug "plugins/common-aliases", from:oh-my-zsh
+zplug "plugins/common-aliases", from:oh-my-zsh, \
+  hook-load:"unalias duf"
 zplug "plugins/git-extras",   from:oh-my-zsh
 zplug "plugins/svn",   from:oh-my-zsh
 zplug "plugins/extract",   from:oh-my-zsh
@@ -31,10 +32,10 @@ zplug "modules/utility", from:prezto
 
 # Others
 zplug "b4b4r07/enhancd", use:init.sh, defer:1, \
-    hook-load:"
-        ENHANCD_DISABLE_HOME=1
-        ENHANCD_DISABLE_DOT=1
-    "
+  hook-load:"
+    ENHANCD_DISABLE_HOME=1
+    ENHANCD_DISABLE_DOT=1
+  "
 
 zplug "RobSis/zsh-completion-generator"
 zplug "zdharma-continuum/fast-syntax-highlighting", defer:2

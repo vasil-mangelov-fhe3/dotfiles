@@ -506,6 +506,87 @@ function _nredf_install_fd() {
   fi
 }
 
+function _nredf_install_duf() {
+  _nredf_get_sys_info
+  local VERSION
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local VERSION_CMD
+
+  GHUSER="muesli"
+  GHREPO="duf"
+  BINARY="duf"
+  VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION_CMD="-version | awk '/duf/{print \$2}'"
+
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m\n"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}_${VERSION#v}_${OS}_${UNAMEM}.tar.gz"
+    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}_${VERSION#v}_${OS}_${UNAMEM}.tar.gz" -C "${XDG_BIN_HOME}/" ${BINARY}
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      chmod +x "${XDG_BIN_HOME}/${BINARY}"
+      unalias duf &>/dev/null
+    else
+      return 1
+    fi
+  fi
+}
+
+function _nredf_install_diskus() {
+  _nredf_get_sys_info
+  local VERSION
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local VERSION_CMD
+
+  GHUSER="sharkdp"
+  GHREPO="diskus"
+  BINARY="diskus"
+  VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION_CMD="--version | awk '/diskus/{print \$2}'"
+
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m\n"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz"
+    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
+    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      chmod +x "${XDG_BIN_HOME}/${BINARY}"
+    else
+      return 1
+    fi
+  fi
+}
+
+function _nredf_install_dust() {
+  _nredf_get_sys_info
+  local VERSION
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local VERSION_CMD
+
+  GHUSER="bootandy"
+  GHREPO="dust"
+  BINARY="dust"
+  VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION_CMD="--version | awk '/Dust/{print \$2}'"
+
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m\n"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz"
+    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
+    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      chmod +x "${XDG_BIN_HOME}/${BINARY}"
+    else
+      return 1
+    fi
+  fi
+}
+
 function _nredf_install_k8s_ops() {
   _nredf_install_kubectl
   _nredf_install_krew
