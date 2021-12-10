@@ -223,7 +223,7 @@ function _nredf_remote_multiplexer() {
           tmux -L "$(hostname -s)" attach-session -t "$(hostname -s)"
       elif [[ "$(which tmux 2>/dev/null)" != "" ]] && [[ "${TMUX}" = "" ]]; then
           echo -e '\033[1mStart new tmux session\033[0m'
-          tmux -f ~/.tmux.conf -L "$(hostname -s)" new-session -s "$(hostname -s)"
+          tmux -L "$(hostname -s)" new-session -s "$(hostname -s)"
       fi
     fi
   fi
