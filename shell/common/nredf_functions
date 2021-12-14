@@ -364,7 +364,8 @@ function _nredf_install_btop() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/btop" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$("${XDG_BIN_HOME}/btop" -v | awk '{print $3}')" ]]; then
     echo -e '\033[1mInstalling btop\033[0m'
-    curl -Lfso - "https://github.com/aristocratos/btop/releases/latest/download/btop-${VERSION#v}-${UNAMEM}-${OS}-${LIBC}.tbz" | tar xjf - -C "${XDG_BIN_HOME}/" --strip-components=1 --wildcards --no-anchored '*btop'
+    curl -Lfso "${NREDF_DOWNLOADS}/btop-${UNAMEM}-${OS}-${LIBC}.tbz" "https://github.com/aristocratos/btop/releases/latest/download/btop-${UNAMEM}-${OS}-${LIBC}.tbz"
+    tar -xjf "${NREDF_DOWNLOADS}/btop-${UNAMEM}-${OS}-${LIBC}.tbz" -C "${XDG_BIN_HOME}/" --strip-components=1 --wildcards --no-anchored '*btop'
     if [[ -f "${XDG_BIN_HOME}/btop" ]]; then
       chmod +x "${XDG_BIN_HOME}/btop"
     else
