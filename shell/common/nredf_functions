@@ -84,7 +84,7 @@ function _nredf_set_defaults() {
   export XDG_STATE_HOME="${HOME}/.local/state"
   export NREDF_DOWNLOADS="${XDG_CACHE_HOME}/nredf/Download"
   export NREDF_GHCACHE="${XDG_CACHE_HOME}/nredf/GHVersionCache"
-  for XDG_PATH in "${RC_LOCAL}" "${XDG_CONFIG_HOME}" "${XDG_BIN_HOME}" "${XDG_CACHE_HOME}" "${NREDF_GHCACHE}" "${NREDF_DOWNLOADS}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}"; do
+  for XDG_PATH in "${RC_LOCAL}" "${COMMON_RC_LOCAL}" "${XDG_CONFIG_HOME}" "${XDG_BIN_HOME}" "${XDG_CACHE_HOME}" "${NREDF_GHCACHE}" "${NREDF_DOWNLOADS}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}"; do
     [[ ! -d "${XDG_PATH}" ]] && mkdir -p "${XDG_PATH}"
   done
 
@@ -375,7 +375,7 @@ function _nredf_install_btop() {
 }
 
 function _nredf_install_ctop() {
-  if command -pv docker >/dev/null 2>&1; then
+  if ! command -pv docker >/dev/null 2>&1; then
     return 0
   fi
   local VERSION
@@ -702,7 +702,7 @@ function _nredf_install_kubeseal() {
   GHREPO="sealed-secrets"
   BINARY="kubeseal"
   VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
-  VERSION_CMD="--version | awk '{print \$2}'"
+  VERSION_CMD="--version | awk '{print \$3}'"
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
