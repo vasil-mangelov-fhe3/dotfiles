@@ -84,7 +84,7 @@ function _nredf_set_defaults() {
   export XDG_STATE_HOME="${HOME}/.local/state"
   export NREDF_DOWNLOADS="${XDG_CACHE_HOME}/nredf/Download"
   export NREDF_GHCACHE="${XDG_CACHE_HOME}/nredf/GHVersionCache"
-  for XDG_PATH in "${XDG_CONFIG_HOME}" "${XDG_BIN_HOME}" "${XDG_CACHE_HOME}" "${NREDF_GHCACHE}" "${NREDF_DOWNLOADS}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}"; do
+  for XDG_PATH in "${RC_LOCAL}" "${XDG_CONFIG_HOME}" "${XDG_BIN_HOME}" "${XDG_CACHE_HOME}" "${NREDF_GHCACHE}" "${NREDF_DOWNLOADS}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}"; do
     [[ ! -d "${XDG_PATH}" ]] && mkdir -p "${XDG_PATH}"
   done
 
@@ -691,17 +691,26 @@ function _nredf_install_kubeadm() {
 }
 
 function _nredf_install_kubeseal() {
-  local VERSION
   _nredf_get_sys_info
+  local VERSION
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local VERSION_CMD
 
-  VERSION=$(_nredf_github_latest_release bitnami-labs sealed-secrets)
+  GHUSER="bitnami-labs"
+  GHREPO="sealed-secrets"
+  BINARY="kubeseal"
+  VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION_CMD="--version | awk '{print \$2}'"
 
-  if [[ ! -f "${XDG_BIN_HOME}/kubeseal" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/kubeseal" --version | awk '{print $3}')" ]]; then
-    echo -e '\033[1mInstalling kubeseal\033[0m'
-    [[ -f "${XDG_BIN_HOME}/kubeseal" ]] && rm -f "${XDG_BIN_HOME}/kubeseal"
-    curl -Lfso "${XDG_BIN_HOME}/kubeseal" "https://github.com/bitnami-labs/sealed-secrets/releases/latest/download/kubeseal-${OS}-${ARCH}"
-    if [[ -f "${XDG_BIN_HOME}/kubeseal" ]]; then
-      chmod +x "${XDG_BIN_HOME}/kubeseal"
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && rm -f "${XDG_BIN_HOME}/${BINARY}"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}-${VERSION#v}-${OS}-${ARCH}.tar.gz"
+    tar -xzf "${NREDF_DOWNLOADS}/${BINARY}-${VERSION#v}-${OS}-${ARCH}.tar.gz" -C "${XDG_BIN_HOME}/" ${BINARY}
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
       return 1
     fi
