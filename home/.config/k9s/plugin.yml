@@ -54,7 +54,7 @@ plugin:
     background: false
     args:
       - -c
-      - "flux $([ $(kubectl get helmreleases -n $NAMESPACE $NAME -o=custom-columns=TYPE:.spec.suspend | tail -1) = \"true\" ] && echo \"resume\" || echo \"suspend\") helmrelease -n $NAMESPACE $NAME | less"
+      - "flux $([ $(kubectl get helmreleases.helm.toolkit.fluxcd.io -n $NAMESPACE $NAME -o=custom-columns=TYPE:.spec.suspend | tail -1) = \"true\" ] && echo \"resume\" || echo \"suspend\") helmrelease -n $NAMESPACE $NAME | less"
   toggle-kustomization:
     shortCut: Shift-T
     confirm: true
