@@ -719,7 +719,6 @@ function _nredf_install_kubeadm() {
 }
 
 function _nredf_install_kubeseal() {
-  set -x
   _nredf_get_sys_info
   local VERSION
   local GHUSER
@@ -745,7 +744,6 @@ function _nredf_install_kubeseal() {
       return 1
     fi
   fi
-  set +x
 }
 
 function _nredf_install_fluxctl() {
