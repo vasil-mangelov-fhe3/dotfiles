@@ -46,11 +46,11 @@ function _nredf_get_sys_info() {
 function _nredf_github_latest_release() {
   local GHUSER=${1}
   local GHREPO=${2}
-  local TAGREGEX=${3}
+  local TAGREGEX=${3:-""}
   local CACHEFILE="${NREDF_GHCACHE}/nredf_github_latest_release-${GHUSER}-${GHREPO}"
 
   if [[ ! -s "${CACHEFILE}" || $(date -r "${CACHEFILE}" +%s) -le $(($(date +%s) - 3600 )) ]]; then
-    curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest" | grep -Po '"tag_name":\s*"'${TAGREGEX}'\K.*?(?=")' > "${CACHEFILE}" | head -n1
+    curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases" | grep -Po '"tag_name":\s*"\K'${TAGREGEX}'.*?(?=")' | head -n1 > "${CACHEFILE}"
   fi
   cat "${CACHEFILE}"
 }
@@ -59,10 +59,27 @@ function _nredf_github_download_latest() {
   local GHUSER=${1}
   local GHREPO=${2}
   local GHFILE=${3}
+  local VERSION=$(_nredf_urlencode ${4})
 
-  curl -Lfso "${NREDF_DOWNLOADS}/${GHFILE}" "https://github.com/${GHUSER}/${GHREPO}/releases/latest/download/${GHFILE}"
+  curl -Lfso "${NREDF_DOWNLOADS}/${GHFILE}" "https://github.com/${GHUSER}/${GHREPO}/releases/download/${VERSION}/${GHFILE}"
 
   return ${?}
+}
+
+function _nredf_urlencode() {
+    old_lc_collate=$LC_COLLATE
+    LC_COLLATE=C
+
+    local length="${#1}"
+    for (( i = 0; i < length; i++ )); do
+        local c="${1:$i:1}"
+        case $c in
+            [a-zA-Z0-9.~_-]) printf '%s' "$c" ;;
+            *) printf '%%%02X' "'$c" ;;
+        esac
+    done
+
+    LC_COLLATE=$old_lc_collate
 }
 
 function _nredf_set_defaults() {
@@ -412,7 +429,7 @@ function _nredf_install_drone() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}_${OS}_${ARCH}.tar.gz"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}_${OS}_${ARCH}.tar.gz" "${VERSION}"
     tar -xzf "${NREDF_DOWNLOADS}/${BINARY}_${OS}_${ARCH}.tar.gz" -C "${XDG_BIN_HOME}/"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
@@ -438,7 +455,7 @@ function _nredf_install_zellij() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${UNAMEM}-${PLATFORM}.tar.gz"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${UNAMEM}-${PLATFORM}.tar.gz" "${VERSION}"
     tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${XDG_BIN_HOME}/"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
@@ -468,7 +485,7 @@ function _nredf_install_ripgrep() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" "${VERSION}"
     tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
     cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
@@ -495,7 +512,7 @@ function _nredf_install_fd() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" "${VERSION}"
     tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
     cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
     cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/autocomplete/_fd" "${HOME}/.config/completion/zsh/_fd.zsh"
@@ -524,7 +541,7 @@ function _nredf_install_duf() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}_${VERSION#v}_${OS}_${UNAMEM}.tar.gz"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}_${VERSION#v}_${OS}_${UNAMEM}.tar.gz" "${VERSION}"
     tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}_${VERSION#v}_${OS}_${UNAMEM}.tar.gz" -C "${XDG_BIN_HOME}/" ${BINARY}
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
@@ -551,7 +568,7 @@ function _nredf_install_diskus() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" "${VERSION}"
     tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
     cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
@@ -578,7 +595,7 @@ function _nredf_install_dust() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" "${VERSION}"
     tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
     cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
@@ -709,7 +726,7 @@ function _nredf_install_kubeseal() {
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
     [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && rm -f "${XDG_BIN_HOME}/${BINARY}"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}-${VERSION#v}-${OS}-${ARCH}.tar.gz"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}-${VERSION#v}-${OS}-${ARCH}.tar.gz" "${VERSION}"
     tar -xzf "${NREDF_DOWNLOADS}/${BINARY}-${VERSION#v}-${OS}-${ARCH}.tar.gz" -C "${XDG_BIN_HOME}/" ${BINARY}
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
@@ -839,15 +856,16 @@ function _nredf_install_kustomize() {
   GHREPO="kustomize"
   BINARY="kustomize"
   VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "${GHREPO}\/")
-  VERSION_CMD="--version | awk '/Dust/{print \$2}'"
-  FILENAME="${GHREPO}_${VERSION}_${OS}_${ARCH}"
+  # shellcheck disable=SC
+  VERSION_CMD="version --short | awk 'sub(/\{/, X) {print $1}'"
+  FILENAME="${GHREPO}_${VERSION#${GHREPO}/}_${OS}_${ARCH}"
   FILEEXT=".tar.gz"
 
-  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${FILENAME}${FILEEXT}"
-    tar -xzf "${NREDF_DOWNLOADS}/${FILENAME}${FILEEXT}" -C "${NREDF_DOWNLOADS}/"
-    cp "${NREDF_DOWNLOADS}/${FILENAME}/${BINARY}" "${XDG_BIN_HOME}/"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${FILENAME}${FILEEXT}" "${VERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${FILENAME}${FILEEXT}" -C "${NREDF_DOWNLOADS}"
+    cp "${NREDF_DOWNLOADS}/${BINARY}" "${XDG_BIN_HOME}/"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
