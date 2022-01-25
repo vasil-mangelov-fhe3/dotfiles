@@ -50,7 +50,11 @@ function _nredf_github_latest_release() {
   local CACHEFILE="${NREDF_GHCACHE}/nredf_github_latest_release-${GHUSER}-${GHREPO}"
 
   if [[ ! -s "${CACHEFILE}" || $(date -r "${CACHEFILE}" +%s) -le $(($(date +%s) - 3600 )) ]]; then
-    curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases" | grep -Po '"tag_name":\s*"\K'${TAGREGEX}'.*?(?=")' | head -n1 > "${CACHEFILE}"
+    if [[ ${TAGREGEX} == "" ]]; then
+      curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest" | grep -Po '"tag_name":\s*"\K.*?(?=")' | head -n1 > "${CACHEFILE}"
+    else
+      curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases" | grep -Po '"tag_name":\s*"\K'${TAGREGEX}'.*?(?=")' | head -n1 > "${CACHEFILE}"
+    fi
   fi
   cat "${CACHEFILE}"
 }
@@ -59,9 +63,14 @@ function _nredf_github_download_latest() {
   local GHUSER=${1}
   local GHREPO=${2}
   local GHFILE=${3}
-  local VERSION=$(_nredf_urlencode ${4})
+  local VERSION=${4}
 
-  curl -Lfso "${NREDF_DOWNLOADS}/${GHFILE}" "https://github.com/${GHUSER}/${GHREPO}/releases/download/${VERSION}/${GHFILE}"
+  if [[ ${VERSION} == "latest" ]]; then
+    curl -Lfso "${NREDF_DOWNLOADS}/${GHFILE}" "https://github.com/${GHUSER}/${GHREPO}/releases/latest/download/${GHFILE}"
+  else
+    local VERSIONURLENC=$(_nredf_urlencode ${VERSION})
+    curl -Lfso "${NREDF_DOWNLOADS}/${GHFILE}" "https://github.com/${GHUSER}/${GHREPO}/releases/download/${VERSION}/${GHFILE}"
+  fi
 
   return ${?}
 }
@@ -720,7 +729,7 @@ function _nredf_install_kubeseal() {
   GHUSER="bitnami-labs"
   GHREPO="sealed-secrets"
   BINARY="kubeseal"
-  VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "${GHREPO}-")
   VERSION_CMD="--version | awk '{print \$3}'"
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
