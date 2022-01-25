@@ -719,6 +719,7 @@ function _nredf_install_kubeadm() {
 }
 
 function _nredf_install_kubeseal() {
+  set -x
   _nredf_get_sys_info
   local VERSION
   local GHUSER
@@ -729,21 +730,22 @@ function _nredf_install_kubeseal() {
   GHUSER="bitnami-labs"
   GHREPO="sealed-secrets"
   BINARY="kubeseal"
-  TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "${GHREPO}-")
-  VERSION="${TAGVERSION#${GHREPO}-}"
+  TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "v")
+  VERSION="${TAGVERSION#v}"
   VERSION_CMD="--version | awk '{print \$3}'"
 
-  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
     [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && rm -f "${XDG_BIN_HOME}/${BINARY}"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}-${VERSION#v}-${OS}-${ARCH}.tar.gz" "${TAGVERSION}"
-    tar -xzf "${NREDF_DOWNLOADS}/${BINARY}-${VERSION#v}-${OS}-${ARCH}.tar.gz" -C "${XDG_BIN_HOME}/" "${BINARY}"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}-${VERSION}-${OS}-${ARCH}.tar.gz" "${TAGVERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${BINARY}-${VERSION}-${OS}-${ARCH}.tar.gz" -C "${XDG_BIN_HOME}/" "${BINARY}"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
       return 1
     fi
   fi
+  set +x
 }
 
 function _nredf_install_fluxctl() {
