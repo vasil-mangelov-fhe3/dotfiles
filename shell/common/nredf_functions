@@ -46,10 +46,11 @@ function _nredf_get_sys_info() {
 function _nredf_github_latest_release() {
   local GHUSER=${1}
   local GHREPO=${2}
+  local TAGREGEX=${3}
   local CACHEFILE="${NREDF_GHCACHE}/nredf_github_latest_release-${GHUSER}-${GHREPO}"
 
   if [[ ! -s "${CACHEFILE}" || $(date -r "${CACHEFILE}" +%s) -le $(($(date +%s) - 3600 )) ]]; then
-    curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest" | grep -Po '"tag_name":\s*"\K.*?(?=")' > "${CACHEFILE}"
+    curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest" | grep -Po '"tag_name":\s*"'${TAGREGEX}'\K.*?(?=")' > "${CACHEFILE}" | head -n1
   fi
   cat "${CACHEFILE}"
 }
@@ -598,6 +599,7 @@ function _nredf_install_k8s_ops() {
   _nredf_install_helm
   _nredf_install_k9s
   _nredf_install_velero
+  _nredf_install_kustomize
 }
 
 function _nredf_install_kubectl() {
@@ -820,5 +822,36 @@ function _nredf_install_velero() {
 
   if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
     [[ -f "${XDG_BIN_HOME}/velero" ]] && source <("${XDG_BIN_HOME}/velero" completion "${SHELL_NAME}")
+  fi
+}
+
+function _nredf_install_kustomize() {
+  _nredf_get_sys_info
+  local VERSION
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local VERSION_CMD
+  local FILENAME
+  local FILEEXT
+
+  GHUSER="kubernetes-sigs"
+  GHREPO="kustomize"
+  BINARY="kustomize"
+  VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "${GHREPO}\/")
+  VERSION_CMD="--version | awk '/Dust/{print \$2}'"
+  FILENAME="${GHREPO}_${VERSION}_${OS}_${ARCH}"
+  FILEEXT=".tar.gz"
+
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${FILENAME}${FILEEXT}"
+    tar -xzf "${NREDF_DOWNLOADS}/${FILENAME}${FILEEXT}" -C "${NREDF_DOWNLOADS}/"
+    cp "${NREDF_DOWNLOADS}/${FILENAME}/${BINARY}" "${XDG_BIN_HOME}/"
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      chmod +x "${XDG_BIN_HOME}/${BINARY}"
+    else
+      return 1
+    fi
   fi
 }
