@@ -1,3 +1,17 @@
+if [ ! -d "${XDG_DATA_HOME}/bash-completions" ]; then
+  mkdir -p "${XDG_DATA_HOME}/bash-completions"
+  ln -s "${XDG_CONFIG_HOME}/completion/bash" "${XDG_DATA_HOME}/bash-completions/completions"
+else
+  if [ -L "${XDG_CONFIG_HOME}/completion/bash" ]; then
+    if [ ! -e ${my_link} ]; then
+      ln -sf "${XDG_CONFIG_HOME}/completion/bash" "${XDG_DATA_HOME}/bash-completions/completions"
+    fi
+  else
+    ln -s "${XDG_CONFIG_HOME}/completion/bash" "${XDG_DATA_HOME}/bash-completions/completions"
+  fi
+fi
+
+
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 	source /etc/bash_completion
 fi
