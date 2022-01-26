@@ -3,7 +3,7 @@ if [ ! -d "${XDG_DATA_HOME}/bash-completions" ]; then
   ln -s "${XDG_CONFIG_HOME}/completion/bash" "${XDG_DATA_HOME}/bash-completions/completions"
 else
   if [ -L "${XDG_CONFIG_HOME}/completion/bash" ]; then
-    if [ ! -e ${my_link} ]; then
+    if [ ! -e "${XDG_CONFIG_HOME}/completion/bash" ]; then
       ln -sf "${XDG_CONFIG_HOME}/completion/bash" "${XDG_DATA_HOME}/bash-completions/completions"
     fi
   else
