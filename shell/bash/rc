@@ -2,8 +2,8 @@ if [ ! -d "${XDG_DATA_HOME}/bash-completions" ]; then
   mkdir -p "${XDG_DATA_HOME}/bash-completions"
   ln -s "${XDG_CONFIG_HOME}/completion/bash" "${XDG_DATA_HOME}/bash-completions/completions"
 else
-  if [ -L "${XDG_CONFIG_HOME}/completion/bash" ]; then
-    if [ ! -e "${XDG_CONFIG_HOME}/completion/bash" ]; then
+  if [ -L "${XDG_DATA_HOME}/bash-completions/completions" ]; then
+    if [ ! -e "${XDG_DATA_HOME}/bash-completions/completions" ]; then
       ln -sf "${XDG_CONFIG_HOME}/completion/bash" "${XDG_DATA_HOME}/bash-completions/completions"
     fi
   else
