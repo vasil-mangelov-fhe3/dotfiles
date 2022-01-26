@@ -885,6 +885,6 @@ function _nredf_install_kustomize() {
   fi
 
   if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && source <("${XDG_BIN_HOME}/${BINARY}" completion "${SHELL_NAME}")
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${SHELL_NAME}" > ${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}.${SHELL_NAME}
   fi
 }
