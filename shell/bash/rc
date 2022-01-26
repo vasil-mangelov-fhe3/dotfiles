@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 	source /etc/bash_completion
 fi
@@ -10,7 +11,7 @@ if [ -f /usr/lib/node_modules/npm/lib/utils/completion.sh ]; then
 	source /usr/lib/node_modules/npm/lib/utils/completion.sh
 fi
 
-source <(cat ${XDG_CONFIG_HOME}/completion/bash/*)
+source <(cat "${XDG_CONFIG_HOME}/completion/bash/*")
 
 # Disable CTRL-S & CTRL-Q
 stty stop ''
@@ -35,7 +36,7 @@ HISTFILESIZE=2000
 shopt -s checkwinsize
 
 # Lock and Load a custom theme file
-[[ ${TERM} != "linux" ]] && source ${RC_PATH}/ps1/shell_prompt.sh
+[[ ${TERM} != "linux" ]] && source "${RC_PATH}/ps1/shell_prompt.sh"
 
 # Write history after every command
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"

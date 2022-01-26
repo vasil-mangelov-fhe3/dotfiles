@@ -53,6 +53,7 @@ function _nredf_github_latest_release() {
     if [[ ${TAGREGEX} == "" ]]; then
       curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest" | grep -Po '"tag_name":\s*"\K.*?(?=")' | head -n1 > "${CACHEFILE}"
     else
+      # shellcheck disable=SC2086
       curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases" | grep -Po '"tag_name":\s*"\K'${TAGREGEX}'.*?(?=")' | head -n1 > "${CACHEFILE}"
     fi
   fi
@@ -64,12 +65,13 @@ function _nredf_github_download_latest() {
   local GHREPO=${2}
   local GHFILE=${3}
   local VERSION=${4}
+  local VERSIONURLENC
 
   if [[ ${VERSION} == "latest" ]]; then
     curl -Lfso "${NREDF_DOWNLOADS}/${GHFILE}" "https://github.com/${GHUSER}/${GHREPO}/releases/latest/download/${GHFILE}"
   else
-    local VERSIONURLENC=$(_nredf_urlencode ${VERSION})
-    curl -Lfso "${NREDF_DOWNLOADS}/${GHFILE}" "https://github.com/${GHUSER}/${GHREPO}/releases/download/${VERSION}/${GHFILE}"
+    VERSIONURLENC=$(_nredf_urlencode "${VERSION}")
+    curl -Lfso "${NREDF_DOWNLOADS}/${GHFILE}" "https://github.com/${GHUSER}/${GHREPO}/releases/download/${VERSIONURLENC}/${GHFILE}"
   fi
 
   return ${?}
@@ -139,7 +141,9 @@ function _nredf_set_defaults() {
   export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
 
   #  VIM/NVIM Defaults
+  # shellcheck disable=SC2016
   export GVIMINIT='let $MYGVIMRC="$XDG_CONFIG_HOME/vim/gvimrc" | source $MYGVIMRC'
+  # shellcheck disable=SC2016
   export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
   export NVIM_LOG_FILE="${XDG_CACHE_HOME}/vim/nvim_debug.log"
   export NVIM_RPLUGIN_MANIFESTE="${XDG_CACHE_HOME}/vim/rplugin.vim"
@@ -867,10 +871,10 @@ function _nredf_install_kustomize() {
   GHREPO="kustomize"
   BINARY="kustomize"
   TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "${GHREPO}\/")
-  VERSION="${TAGVERSION#${GHREPO}/}"
-  # shellcheck disable=SC
+  VERSION="${TAGVERSION#"${GHREPO}"/}"
+  # shellcheck disable=SC2021
   VERSION_CMD="version --short | awk 'sub(/\{kustomize\//, X) {print \$1}'"
-  FILENAME="${GHREPO}_${VERSION#${GHREPO}/}_${OS}_${ARCH}"
+  FILENAME="${GHREPO}_${VERSION#"${GHREPO}"/}_${OS}_${ARCH}"
   FILEEXT=".tar.gz"
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
@@ -885,6 +889,6 @@ function _nredf_install_kustomize() {
   fi
 
   if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${SHELL_NAME}" > ${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}.${SHELL_NAME}
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}.${SHELL_NAME}"
   fi
 }
