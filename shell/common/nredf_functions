@@ -656,6 +656,7 @@ function _nredf_install_kubectl() {
 }
 
 function _nredf_install_krew() {
+  _nredf_get_sys_info
   local VERSION
   [[ ! -f "${XDG_BIN_HOME}/kubectl" ]] && return 1
 
@@ -672,9 +673,14 @@ function _nredf_install_krew() {
       rm -f "${HOME}/.cache/krew/krew.tar.gz"
       KREW="${HOME}/.cache/krew/krew-"$(uname | tr '[:upper:]' '[:lower:]')_$(uname -m | sed -e 's/x86_64/amd64/' -e 's/arm.*$/arm/')""
       "$KREW" install krew 2>/dev/null
+      ln -s "${HOME}/.krew/bin/kubectl-krew" "${XDG_BIN_HOME}/krew"
     else
       return 1
     fi
+  fi
+
+  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${XDG_BIN_HOME}/krew" ]] && "${XDG_BIN_HOME}/krew" completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_krew.${SHELL_NAME}"
   fi
 
   echo -e '\033[1mUpdating krew plugins\033[0m'
