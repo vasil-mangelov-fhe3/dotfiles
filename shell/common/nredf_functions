@@ -682,7 +682,7 @@ function _nredf_install_krew() {
   fi
 
   if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/krew" ]] && "${XDG_BIN_HOME}/krew" completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_krew.${SHELL_NAME}"
+    [[ -f "${XDG_BIN_HOME}/krew" ]] && "${XDG_BIN_HOME}/krew" completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_krew"
   fi
 
   echo -e '\033[1mUpdating krew plugins\033[0m'
