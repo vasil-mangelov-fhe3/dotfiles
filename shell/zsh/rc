@@ -4,7 +4,7 @@ fpath=("${HOME}/.config/completion/zsh" "${fpath[@]}")
 
 source "${RC_PATH}/zplugrc"
 export HISTFILE="${XDG_STATE_HOME}"/zsh/history
-compinit -u -d "${XDG_CACHE_HOME}/zsh/zcompdump-${ZSH_VERSION}"
+compinit -u -d "${HOME}/.zcompdump"
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME}/zsh/zcompcache"
 zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(|.|..) ]] && reply=(..)'
 
@@ -12,5 +12,5 @@ zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(|.|..) ]] && reply=(
 zmodload zsh/mathfunc
 
 for COMPLETION in "${XDG_CONFIG_HOME}/completion/zsh/"*; do
-  complete ${COMPLETION}
+  complete "${COMPLETION}"
 done

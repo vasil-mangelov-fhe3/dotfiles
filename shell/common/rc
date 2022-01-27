@@ -6,9 +6,6 @@ _nredf_set_defaults
 _nredf_set_ssh_agent
 [[ -z ${SUDO_COMMAND} ]] && _nredf_sync_dotfiles
 
-# run shell exclusive things
-source "${RC_PATH}/rc"
-
 _nredf_set_local
 [[ -z ${SUDO_COMMAND} ]] && _nredf_cleanup_dotfiles
 
@@ -28,5 +25,8 @@ if [[ -z ${SUDO_COMMAND} ]]; then
   [[ -f "${HOME}/.local/bin/drone" ]] &&_nredf_install_drone
   [[ -f "${HOME}/.local/bin/kubectl" ]] && _nredf_install_k8s_ops
 fi
+
+# run shell exclusive things
+source "${RC_PATH}/rc"
 
 _nredf_remote_multiplexer
