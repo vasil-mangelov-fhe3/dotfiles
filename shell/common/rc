@@ -31,4 +31,4 @@ fi
 
 _nredf_remote_multiplexer
 
-source <(cat "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/*")
+source <(cat "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/"*)
