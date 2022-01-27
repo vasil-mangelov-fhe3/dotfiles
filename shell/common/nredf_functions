@@ -630,6 +630,7 @@ function _nredf_install_k8s_ops() {
   _nredf_install_k9s
   _nredf_install_velero
   _nredf_install_kustomize
+  _nredf_install_stern
 }
 
 function _nredf_install_kubectl() {
