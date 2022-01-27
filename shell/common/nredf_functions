@@ -892,3 +892,36 @@ function _nredf_install_kustomize() {
     [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}.${SHELL_NAME}"
   fi
 }
+
+function _nredf_install_stern() {
+  _nredf_get_sys_info
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local TAGVERSION
+  local VERSION
+  local VERSION_CMD
+  local FILENAME
+  local FILEEXT
+
+  GHUSER="wercker"
+  GHREPO="stern"
+  BINARY="stern"
+  TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION="${TAGVERSION}"
+  # shellcheck disable=SC2021
+  VERSION_CMD="--version | awk '{print \$3}'"
+  FILENAME="${GHREPO}_${OS}_${ARCH}"
+  FILEEXT=""
+
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${FILENAME}${FILEEXT}" "${TAGVERSION}"
+    cp "${NREDF_DOWNLOADS}/${FILENAME}${FILEEXT}" "${XDG_BIN_HOME}/${BINARY}"
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      chmod +x "${XDG_BIN_HOME}/${BINARY}"
+    else
+      return 1
+    fi
+  fi
+}
