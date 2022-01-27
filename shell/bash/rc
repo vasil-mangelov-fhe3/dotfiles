@@ -11,8 +11,6 @@ if [ -f /usr/lib/node_modules/npm/lib/utils/completion.sh ]; then
 	source /usr/lib/node_modules/npm/lib/utils/completion.sh
 fi
 
-source <(cat "${XDG_CONFIG_HOME}/completion/bash/*")
-
 # Disable CTRL-S & CTRL-Q
 stty stop ''
 stty start ''
