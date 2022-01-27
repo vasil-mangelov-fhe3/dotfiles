@@ -501,7 +501,7 @@ function _nredf_install_ripgrep() {
     _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" "${VERSION}"
     tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
     cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
-    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/complete/_rg" "${XDG_CONFIG_HOME}/completion/zsh/_rg.zsh"
+    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/complete/_rg" "${XDG_CONFIG_HOME}/completion/zsh/_rg"
     cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/complete/rg.bash" "${XDG_CONFIG_HOME}/completion/bash/rg.bash"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
@@ -530,7 +530,7 @@ function _nredf_install_fd() {
     _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" "${VERSION}"
     tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
     cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
-    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/autocomplete/_fd" "${XDG_CONFIG_HOME}/completion/zsh/_fd.zsh"
+    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/autocomplete/_fd" "${XDG_CONFIG_HOME}/completion/zsh/_fd"
     cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/autocomplete/fd.bash" "${XDG_CONFIG_HOME}/completion/bash/fd.bash"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
@@ -898,7 +898,7 @@ function _nredf_install_kustomize() {
   fi
 
   if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}.${SHELL_NAME}"
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}"
   fi
 }
 
@@ -934,6 +934,6 @@ function _nredf_install_stern() {
     fi
   fi
   if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" --completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}.${SHELL_NAME}"
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" --completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}"
   fi
 }

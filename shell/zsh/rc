@@ -10,3 +10,7 @@ zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(|.|..) ]] && reply=(
 
 # Enable math functions
 zmodload zsh/mathfunc
+
+for COMPLETION in "${XDG_CONFIG_HOME}/completion/zsh/"*; do
+  complete ${COMPLETION}
+done

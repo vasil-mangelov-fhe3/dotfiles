@@ -39,4 +39,6 @@ shopt -s checkwinsize
 # Write history after every command
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
+source <(cat "${XDG_CONFIG_HOME}/completion/bash/"*)
+
 trap _unsudo exit
