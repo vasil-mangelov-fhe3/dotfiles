@@ -12,6 +12,7 @@ set ratios 1:3:4
 # key bindings
 map . set hidden!
 map <enter> open
+map <c-d> delete
 
 cmap <up>   cmd-history-prev
 cmap <down> cmd-history-next
