@@ -621,6 +621,44 @@ function _nredf_install_dust() {
   fi
 }
 
+function _nredf_install_yq() {
+  _nredf_get_sys_info
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local TAGVERSION
+  local VERSION
+  local VERSION_CMD
+  local FILENAME
+  local FILEEXT
+
+  GHUSER="mikefarah"
+  GHREPO="yq"
+  BINARY="yq"
+  TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION="${TAGVERSION#"v"}"
+  # shellcheck disable=SC2021
+  VERSION_CMD="-V | awk '{print \$4}'"
+  FILENAME="${GHREPO}_${OS}_${ARCH}"
+  FILEEXT=".tar.gz"
+
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${FILENAME}${FILEEXT}" "${TAGVERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${FILENAME}${FILEEXT}" -C "${XDG_BIN_HOME}/" "./${FILENAME}"
+    mv "${XDG_BIN_HOME}/${FILENAME}" "${XDG_BIN_HOME}/${BINARY}"
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      chmod +x "${XDG_BIN_HOME}/${BINARY}"
+    else
+      return 1
+    fi
+  fi
+
+  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" shell-completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}"
+  fi
+}
+
 function _nredf_install_k8s_ops() {
   _nredf_install_kubectl
   _nredf_install_krew
@@ -658,31 +696,41 @@ function _nredf_install_kubectl() {
 }
 
 function _nredf_install_krew() {
-  _nredf_get_sys_info
-  local VERSION
   [[ ! -f "${XDG_BIN_HOME}/kubectl" ]] && return 1
+  _nredf_get_sys_info
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local TAGVERSION
+  local VERSION
+  local VERSION_CMD
+  local FILENAME
+  local FILEEXT
 
-  VERSION=$(_nredf_github_latest_release kubernetes-sigs krew)
+  GHUSER="kubernetes-sigs"
+  GHREPO="krew"
+  BINARY="krew"
+  TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION="${TAGVERSION}"
+  # shellcheck disable=SC2021
+  VERSION_CMD="version | awk '/^GitTag/{print \$2}'"
+  FILENAME="${GHREPO}-${OS}_${ARCH}"
+  FILEEXT=".tar.gz"
 
-  export KREW_PLUGINS=()
-  export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-
-  if [[ ! -d "${HOME}/.krew" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/kubectl" krew version | awk '/^GitTag/{print $2}')" ]]; then
-    echo -e '\033[1mInstalling krew\033[0m'
-    curl -LfsSo "${HOME}/.cache/krew/krew.tar.gz" "https://github.com/kubernetes-sigs/krew/releases/download/${VERSION}/krew.tar.gz"
-    if [[ -f "${HOME}/.cache/krew/krew.tar.gz" ]]; then
-      tar -zxf "${HOME}/.cache/krew/krew.tar.gz" --directory "${HOME}/.cache/krew"
-      rm -f "${HOME}/.cache/krew/krew.tar.gz"
-      KREW="${HOME}/.cache/krew/krew-"$(uname | tr '[:upper:]' '[:lower:]')_$(uname -m | sed -e 's/x86_64/amd64/' -e 's/arm.*$/arm/')""
-      "$KREW" install krew 2>/dev/null
-      ln -s "${HOME}/.krew/bin/kubectl-krew" "${XDG_BIN_HOME}/krew"
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1mInstalling ${BINARY} Version ${VERSION}\033[0m"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${FILENAME}${FILEEXT}" "${TAGVERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${FILENAME}${FILEEXT}" -C "${XDG_BIN_HOME}/" "./${FILENAME}"
+    mv "${XDG_BIN_HOME}/${FILENAME}" "${XDG_BIN_HOME}/${BINARY}"
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      chmod +x "${XDG_BIN_HOME}/${BINARY}"
+      "${XDG_BIN_HOME}/${BINARY}" install krew 2>/dev/null
     else
       return 1
     fi
   fi
-
   if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/krew" ]] && "${XDG_BIN_HOME}/krew" completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_krew"
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}"
   fi
 
   echo -e '\033[1mUpdating krew plugins\033[0m'
@@ -703,6 +751,8 @@ function _nredf_install_krew() {
   KREW_PLUGINS+=("df-pv")
   KREW_PLUGINS+=("outdated")
   KREW_PLUGINS+=("sniff")
+  KREW_PLUGINS+=("unused-volumes")
+  KREW_PLUGINS+=("cert-manager")
 
   for KREW_PLUGIN in "${KREW_PLUGINS[@]}"; do
     kubectl krew list | grep -q "${KREW_PLUGIN}" || kubectl krew install "${KREW_PLUGIN}" 2>/dev/null
