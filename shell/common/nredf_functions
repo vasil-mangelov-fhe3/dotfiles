@@ -706,6 +706,8 @@ function _nredf_install_krew() {
   local VERSION_CMD
   local FILENAME
   local FILEEXT
+  export KREW_PLUGINS=()
+  export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
   GHUSER="kubernetes-sigs"
   GHREPO="krew"
