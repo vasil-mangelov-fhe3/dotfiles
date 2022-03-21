@@ -26,8 +26,12 @@ keybinds:
       key: [Char: 't',]
     - action: [SwitchToMode: Scroll,]
       key: [Char: 's',]
+    - action: [SwitchToMode: Session,]
+      key: [Char: 'o',]
     - action: [Quit,]
       key: [Ctrl: 'q',]
+    - action: [Detach,]
+      key: [Char: 'd',]
     - action: [NewPane: , SwitchToMode: Locked, ]
       key: [ Alt: 'n',]
     - action: [NewTab: , SwitchToMode: Locked, ]
@@ -328,4 +332,4 @@ default_mode: locked
 # Options:
 #   - true
 #   - false (default)
-disable_mouse_mode: true
+disable_mouse_mode: false

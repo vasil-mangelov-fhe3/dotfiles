@@ -241,36 +241,34 @@ function _nredf_cleanup_dotfiles() {
 }
 
 function _nredf_remote_multiplexer() {
-  if [[ "${OS}" == "linux" ]] && [[ -n "${SSH_TTY}" ]] && [[ "${PS1}" != "" ]] && command -pv tmux &>/dev/null; then
-    if [[ -z "${TMUX}" ]]; then
-      if [ -n "${SSH_AUTH_SOCK}" ] && [ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
+  # if [[ "${OS}" == "linux" ]] && [[ -n "${SSH_TTY}" ]] && [[ "${PS1}" != "" ]] && command -pv tmux &>/dev/null; then
+  #   if [[ -z "${TMUX}" ]]; then
+  #     if [ -n "${SSH_AUTH_SOCK}" ] && [ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
+  #         unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
+  #         ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
+  #         export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
+  #     fi
+  #           # Start tmux on connection
+  #     if [[ "$(tmux -L "$(hostname -s)" has-session -t "$(hostname -s)" &>/dev/null; echo $?)" = 0 ]]; then
+  #         echo -e '\033[1mAttach to running tmux session\033[0m'
+  #         tmux -L "$(hostname -s)" attach-session -t "$(hostname -s)"
+  #     elif [[ "$(which tmux 2>/dev/null)" != "" ]] && [[ "${TMUX}" = "" ]]; then
+  #         echo -e '\033[1mStart new tmux session\033[0m'
+  #         tmux -L "$(hostname -s)" new-session -s "$(hostname -s)"
+  #     fi
+  #   fi
+  # fi
+
+  if [[ ! -z "${SSH_TTY}" ]] && command -v zellij &>/dev/null; then
+    if [[ -z "${ZELLIJ}" ]]; then
+      if [[ ! -z "${SSH_AUTH_SOCK}" ]] && [[ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]]; then
           unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
           ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
           export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
       fi
-            # Start tmux on connection
-      if [[ "$(tmux -L "$(hostname -s)" has-session -t "$(hostname -s)" &>/dev/null; echo $?)" = 0 ]]; then
-          echo -e '\033[1mAttach to running tmux session\033[0m'
-          tmux -L "$(hostname -s)" attach-session -t "$(hostname -s)"
-      elif [[ "$(which tmux 2>/dev/null)" != "" ]] && [[ "${TMUX}" = "" ]]; then
-          echo -e '\033[1mStart new tmux session\033[0m'
-          tmux -L "$(hostname -s)" new-session -s "$(hostname -s)"
-      fi
+      zellij attach -c "$(hostname -s)"
     fi
   fi
-
-  # Will replace tmux when proper mouse support is added
-  # https://github.com/zellij-org/zellij/issues/175
-  #if [[ ! -z "${SSH_TTY}" ]] && command -v zellij &>/dev/null; then
-  #  if [[ -z "${ZELLIJ}" ]]; then
-  #    if [[ ! -z "${SSH_AUTH_SOCK}" ]] && [[ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]]; then
-  #        unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
-  #        ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
-  #        export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
-  #    fi
-  #    zellij attach -c "$(hostname -s)"
-  #  fi
-  #fi
 }
 
 function _nredf_install_fzf() {

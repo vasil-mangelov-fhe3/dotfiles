@@ -3,7 +3,7 @@ template:
   direction: Horizontal
   parts:
     - direction: Vertical
-      borderless: false
+      borderless: true
       split_size:
         Fixed: 2
       run:
@@ -19,22 +19,24 @@ template:
         plugin:
           location: "zellij:tab-bar"
 tabs:
-  - name: "Monitor" # Monitor
+  - name: "Monitor" # tab 1
     direction: Horizontal
+    focus: true
     parts:
       - direction: Horizontal
-        borderless: true
+        borderless: false
         split_size:
-          Fixed: 25
+          Fixed: 26
         run:
           command: {cmd: btop, args: ["-p","1"]}
       - direction: Vertical
         parts:
           - direction: Horizontal
+            focus: true
           - direction: Horizontal
             split_size:
               Fixed: 70
             run:
               command: {cmd: btop, args: ["-p","2"]}
-  - name: "Tab 1" # tab 1
+  - name: "Tab #2" # tab 2
     direction: Horizontal
