@@ -995,8 +995,9 @@ function _nredf_install_calico() {
   local GHREPO
   local BINARY
   local TAGVERSION
-  local VERSION
+  local VERSION_REMOTE
   local VERSION_CMD
+  local VERSION_LOCAL
   local FILENAME
   local FILEEXT
 
@@ -1004,14 +1005,19 @@ function _nredf_install_calico() {
   GHREPO="calico"
   BINARY="kubectl-calico"
   TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
-  VERSION="${TAGVERSION}"
+  VERSION_REMOTE="${TAGVERSION}"
   # shellcheck disable=SC2021
   VERSION_CMD="version | awk '/Client Version/{print \$3}'"
+  VERSION_LOCAL="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
   FILENAME="${GHREPO}ctl-${OS}-${ARCH}"
   FILEEXT=""
 
-  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
-    echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
+  if [[ "${VERSION_REMOTE}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION_REMOTE}" != "" && "${VERSION_REMOTE}" != "${VERSION_LOCAL}" ]]; then
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      echo -e "\033[1m  Updating ${BINARY} from ${VERSION_LOCAL} to Version ${VERSION_REMOTE}\033[0m"
+    else
+      echo -e "\033[1m  Installing ${BINARY} Version ${VERSION_REMOTE}\033[0m"
+    fi
     _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${FILENAME}${FILEEXT}" "${TAGVERSION}"
     cp "${NREDF_DOWNLOADS}/${FILENAME}${FILEEXT}" "${XDG_BIN_HOME}/${BINARY}"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
@@ -1020,9 +1026,5 @@ function _nredf_install_calico() {
       return 1
     fi
   fi
-
-  #if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-  #  [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}"
-  #fi
 }
 
