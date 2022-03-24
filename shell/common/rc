@@ -10,6 +10,7 @@ _nredf_set_local
 [[ -z ${SUDO_COMMAND} ]] && _nredf_cleanup_dotfiles
 
 if [[ -z ${SUDO_COMMAND} ]]; then
+  echo -e "\033[1mLooking for fresh Batteries\033[0m"
   _nredf_install_fzf
   _nredf_install_nvim
   _nredf_install_lf
@@ -28,6 +29,7 @@ if [[ -z ${SUDO_COMMAND} ]]; then
 fi
 
 # run shell exclusive things
+echo -e "\033[1mCustomizing Shell\033[0m"
 source "${RC_PATH}/rc"
 
 _nredf_remote_multiplexer
