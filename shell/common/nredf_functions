@@ -1006,7 +1006,7 @@ function _nredf_install_calico() {
   TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   VERSION="${TAGVERSION}"
   # shellcheck disable=SC2021
-  VERSION_CMD="version | awk '/Version/{print \$3}'"
+  VERSION_CMD="version | awk '/Client Version/{print \$3}'"
   FILENAME="${GHREPO}ctl-${OS}-${ARCH}"
   FILEEXT=""
 
