@@ -6,7 +6,6 @@ ${MODULES} = @(
   , "PSFzf"
   , "Recycle"
   , "Terminal-Icons"
-  , "Get-ChildItemColor"
 )
 
 function LoadModule (${MODULE}) {
