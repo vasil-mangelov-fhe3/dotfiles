@@ -27,6 +27,7 @@ zplug "plugins/pyenv",   from:oh-my-zsh
 zplug "plugins/virtualenv",   from:oh-my-zsh
 zplug "plugins/systemadmin",   from:oh-my-zsh
 zplug "plugins/z",   from:oh-my-zsh
+zplug "plugins/asdf",   from:oh-my-zsh
 
 # PREZTO
 zplug "modules/utility", from:prezto
