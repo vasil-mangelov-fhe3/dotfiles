@@ -72,7 +72,7 @@ plugin:
     background: false
     args:
       - -c
-      - "flux --context $CONTEXT $([ $(kubectl get helmreleases.helm.toolkit.fluxcd.io -n $NAMESPACE $NAME -o=custom-columns=TYPE:.spec.suspend | tail -1) = \"true\" ] && echo \"resume\" || echo \"suspend\") helmrelease -n $NAMESPACE $NAME | less"
+      - "flux --context $CONTEXT $([ $(kubectl --context $CONTEXT get helmreleases.helm.toolkit.fluxcd.io -n $NAMESPACE $NAME -o=custom-columns=TYPE:.spec.suspend | tail -1) = \"true\" ] && echo \"resume\" || echo \"suspend\") helmrelease -n $NAMESPACE $NAME | less"
   toggle-kustomization:
     shortCut: Shift-T
     confirm: true
@@ -83,7 +83,7 @@ plugin:
     background: false
     args:
       - -c
-      - "flux --context $CONTEXT $([ $(kubectl get kustomizations -n $NAMESPACE $NAME -o=custom-columns=TYPE:.spec.suspend | tail -1) = \"true\" ] && echo \"resume\" || echo \"suspend\") kustomization -n $NAMESPACE $NAME | less"
+      - "flux --context $CONTEXT $([ $(kubectl --context $CONTEXT get kustomizations -n $NAMESPACE $NAME -o=custom-columns=TYPE:.spec.suspend | tail -1) = \"true\" ] && echo \"resume\" || echo \"suspend\") kustomization -n $NAMESPACE $NAME | less"
   reconcile-git:
     shortCut: Shift-R
     confirm: false
