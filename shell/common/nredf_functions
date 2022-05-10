@@ -678,7 +678,7 @@ function _nredf_install_kubectl() {
 
   VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt)
 
-  if [[ ! -f "${XDG_BIN_HOME}/kubectl" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/kubectl" version --short --client | awk '{print $3}')" ]]; then
+  if [[ ! -f "${XDG_BIN_HOME}/kubectl" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/kubectl" version --output yaml --client | yq '.clientVersion.gitVersion')" ]]; then
     echo -e '\033[1m  Installing kubectl\033[0m'
     [[ -f "${XDG_BIN_HOME}/kubectl" ]] && rm -f "${XDG_BIN_HOME}/kubectl"
     curl -Lfso "${XDG_BIN_HOME}/kubectl" "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubectl"
