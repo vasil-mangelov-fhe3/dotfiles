@@ -12,7 +12,7 @@
 [ -z "${PS1}" ] && return
 
 export DOT_PATH="${HOME}/.homesick/repos/dotfiles"
-source "${DOT_PATH}/shell/common/rc"
+source "${NREDF_DOT_PATH}/shell/common/rc"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

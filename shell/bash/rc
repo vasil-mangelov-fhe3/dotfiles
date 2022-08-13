@@ -34,7 +34,7 @@ HISTFILESIZE=2000
 shopt -s checkwinsize
 
 # Lock and Load a custom theme file
-[[ ${TERM} != "linux" ]] && source "${RC_PATH}/ps1/shell_prompt.sh"
+[[ ${TERM} != "linux" ]] && source "${NREDF_RC_PATH}/ps1/shell_prompt.sh"
 
 # Write history after every command
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"

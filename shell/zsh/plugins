@@ -3,9 +3,9 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # OH-MY-ZSH
 zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh", \
   hook-load:"
-    [[ -f \"${HOME}/.config/fzf/key-bindings.${SHELL_NAME}\" ]] && source \"${HOME}/.config/fzf/key-bindings.${SHELL_NAME}\"
+    [[ -f \"${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}\" ]] && source \"${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}\"
   "
-  ZSH_CUSTOM=${RC_PATH}
+  ZSH_CUSTOM=${NREDF_RC_PATH}
   DISABLE_AUTO_TITLE="true"
   HYPHEN_INSENSITIVE="true"
   DISABLE_AUTO_UPDATE="true"

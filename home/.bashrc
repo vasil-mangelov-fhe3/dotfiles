@@ -12,4 +12,4 @@
 [ -z "${PS1}" ] && return
 
 export DOT_PATH="${HOME}/.homesick/repos/dotfiles"
-source "${DOT_PATH}/shell/common/rc"
+source "${NREDF_DOT_PATH}/shell/common/rc"

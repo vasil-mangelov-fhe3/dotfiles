@@ -2,7 +2,7 @@
 [[ ! -d "${XDG_CACHE_HOME}/zsh" ]] && mkdir -p "${XDG_CACHE_HOME}/zsh"
 fpath=("${HOME}/.config/completion/zsh" "${fpath[@]}")
 
-source "${RC_PATH}/zplugrc"
+source "${NREDF_RC_PATH}/zplugrc"
 export HISTFILE="${XDG_STATE_HOME}"/zsh/history
 rm -f "${HOME}/.zcompdump"
 compinit -u -d "${HOME}/.zcompdump"

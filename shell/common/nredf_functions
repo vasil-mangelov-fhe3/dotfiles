@@ -11,36 +11,36 @@ function _nredf_set_ssh_agent() {
 }
 
 function _nredf_get_sys_info() {
-  UNAMEM=$(uname -m)
-  case ${UNAMEM} in
-    armv5*) ARCH="armv5";;
-    armv6*) ARCH="armv6";;
-    armv7*) ARCH="arm";;
-    aarch64) ARCH="arm64";;
-    x86) ARCH="386";;
-    x86_64) ARCH="amd64";;
-    i686) ARCH="386";;
-    i386) ARCH="386";;
+  NREDF_UNAMEM=$(uname -m)
+  case ${NREDF_UNAMEM} in
+    armv5*) NREDF_ARCH="armv5";;
+    armv6*) NREDF_ARCH="armv6";;
+    armv7*) NREDF_ARCH="arm";;
+    aarch64) NREDF_ARCH="arm64";;
+    x86) NREDF_ARCH="386";;
+    x86_64) NREDF_ARCH="amd64";;
+    i686) NREDF_ARCH="386";;
+    i386) NREDF_ARCH="386";;
   esac
 
-  UNAMES="$(uname -s | tr '[:upper:]' '[:lower:]')"
-  case "${UNAMES}" in
-    msys_nt*) PLATFORM="pc-windows-msvc" ;;
-    cygwin_nt*) PLATFORM="pc-windows-msvc";;
-    mingw*) PLATFORM="pc-windows-msvc" ;;
-    linux) PLATFORM="unknown-linux-musl" ;;
-    darwin) PLATFORM="apple-darwin" ;;
-    freebsd) PLATFORM="unknown-freebsd" ;;
+  NREDF_UNAMES="$(uname -s | tr '[:upper:]' '[:lower:]')"
+  case "${NREDF_UNAMES}" in
+    msys_nt*) NREDF_PLATFORM="pc-windows-msvc" ;;
+    cygwin_nt*) NREDF_PLATFORM="pc-windows-msvc";;
+    mingw*) NREDF_PLATFORM="pc-windows-msvc" ;;
+    linux) NREDF_PLATFORM="unknown-linux-musl" ;;
+    darwin) NREDF_PLATFORM="apple-darwin" ;;
+    freebsd) NREDF_PLATFORM="unknown-freebsd" ;;
   esac
 
-  OS=$(uname|tr '[:upper:]' '[:lower:]')
-  case "${OS}" in
-    mingw*) OS='windows';;
+  NREDF_OS=$(uname|tr '[:upper:]' '[:lower:]')
+  case "${NREDF_OS}" in
+    mingw*) NREDF_OS='windows';;
   esac
 
-  SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
+  NREDF_SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
 
-  export ARCH OS PLATFORM SHELL_NAME
+  export NREDF_ARCH NREDF_OS NREDF_PLATFORM NREDF_SHELL_NAME
 }
 
 function _nredf_github_latest_release() {
@@ -97,9 +97,9 @@ function _nredf_set_defaults() {
   echo -e '\033[1mSetting defaults\033[0m'
   [[ -f "${HOME}/.proxy.local" ]] && source "${HOME}/.proxy.local"
 
-  export COMMON_RC_LOCAL="${HOME}/.config/shell"
-  export RC_PATH="${DOT_PATH}/shell/${SHELL_NAME}"
-  export RC_LOCAL="${HOME}/.config/${SHELL_NAME}"
+  export NREDF_COMMON_RC_LOCAL="${HOME}/.config/shell"
+  export NREDF_RC_PATH="${NREDF_DOT_PATH}/shell/${NREDF_SHELL_NAME}"
+  export NREDF_RC_LOCAL="${HOME}/.config/${NREDF_SHELL_NAME}"
 
   # You may need to manually set your language environment
   export LANG=en_US.UTF-8
@@ -113,7 +113,7 @@ function _nredf_set_defaults() {
   export XDG_STATE_HOME="${HOME}/.local/state"
   export NREDF_DOWNLOADS="${XDG_CACHE_HOME}/nredf/Download"
   export NREDF_GHCACHE="${XDG_CACHE_HOME}/nredf/GHVersionCache"
-  for XDG_PATH in "${RC_LOCAL}" "${COMMON_RC_LOCAL}" "${XDG_CONFIG_HOME}" "${XDG_BIN_HOME}" "${XDG_CACHE_HOME}" "${NREDF_GHCACHE}" "${NREDF_DOWNLOADS}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}"; do
+  for XDG_PATH in "${NREDF_RC_LOCAL}" "${NREDF_COMMON_RC_LOCAL}" "${XDG_CONFIG_HOME}" "${XDG_BIN_HOME}" "${XDG_CACHE_HOME}" "${NREDF_GHCACHE}" "${NREDF_DOWNLOADS}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}"; do
     [[ ! -d "${XDG_PATH}" ]] && mkdir -p "${XDG_PATH}"
   done
 
@@ -181,14 +181,14 @@ function _nredf_set_defaults() {
 
 function _nredf_set_local() {
   echo -e '\033[1mSourcing local aliases and functions\033[0m'
-  [[ ! -d "${RC_LOCAL}" ]] && mkdir -p "${RC_LOCAL}"
-  [[ -e "${DOT_PATH}/shell/common/aliases" ]] && source "${DOT_PATH}/shell/common/aliases"
-  [[ -e "${RC_PATH}/aliases" ]] && source "${RC_PATH}/aliases"
-  [[ -f "${RC_LOCAL}/aliases.local" ]] && source "${RC_LOCAL}/aliases.local" || touch "${RC_LOCAL}/aliases.local"
-  [[ -e "${RC_PATH}/functions" ]] && source "${RC_PATH}/functions"
-  [[ -f "${RC_LOCAL}/functions.local" ]] && source "${RC_LOCAL}/functions.local" || touch "${RC_LOCAL}/functions.local"
-  [[ -f "${COMMON_RC_LOCAL}/rc.local" ]] && source "${COMMON_RC_LOCAL}/rc.local" || touch "${COMMON_RC_LOCAL}/rc.local"
-  [[ -f "${RC_LOCAL}/rc.local" ]] && source "${RC_LOCAL}/rc.local" || touch "${RC_LOCAL}/rc.local"
+  [[ ! -d "${NREDF_RC_LOCAL}" ]] && mkdir -p "${NREDF_RC_LOCAL}"
+  [[ -e "${NREDF_DOT_PATH}/shell/common/aliases" ]] && source "${NREDF_DOT_PATH}/shell/common/aliases"
+  [[ -e "${NREDF_RC_PATH}/aliases" ]] && source "${NREDF_RC_PATH}/aliases"
+  [[ -f "${NREDF_RC_LOCAL}/aliases.local" ]] && source "${NREDF_RC_LOCAL}/aliases.local" || touch "${NREDF_RC_LOCAL}/aliases.local"
+  [[ -e "${NREDF_RC_PATH}/functions" ]] && source "${NREDF_RC_PATH}/functions"
+  [[ -f "${NREDF_RC_LOCAL}/functions.local" ]] && source "${NREDF_RC_LOCAL}/functions.local" || touch "${NREDF_RC_LOCAL}/functions.local"
+  [[ -f "${NREDF_COMMON_RC_LOCAL}/rc.local" ]] && source "${NREDF_COMMON_RC_LOCAL}/rc.local" || touch "${NREDF_COMMON_RC_LOCAL}/rc.local"
+  [[ -f "${NREDF_RC_LOCAL}/rc.local" ]] && source "${NREDF_RC_LOCAL}/rc.local" || touch "${NREDF_RC_LOCAL}/rc.local"
 }
 
 function _nredf_sync_dotfiles() {
@@ -234,14 +234,14 @@ function _nredf_sync_dotfiles() {
 }
 
 function _nredf_cleanup_dotfiles() {
-  if [[ "${OS}" == "linux" ]]; then
+  if [[ "${NREDF_OS}" == "linux" ]]; then
     echo -e '\033[1mSearch and delete broken symlinks\033[0m'
     find "${HOME}" -type l ! -exec test -e {} \; -delete
   fi
 }
 
 function _nredf_remote_multiplexer() {
-  # if [[ "${OS}" == "linux" ]] && [[ -n "${SSH_TTY}" ]] && [[ "${PS1}" != "" ]] && command -pv tmux &>/dev/null; then
+  # if [[ "${NREDF_OS}" == "linux" ]] && [[ -n "${SSH_TTY}" ]] && [[ "${PS1}" != "" ]] && command -pv tmux &>/dev/null; then
   #   if [[ -z "${TMUX}" ]]; then
   #     if [ -n "${SSH_AUTH_SOCK}" ] && [ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
   #         unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
@@ -258,10 +258,10 @@ function _nredf_remote_multiplexer() {
   #     fi
   #   fi
   # fi
-  if [[ ! -z "${SSH_TTY}" ]] && command -v zellij &>/dev/null; then
+  if [[ -n "${SSH_TTY}" ]] && command -v zellij &>/dev/null; then
     if [[ -z "${ZELLIJ}" ]]; then
       echo -e "\033[1mStarting multiplexer\033[0m"
-      if [[ ! -z "${SSH_AUTH_SOCK}" ]] && [[ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]]; then
+      if [[ -n "${SSH_AUTH_SOCK}" ]] && [[ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]]; then
           unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
           ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
           export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
@@ -282,7 +282,7 @@ function _nredf_install_fzf() {
     [[ -d ${HOME}/.fzf ]] && rm -rf "${HOME}/.fzf"
     [[ -f ${HOME}/.fzf.bash ]] && rm -f "${HOME}/.fzf.bash"
     [[ -f ${HOME}/.fzf.zsh ]] && rm -f "${HOME}/.fzf.zsh"
-    curl -Lfs "https://github.com/junegunn/fzf/releases/download/${VERSION}/fzf-${VERSION}-${OS}_${ARCH}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/"
+    curl -Lfs "https://github.com/junegunn/fzf/releases/download/${VERSION}/fzf-${VERSION}-${NREDF_OS}_${NREDF_ARCH}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/"
     curl -Lfso "${XDG_BIN_HOME}/fzf-tmux" "https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux"
     [[ ! -d ${HOME}/.config/fzf ]] && /bin/mkdir "${HOME}/.config/fzf"
     for FZF_FILE in completion.bash completion.zsh key-bindings.bash key-bindings.zsh key-bindings.fish; do
@@ -300,12 +300,12 @@ function _nredf_install_fzf() {
     fi
   fi
 
-  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${HOME}/.config/fzf/completion.${SHELL_NAME}" ]] && source "${HOME}/.config/fzf/completion.${SHELL_NAME}"
-    [[ -f "${HOME}/.config/fzf/key-bindings.${SHELL_NAME}" ]] && source "${HOME}/.config/fzf/key-bindings.${SHELL_NAME}"
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${HOME}/.config/fzf/completion.${NREDF_SHELL_NAME}" ]] && source "${HOME}/.config/fzf/completion.${NREDF_SHELL_NAME}"
+    [[ -f "${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}" ]] && source "${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}"
   fi
 
-  [[ -f "${DOT_PATH}/shell/common/fzf" ]] && source "${DOT_PATH}/shell/common/fzf"
+  [[ -f "${NREDF_DOT_PATH}/shell/common/fzf" ]] && source "${NREDF_DOT_PATH}/shell/common/fzf"
 }
 
 function _nredf_install_nvim() {
@@ -314,7 +314,7 @@ function _nredf_install_nvim() {
 
   VERSION=$(_nredf_github_latest_release neovim neovim)
 
-  [[ "${OS}" != "linux" ]] && return 1
+  [[ "${NREDF_OS}" != "linux" ]] && return 1
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/nvim" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/nvim" --version | head -1 | awk '{print $2}')" ]]; then
     echo -e '\033[1m  Installing neovim\033[0m'
@@ -343,7 +343,7 @@ function _nredf_install_lf() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/lf" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/lf" -version)" ]]; then
     echo -e '\033[1m  Installing lf\033[0m'
-    curl -Lfso - "https://github.com/gokcehan/lf/releases/latest/download/lf-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/"
+    curl -Lfso - "https://github.com/gokcehan/lf/releases/latest/download/lf-${NREDF_OS}-${NREDF_ARCH}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/"
     if [[ -f "${XDG_BIN_HOME}/lf" ]]; then
       chmod +x "${XDG_BIN_HOME}/lf"
     else
@@ -362,7 +362,7 @@ function _nredf_install_lazygit() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/lazygit" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$("${XDG_BIN_HOME}/lazygit" -v | awk '{print $6}' | awk -F= '{gsub(/,$/,""); print $2}')" ]]; then
     echo -e '\033[1m  Installing lazygit\033[0m'
-    curl -Lfso - "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${VERSION#v}_${OS}_${UNAMEM}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/" lazygit
+    curl -Lfso - "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${VERSION#v}_${NREDF_OS}_${NREDF_UNAMEM}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/" lazygit
     if [[ -f "${XDG_BIN_HOME}/lazygit" ]]; then
       chmod +x "${XDG_BIN_HOME}/lazygit"
     else
@@ -379,22 +379,22 @@ function _nredf_install_btop() {
   VERSION=$(_nredf_github_latest_release aristocratos btop)
   LIBC="musl"
 
-  if [[ "${OS}" == "linux" ]]; then
-    case ${UNAMEM} in
+  if [[ "${NREDF_OS}" == "linux" ]]; then
+    case ${NREDF_UNAMEM} in
       armv5*) return;;
       armv6*) return;;
       armv7*) LIBC="musleabihf";;
       x86) return;;
       i386) return;;
     esac
-  elif [[ "${OS}" == "macos" ]]; then
+  elif [[ "${NREDF_OS}" == "macos" ]]; then
     LIBC="monterey"
   fi
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/btop" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$("${XDG_BIN_HOME}/btop" -v | awk '{print $3}')" ]]; then
     echo -e '\033[1m  Installing btop\033[0m'
-    curl -Lfso "${NREDF_DOWNLOADS}/btop-${UNAMEM}-${OS}-${LIBC}.tbz" "https://github.com/aristocratos/btop/releases/latest/download/btop-${UNAMEM}-${OS}-${LIBC}.tbz"
-    tar -xjf "${NREDF_DOWNLOADS}/btop-${UNAMEM}-${OS}-${LIBC}.tbz" -C "${XDG_BIN_HOME}/" --strip-components=1 --wildcards --no-anchored '*btop'
+    curl -Lfso "${NREDF_DOWNLOADS}/btop-${NREDF_UNAMEM}-${NREDF_OS}-${LIBC}.tbz" "https://github.com/aristocratos/btop/releases/latest/download/btop-${NREDF_UNAMEM}-${NREDF_OS}-${LIBC}.tbz"
+    tar -xjf "${NREDF_DOWNLOADS}/btop-${NREDF_UNAMEM}-${NREDF_OS}-${LIBC}.tbz" -C "${XDG_BIN_HOME}/" --strip-components=1 --wildcards --no-anchored '*btop'
     if [[ -f "${XDG_BIN_HOME}/btop" ]]; then
       chmod +x "${XDG_BIN_HOME}/btop"
     else
@@ -415,7 +415,7 @@ function _nredf_install_ctop() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/ctop" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$("${XDG_BIN_HOME}/ctop" -v | awk '{sub(",",""); print $3}')" ]]; then
     echo -e '\033[1m  Installing ctop\033[0m'
-    curl -Lfso "${XDG_BIN_HOME}/ctop" "https://github.com/bcicen/ctop/releases/latest/download/ctop-${VERSION#v}-${OS}-${ARCH}"
+    curl -Lfso "${XDG_BIN_HOME}/ctop" "https://github.com/bcicen/ctop/releases/latest/download/ctop-${VERSION#v}-${NREDF_OS}-${NREDF_ARCH}"
     if [[ -f "${XDG_BIN_HOME}/ctop" ]]; then
       chmod +x "${XDG_BIN_HOME}/ctop"
     else
@@ -440,8 +440,8 @@ function _nredf_install_drone() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}_${OS}_${ARCH}.tar.gz" "${VERSION}"
-    tar -xzf "${NREDF_DOWNLOADS}/${BINARY}_${OS}_${ARCH}.tar.gz" -C "${XDG_BIN_HOME}/"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}_${NREDF_OS}_${NREDF_ARCH}.tar.gz" "${VERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${BINARY}_${NREDF_OS}_${NREDF_ARCH}.tar.gz" -C "${XDG_BIN_HOME}/"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
@@ -466,8 +466,8 @@ function _nredf_install_zellij() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${UNAMEM}-${PLATFORM}.tar.gz" "${VERSION}"
-    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${XDG_BIN_HOME}/"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz" "${VERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz" -C "${XDG_BIN_HOME}/"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
@@ -475,8 +475,8 @@ function _nredf_install_zellij() {
     fi
   fi
 
-  #if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-  #  [[ -f "${XDG_BIN_HOME}/zellij" ]] && source <("${XDG_BIN_HOME}/zellij" setup --generate-completion ${SHELL_NAME})
+  #if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+  #  [[ -f "${XDG_BIN_HOME}/zellij" ]] && source <("${XDG_BIN_HOME}/zellij" setup --generate-completion ${NREDF_SHELL_NAME})
   #fi
 }
 
@@ -496,11 +496,11 @@ function _nredf_install_ripgrep() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" "${VERSION}"
-    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
-    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
-    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/complete/_rg" "${XDG_CONFIG_HOME}/completion/zsh/_rg"
-    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/complete/rg.bash" "${XDG_CONFIG_HOME}/completion/bash/rg.bash"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz" "${VERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
+    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
+    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}/complete/_rg" "${XDG_CONFIG_HOME}/completion/zsh/_rg"
+    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}/complete/rg.bash" "${XDG_CONFIG_HOME}/completion/bash/rg.bash"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
@@ -525,11 +525,11 @@ function _nredf_install_fd() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" "${VERSION}"
-    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
-    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
-    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/autocomplete/_fd" "${XDG_CONFIG_HOME}/completion/zsh/_fd"
-    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/autocomplete/fd.bash" "${XDG_CONFIG_HOME}/completion/bash/fd.bash"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz" "${VERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
+    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
+    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}/autocomplete/_fd" "${XDG_CONFIG_HOME}/completion/zsh/_fd"
+    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}/autocomplete/fd.bash" "${XDG_CONFIG_HOME}/completion/bash/fd.bash"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
@@ -554,8 +554,8 @@ function _nredf_install_duf() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}_${VERSION#v}_${OS}_${UNAMEM}.tar.gz" "${VERSION}"
-    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}_${VERSION#v}_${OS}_${UNAMEM}.tar.gz" -C "${XDG_BIN_HOME}/" ${BINARY}
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}_${VERSION#v}_${NREDF_OS}_${NREDF_UNAMEM}.tar.gz" "${VERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}_${VERSION#v}_${NREDF_OS}_${NREDF_UNAMEM}.tar.gz" -C "${XDG_BIN_HOME}/" ${BINARY}
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
       unalias duf &>/dev/null
@@ -581,9 +581,9 @@ function _nredf_install_diskus() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" "${VERSION}"
-    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
-    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz" "${VERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
+    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
@@ -608,9 +608,9 @@ function _nredf_install_dust() {
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" "${VERSION}"
-    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
-    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${UNAMEM}-${PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz" "${VERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz" -C "${NREDF_DOWNLOADS}/"
+    cp "${NREDF_DOWNLOADS}/${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}/${BINARY}" "${XDG_BIN_HOME}/"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
@@ -637,7 +637,7 @@ function _nredf_install_yq() {
   VERSION="${TAGVERSION#"v"}"
   # shellcheck disable=SC2021
   VERSION_CMD="-V | awk '{print \$4}'"
-  FILENAME="${GHREPO}_${OS}_${ARCH}"
+  FILENAME="${GHREPO}_${NREDF_OS}_${NREDF_ARCH}"
   FILEEXT=".tar.gz"
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
@@ -652,8 +652,8 @@ function _nredf_install_yq() {
     fi
   fi
 
-  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" shell-completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}"
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" shell-completion "${NREDF_SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
   fi
 }
 
@@ -681,7 +681,7 @@ function _nredf_install_kubectl() {
   if [[ ! -f "${XDG_BIN_HOME}/kubectl" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/kubectl" version --output yaml --client | yq '.clientVersion.gitVersion')" ]]; then
     echo -e '\033[1m  Installing kubectl\033[0m'
     [[ -f "${XDG_BIN_HOME}/kubectl" ]] && rm -f "${XDG_BIN_HOME}/kubectl"
-    curl -Lfso "${XDG_BIN_HOME}/kubectl" "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubectl"
+    curl -Lfso "${XDG_BIN_HOME}/kubectl" "https://dl.k8s.io/release/${VERSION}/bin/${NREDF_OS}/${NREDF_ARCH}/kubectl"
     if [[ -f "${XDG_BIN_HOME}/kubectl" ]]; then
       chmod +x "${XDG_BIN_HOME}/kubectl"
     else
@@ -689,8 +689,8 @@ function _nredf_install_kubectl() {
     fi
   fi
 
-  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/kubectl" ]] && source <("${XDG_BIN_HOME}/kubectl" completion "${SHELL_NAME}")
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${XDG_BIN_HOME}/kubectl" ]] && source <("${XDG_BIN_HOME}/kubectl" completion "${NREDF_SHELL_NAME}")
   fi
 }
 
@@ -715,7 +715,7 @@ function _nredf_install_krew() {
   VERSION="${TAGVERSION}"
   # shellcheck disable=SC2021
   VERSION_CMD="version | awk '/^GitTag/{print \$2}'"
-  FILENAME="${GHREPO}-${OS}_${ARCH}"
+  FILENAME="${GHREPO}-${NREDF_OS}_${NREDF_ARCH}"
   FILEEXT=".tar.gz"
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
@@ -730,8 +730,8 @@ function _nredf_install_krew() {
       return 1
     fi
   fi
-  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}"
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
   fi
 
   echo -e '\033[1m    Updating krew plugins\033[0m'
@@ -769,7 +769,7 @@ function _nredf_install_kubeadm() {
   if [[ ! -f "${XDG_BIN_HOME}/kubeadm" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/kubeadm" version -o short)" ]]; then
     echo -e '\033[1m  Installing kubeadm\033[0m'
     [[ -f "${XDG_BIN_HOME}/kubeadm" ]] && rm -f "${XDG_BIN_HOME}/kubeadm"
-    curl -Lfso "${XDG_BIN_HOME}/kubeadm" "https://dl.k8s.io/release/${VERSION}/bin/${OS}/${ARCH}/kubeadm"
+    curl -Lfso "${XDG_BIN_HOME}/kubeadm" "https://dl.k8s.io/release/${VERSION}/bin/${NREDF_OS}/${NREDF_ARCH}/kubeadm"
     if [[ -f "${XDG_BIN_HOME}/kubeadm" ]]; then
       chmod +x "${XDG_BIN_HOME}/kubeadm"
     else
@@ -777,8 +777,8 @@ function _nredf_install_kubeadm() {
     fi
   fi
 
-  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/kubeadm" ]] && source <("${XDG_BIN_HOME}/kubeadm" completion "${SHELL_NAME}")
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${XDG_BIN_HOME}/kubeadm" ]] && source <("${XDG_BIN_HOME}/kubeadm" completion "${NREDF_SHELL_NAME}")
   fi
 }
 
@@ -800,8 +800,8 @@ function _nredf_install_kubeseal() {
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
     [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && rm -f "${XDG_BIN_HOME}/${BINARY}"
-    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}-${VERSION}-${OS}-${ARCH}.tar.gz" "${TAGVERSION}"
-    tar -xzf "${NREDF_DOWNLOADS}/${BINARY}-${VERSION}-${OS}-${ARCH}.tar.gz" -C "${XDG_BIN_HOME}/" "${BINARY}"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}-${VERSION}-${NREDF_OS}-${NREDF_ARCH}.tar.gz" "${TAGVERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${BINARY}-${VERSION}-${NREDF_OS}-${NREDF_ARCH}.tar.gz" -C "${XDG_BIN_HOME}/" "${BINARY}"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
@@ -819,7 +819,7 @@ function _nredf_install_fluxctl() {
   if [[ ! -f "${XDG_BIN_HOME}/fluxctl" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/fluxctl" version)" ]]; then
     echo -e '\033[1m  Installing fluxctl\033[0m'
     [[ -f "${XDG_BIN_HOME}/fluxctl" ]] && rm -f "${XDG_BIN_HOME}/fluxctl"
-    curl -Lfso "${XDG_BIN_HOME}/fluxctl" "https://github.com/fluxcd/flux/releases/latest/download/fluxctl_${OS}_${ARCH}"
+    curl -Lfso "${XDG_BIN_HOME}/fluxctl" "https://github.com/fluxcd/flux/releases/latest/download/fluxctl_${NREDF_OS}_${NREDF_ARCH}"
     if [[ -f "${XDG_BIN_HOME}/fluxctl" ]]; then
       chmod +x "${XDG_BIN_HOME}/fluxctl"
     else
@@ -827,8 +827,8 @@ function _nredf_install_fluxctl() {
     fi
   fi
 
-  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/fluxctl" ]] && source <("${XDG_BIN_HOME}/fluxctl" completion "${SHELL_NAME}")
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${XDG_BIN_HOME}/fluxctl" ]] && source <("${XDG_BIN_HOME}/fluxctl" completion "${NREDF_SHELL_NAME}")
   fi
 }
 
@@ -841,7 +841,7 @@ function _nredf_install_flux() {
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/flux" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$("${XDG_BIN_HOME}/flux" --version | awk '{print $3}')" ]]; then
     echo -e '\033[1m  Installing flux\033[0m'
     [[ -f "${XDG_BIN_HOME}/flux" ]] && rm -f "${XDG_BIN_HOME}/flux"
-    curl -Lfso - "https://github.com/fluxcd/flux2/releases/latest/download/flux_${VERSION#v}_${OS}_${ARCH}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/"
+    curl -Lfso - "https://github.com/fluxcd/flux2/releases/latest/download/flux_${VERSION#v}_${NREDF_OS}_${NREDF_ARCH}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/"
     if [[ -f "${XDG_BIN_HOME}/flux" ]]; then
       chmod +x "${XDG_BIN_HOME}/flux"
     else
@@ -849,8 +849,8 @@ function _nredf_install_flux() {
     fi
   fi
 
-  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/flux" ]] && source <("${XDG_BIN_HOME}/flux" completion "${SHELL_NAME}")
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${XDG_BIN_HOME}/flux" ]] && source <("${XDG_BIN_HOME}/flux" completion "${NREDF_SHELL_NAME}")
   fi
 }
 
@@ -863,7 +863,7 @@ function _nredf_install_helm() {
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/helm" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/helm" version --template\='{{ .Version }}')" ]]; then
     echo -e '\033[1m  Installing helm\033[0m'
     [[ -f "${XDG_BIN_HOME}/helm" ]] && rm -f "${XDG_BIN_HOME}/helm"
-    curl -Lfso - "https://get.helm.sh/helm-${VERSION}-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/" --strip-components=1 --wildcards --no-anchored '*helm'
+    curl -Lfso - "https://get.helm.sh/helm-${VERSION}-${NREDF_OS}-${NREDF_ARCH}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/" --strip-components=1 --wildcards --no-anchored '*helm'
     if [[ -f "${XDG_BIN_HOME}/helm" ]]; then
       chmod +x "${XDG_BIN_HOME}/helm"
     else
@@ -871,8 +871,8 @@ function _nredf_install_helm() {
     fi
   fi
 
-  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/helm" ]] && source <("${XDG_BIN_HOME}/helm" completion "${SHELL_NAME}")
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${XDG_BIN_HOME}/helm" ]] && source <("${XDG_BIN_HOME}/helm" completion "${NREDF_SHELL_NAME}")
   fi
 }
 
@@ -885,7 +885,7 @@ function _nredf_install_k9s() {
   if [[ ! -f "${XDG_BIN_HOME}/k9s" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/k9s" version -s | awk 'tolower($0) ~ /version/{print $2}')" ]]; then
     echo -e '\033[1m  Installing k9s\033[0m'
     [[ -f "${XDG_BIN_HOME}/k9s" ]] && rm -f "${XDG_BIN_HOME}/k9s"
-    curl -Lfso - "https://github.com/derailed/k9s/releases/latest/download/k9s_$(uname)_${UNAMEM}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/" k9s
+    curl -Lfso - "https://github.com/derailed/k9s/releases/latest/download/k9s_$(uname)_${NREDF_UNAMEM}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/" k9s
     if [[ -f "${XDG_BIN_HOME}/k9s" ]]; then
       chmod +x "${XDG_BIN_HOME}/k9s"
     else
@@ -903,7 +903,7 @@ function _nredf_install_velero() {
   if [[ ! -f "${XDG_BIN_HOME}/velero" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/velero" version --client-only | grep Version | awk '{print $2}')" ]]; then
     echo -e '\033[1m  Installing velero\033[0m'
     [[ -f "${XDG_BIN_HOME}/velero" ]] && rm -f "${XDG_BIN_HOME}/velero"
-    curl -Lfso - "https://github.com/vmware-tanzu/velero/releases/latest/download/velero-${VERSION}-${OS}-${ARCH}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/" --strip-components=1 --wildcards --no-anchored '*velero'
+    curl -Lfso - "https://github.com/vmware-tanzu/velero/releases/latest/download/velero-${VERSION}-${NREDF_OS}-${NREDF_ARCH}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/" --strip-components=1 --wildcards --no-anchored '*velero'
     if [[ -f "${XDG_BIN_HOME}/velero" ]]; then
       chmod +x "${XDG_BIN_HOME}/velero"
     else
@@ -911,8 +911,8 @@ function _nredf_install_velero() {
     fi
   fi
 
-  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/velero" ]] && source <("${XDG_BIN_HOME}/velero" completion "${SHELL_NAME}")
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${XDG_BIN_HOME}/velero" ]] && source <("${XDG_BIN_HOME}/velero" completion "${NREDF_SHELL_NAME}")
   fi
 }
 
@@ -934,7 +934,7 @@ function _nredf_install_kustomize() {
   VERSION="${TAGVERSION#"${GHREPO}"/}"
   # shellcheck disable=SC2021
   VERSION_CMD="version --short | awk 'sub(/\{kustomize\//, X) {print \$1}'"
-  FILENAME="${GHREPO}_${VERSION#"${GHREPO}"/}_${OS}_${ARCH}"
+  FILENAME="${GHREPO}_${VERSION#"${GHREPO}"/}_${NREDF_OS}_${NREDF_ARCH}"
   FILEEXT=".tar.gz"
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
@@ -948,8 +948,8 @@ function _nredf_install_kustomize() {
     fi
   fi
 
-  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}"
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
   fi
 }
 
@@ -971,7 +971,7 @@ function _nredf_install_stern() {
   VERSION="${TAGVERSION}"
   # shellcheck disable=SC2021
   VERSION_CMD="--version | awk '{print \$3}'"
-  FILENAME="${GHREPO}_${OS}_${ARCH}"
+  FILENAME="${GHREPO}_${NREDF_OS}_${NREDF_ARCH}"
   FILEEXT=""
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
@@ -984,8 +984,8 @@ function _nredf_install_stern() {
       return 1
     fi
   fi
-  if [[ "${SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" --completion "${SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${SHELL_NAME}/_${BINARY}"
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" --completion "${NREDF_SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
   fi
 }
 
@@ -1009,7 +1009,7 @@ function _nredf_install_calico() {
   # shellcheck disable=SC2021
   VERSION_CMD="version | awk '/Client Version/{print \$3}'"
   VERSION_LOCAL="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
-  FILENAME="${GHREPO}ctl-${OS}-${ARCH}"
+  FILENAME="${GHREPO}ctl-${NREDF_OS}-${NREDF_ARCH}"
   FILEEXT=""
 
   if [[ "${VERSION_REMOTE}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION_REMOTE}" != "" && "${VERSION_REMOTE}" != "${VERSION_LOCAL}" ]]; then
