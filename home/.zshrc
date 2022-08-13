@@ -11,7 +11,7 @@
 # If not running interactively, don't do anything
 [ -z "${PS1}" ] && return
 
-export DOT_PATH="${HOME}/.homesick/repos/dotfiles"
+export NREDF_DOT_PATH="${HOME}/.homesick/repos/dotfiles"
 source "${NREDF_DOT_PATH}/shell/common/rc"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
