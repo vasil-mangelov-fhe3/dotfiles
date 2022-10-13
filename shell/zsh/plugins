@@ -12,8 +12,7 @@ zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh", \
   ENABLE_CORRECTION="false"
   HIST_STAMPS="dd.mm.yyyy"
 
-zplug "plugins/common-aliases", from:oh-my-zsh, \
-  hook-load:"unalias duf"
+zplug "plugins/common-aliases", from:oh-my-zsh
 zplug "plugins/git-extras",   from:oh-my-zsh
 zplug "plugins/svn",   from:oh-my-zsh
 zplug "plugins/extract",   from:oh-my-zsh
