@@ -558,7 +558,9 @@ function _nredf_install_duf() {
     tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}_${VERSION#v}_${NREDF_OS}_${NREDF_UNAMEM}.tar.gz" -C "${XDG_BIN_HOME}/" ${BINARY}
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
-      unalias duf &>/dev/null
+      if alias duf &>/dev/null; then 
+        unalias duf &>/dev/null
+      fi
     else
       return 1
     fi
