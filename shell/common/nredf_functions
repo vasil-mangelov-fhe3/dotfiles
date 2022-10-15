@@ -316,7 +316,7 @@ function _nredf_install_nvim() {
 
   [[ "${NREDF_OS}" != "linux" ]] && return 1
 
-  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/nvim" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/nvim" --version | head -1 | awk '{print $2}')" ]]; then
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/nvim" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/nvim" --version | head -1 | awk '{print $2}' | sed 's/-.*$//')" ]]; then
     echo -e '\033[1m  Installing neovim\033[0m'
     [[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
     [[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
@@ -558,7 +558,7 @@ function _nredf_install_duf() {
     tar -xzf "${NREDF_DOWNLOADS}/${GHREPO}_${VERSION#v}_${NREDF_OS}_${NREDF_UNAMEM}.tar.gz" -C "${XDG_BIN_HOME}/" ${BINARY}
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
-      if alias duf &>/dev/null; then 
+      if alias duf &>/dev/null; then
         unalias duf &>/dev/null
       fi
     else
