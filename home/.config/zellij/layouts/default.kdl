@@ -1,0 +1,29 @@
+layout {
+  default_tab_template {
+    pane size=2 borderless=true {
+      plugin location="zellij:status-bar"
+    }
+    children
+    pane size=1 borderless=true {
+      plugin location="zellij:tab-bar"
+    }
+  }
+
+  pane_template name="btop-main" size="40%" command="btop" {
+    args "-p" "1"
+  }
+
+  pane_template name="btop-stats" size="25%" command="btop" {
+    args "-p" "2"
+  }
+
+  tab focus=true split_direction="horizontal" {
+    btop-main
+    pane split_direction="vertical" {
+      pane focus=true
+      btop-stats
+    }
+  }
+
+  tab
+}
