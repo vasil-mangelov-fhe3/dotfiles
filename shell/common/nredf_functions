@@ -320,6 +320,7 @@ function _nredf_install_nvim() {
     echo -e '\033[1m  Installing neovim\033[0m'
     [[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
     [[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
+    [[ ! -d "${HOME}/.cache/vim" ]] && mkdir -p "${HOME}/.cache/vim"
     curl -Lfso "${HOME}/.cache/vim/nvim.appimage" "https://github.com/neovim/neovim/releases/download/${VERSION}/nvim.appimage"
     if [[ -f "${HOME}/.cache/vim/nvim.appimage" ]]; then
       chmod +x "${HOME}/.cache/vim/nvim.appimage"
