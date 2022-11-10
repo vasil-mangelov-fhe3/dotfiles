@@ -6,7 +6,7 @@ hotKey:
   F2:
     shortCut:     F2
     description:  Viewing Namespaces
-    command:      namespaces
+    command:      contexts
   F3:
     shortCut:     F3
     description:  Viewing Helmreleases
