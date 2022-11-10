@@ -7,13 +7,16 @@ k9s:
   enableMouse: true
   # Set to true to hide K9s header. Default false
   headless: false
+  # Set to true to hide K9s logo. Default false
+  logoless: false
   # Set to true to hide K9s crumbs. Default false
   crumbsless: false
   # Indicates whether modification commands like delete/kill/edit are disabled. Default is false
   readOnly: false
+  # Toggles exit on ctrl-c.
+  noExitOnCtrlC: false
   # Toggles icons display as not all terminal support these chars.
   noIcons: false
-  clusters: []
   # Logs configuration
   logger:
     tail: 100
@@ -29,3 +32,5 @@ k9s:
     memory:
       critical: 90
       warn: 70
+  screenDumpDir: /tmp/k9s-screens
+  clusters: []
