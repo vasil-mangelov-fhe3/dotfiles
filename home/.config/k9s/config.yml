@@ -1,23 +1,13 @@
 k9s:
-  # Represents ui poll intervals. Default 2secs
   refreshRate: 2
-  # Number of retries once the connection to the api-server is lost. Default 15.
   maxConnRetry: 5
-  # Enable mouse support. Default false
   enableMouse: true
-  # Set to true to hide K9s header. Default false
   headless: false
-  # Set to true to hide K9s logo. Default false
   logoless: false
-  # Set to true to hide K9s crumbs. Default false
   crumbsless: false
-  # Indicates whether modification commands like delete/kill/edit are disabled. Default is false
   readOnly: false
-  # Toggles exit on ctrl-c.
   noExitOnCtrlC: false
-  # Toggles icons display as not all terminal support these chars.
   noIcons: false
-  # Logs configuration
   logger:
     tail: 100
     buffer: 5000
@@ -25,6 +15,28 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: true
+  currentContext: none
+  currentCluster: none
+  clusters:
+    none:
+      namespace:
+        active: all
+        lockFavorites: false
+        favorites:
+        - all
+      view:
+        active: po
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.35.0
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
   thresholds:
     cpu:
       critical: 90
@@ -33,4 +45,3 @@ k9s:
       critical: 90
       warn: 70
   screenDumpDir: /tmp/k9s-screens
-  clusters: []
