@@ -879,20 +879,39 @@ function _nredf_install_helm() {
 }
 
 function _nredf_install_k9s() {
-  local VERSION
   _nredf_get_sys_info
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local TAGVERSION
+  local VERSION
+  local VERSION_CMD
+  local FILENAME
+  local FILEEXT
 
-  VERSION=$(_nredf_github_latest_release derailed k9s)
+  GHUSER="derailed"
+  GHREPO="k9s"
+  BINARY="k9s"
+  TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION="${TAGVERSION}"
+  # shellcheck disable=SC2021
+  VERSION_CMD="version -s | awk 'tolower(\$0) ~ /version/{print \$2}'"
+  FILENAME="${GHREPO}_$(uname)_${NREDF_ARCH}"
+  FILEEXT=".tar.gz"
 
-  if [[ ! -f "${XDG_BIN_HOME}/k9s" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/k9s" version -s | awk 'tolower($0) ~ /version/{print $2}')" ]]; then
-    echo -e '\033[1m  Installing k9s\033[0m'
-    [[ -f "${XDG_BIN_HOME}/k9s" ]] && rm -f "${XDG_BIN_HOME}/k9s"
-    curl -Lfso - "https://github.com/derailed/k9s/releases/latest/download/k9s_$(uname)_${NREDF_UNAMEM}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/" k9s
-    if [[ -f "${XDG_BIN_HOME}/k9s" ]]; then
-      chmod +x "${XDG_BIN_HOME}/k9s"
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${FILENAME}${FILEEXT}" "${TAGVERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${FILENAME}${FILEEXT}" -C "${XDG_BIN_HOME}/" "${BINARY}"
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
       return 1
     fi
+  fi
+
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
   fi
 }
 
