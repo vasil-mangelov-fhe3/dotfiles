@@ -241,23 +241,6 @@ function _nredf_cleanup_dotfiles() {
 }
 
 function _nredf_remote_multiplexer() {
-  # if [[ "${NREDF_OS}" == "linux" ]] && [[ -n "${SSH_TTY}" ]] && [[ "${PS1}" != "" ]] && command -pv tmux &>/dev/null; then
-  #   if [[ -z "${TMUX}" ]]; then
-  #     if [ -n "${SSH_AUTH_SOCK}" ] && [ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
-  #         unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
-  #         ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
-  #         export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
-  #     fi
-  #           # Start tmux on connection
-  #     if [[ "$(tmux -L "$(hostname -s)" has-session -t "$(hostname -s)" &>/dev/null; echo $?)" = 0 ]]; then
-  #         echo -e '\033[1mAttach to running tmux session\033[0m'
-  #         tmux -L "$(hostname -s)" attach-session -t "$(hostname -s)"
-  #     elif [[ "$(which tmux 2>/dev/null)" != "" ]] && [[ "${TMUX}" = "" ]]; then
-  #         echo -e '\033[1mStart new tmux session\033[0m'
-  #         tmux -L "$(hostname -s)" new-session -s "$(hostname -s)"
-  #     fi
-  #   fi
-  # fi
   if [[ -n "${SSH_TTY}" ]] && command -v zellij &>/dev/null; then
     if [[ -z "${ZELLIJ}" ]]; then
       echo -e "\033[1mStarting multiplexer\033[0m"
@@ -267,6 +250,22 @@ function _nredf_remote_multiplexer() {
           export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
       fi
       zellij attach -c "$(hostname -s)"
+    fi
+  elif [[ "${NREDF_OS}" == "linux" ]] && [[ -n "${SSH_TTY}" ]] && [[ "${PS1}" != "" ]] && command -pv tmux &>/dev/null; then
+    if [[ -z "${TMUX}" ]]; then
+      if [ -n "${SSH_AUTH_SOCK}" ] && [ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]; then
+          unlink "${HOME}/.ssh/auth_sock" 2>/dev/null
+          ln -sf "${SSH_AUTH_SOCK}" "${HOME}/.ssh/auth_sock"
+          export SSH_AUTH_SOCK="${HOME}/.ssh/auth_sock"
+      fi
+            # Start tmux on connection
+      if [[ "$(tmux -L "$(hostname -s)" has-session -t "$(hostname -s)" &>/dev/null; echo $?)" = 0 ]]; then
+          echo -e '\033[1mAttach to running tmux session\033[0m'
+          tmux -L "$(hostname -s)" attach-session -t "$(hostname -s)"
+      elif [[ "$(which tmux 2>/dev/null)" != "" ]] && [[ "${TMUX}" = "" ]]; then
+          echo -e '\033[1mStart new tmux session\033[0m'
+          tmux -L "$(hostname -s)" new-session -s "$(hostname -s)"
+      fi
     fi
   fi
 }
@@ -312,11 +311,11 @@ function _nredf_install_nvim() {
   local VERSION
   _nredf_get_sys_info
 
-  VERSION=$(_nredf_github_latest_release neovim neovim)
+  VERSION=$(curl -fs "https://api.github.com/repos/neovim/neovim/releases/latest" | yq .body | awk '/NVIM/{print $2}')
 
   [[ "${NREDF_OS}" != "linux" ]] && return 1
 
-  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/nvim" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/nvim" --version | head -1 | awk '{print $2}' | sed 's/-.*$//')" ]]; then
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/nvim" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/nvim" --version | awk '/NVIM//NR==1{print $2}')" ]]; then
     echo -e '\033[1m  Installing neovim\033[0m'
     [[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
     [[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
@@ -328,9 +327,9 @@ function _nredf_install_nvim() {
       return 1
     fi
     PRERC_CURRENT_DIR=$(pwd)
-    cd "${HOME}/.cache/vim/"
+    cd "${HOME}/.cache/vim/" || exit
     "${HOME}/.cache/vim/nvim.appimage" --appimage-extract &>/dev/null
-    cd "${PRERC_CURRENT_DIR}"
+    cd "${PRERC_CURRENT_DIR}" || exit
     unset PRERC_CURRENT_DIR
     ln -sf "${HOME}/.cache/vim/squashfs-root/AppRun" "${XDG_BIN_HOME}/nvim"
   fi
@@ -637,7 +636,7 @@ function _nredf_install_yq() {
   GHREPO="yq"
   BINARY="yq"
   TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
-  VERSION="${TAGVERSION#"v"}"
+  VERSION="${TAGVERSION}"
   # shellcheck disable=SC2021
   VERSION_CMD="-V | awk '{print \$4}'"
   FILENAME="${GHREPO}_${NREDF_OS}_${NREDF_ARCH}"
