@@ -9,19 +9,15 @@ layout {
     }
   }
 
-  pane_template name="btop-main" size="40%" command="btop" {
-    args "-p" "1"
-  }
-
-  pane_template name="btop-stats" size="25%" command="btop" {
-    args "-p" "2"
-  }
-
-  tab focus=true split_direction="horizontal" {
-    btop-main
+  tab name="Monitor" focus=true split_direction="horizontal" {
+    pane command="btop" size="40%" borderless=true {
+      args "-p" "1"
+    }
     pane split_direction="vertical" {
-      pane focus=true
-      btop-stats
+      pane name="Term" focus=true
+      pane command="btop" size="25%" borderless=true {
+        args "-p" "2"
+      }
     }
   }
 
