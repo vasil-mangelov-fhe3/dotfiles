@@ -308,27 +308,30 @@ function _nredf_install_fzf() {
 }
 
 function _nredf_install_nvim() {
-  local VERSION
   _nredf_get_sys_info
+  local VERSION
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local VERSION_CMD
 
-  VERSION=$(curl -fs "https://api.github.com/repos/neovim/neovim/releases/latest" | yq .body | awk '/NVIM/{print $2}')
-
-  [[ "${NREDF_OS}" != "linux" ]] && return 1
-
-  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/nvim" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/nvim" --version | awk '/NVIM//NR==1{print $2}')" ]]; then
-    echo -e '\033[1m  Installing neovim\033[0m'
+  GHUSER="neovim"
+  GHREPO="neovim"
+  BINARY="nvim"
+  VERSION=$(curl -fs "https://api.github.com/repos/neovim/neovim/releases/latest" | yq .body | awk '/NVIM/{sub(/\r?$/, ""); print $2}')
+  VERSION_CMD="--version | awk '/NVIM/{print \$2}'"
+  if [[ "${VERSION}" != "" && ! -e "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
     [[ -d "${HOME}/.cache/vim/squashfs-root" ]] && rm -rf "${HOME}/.cache/vim/squashfs-root"
-    [[ -f "${HOME}/.cache/vim/nvim.appimage" ]] && rm -rf "${HOME}/.cache/vim/nvim.appimage"
-    [[ ! -d "${HOME}/.cache/vim" ]] && mkdir -p "${HOME}/.cache/vim"
-    curl -Lfso "${HOME}/.cache/vim/nvim.appimage" "https://github.com/neovim/neovim/releases/download/${VERSION}/nvim.appimage"
-    if [[ -f "${HOME}/.cache/vim/nvim.appimage" ]]; then
-      chmod +x "${HOME}/.cache/vim/nvim.appimage"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}.appimage" "${VERSION}"
+    if [[ -f "${NREDF_DOWNLOADS}/${BINARY}.appimage" ]]; then
+      chmod +x "${NREDF_DOWNLOADS}/${BINARY}.appimage"
     else
       return 1
     fi
     PRERC_CURRENT_DIR=$(pwd)
     cd "${HOME}/.cache/vim/" || exit
-    "${HOME}/.cache/vim/nvim.appimage" --appimage-extract &>/dev/null
+    "${NREDF_DOWNLOADS}/${BINARY}.appimage" --appimage-extract &>/dev/null
     cd "${PRERC_CURRENT_DIR}" || exit
     unset PRERC_CURRENT_DIR
     ln -sf "${HOME}/.cache/vim/squashfs-root/AppRun" "${XDG_BIN_HOME}/nvim"
@@ -336,16 +339,25 @@ function _nredf_install_nvim() {
 }
 
 function _nredf_install_lf() {
-  local VERSION
   _nredf_get_sys_info
+  local VERSION
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local VERSION_CMD
 
-  VERSION=$(_nredf_github_latest_release gokcehan lf)
+  GHUSER="gokcehan"
+  GHREPO="lf"
+  BINARY="lf"
+  VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION_CMD="-version"
 
-  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/lf" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$("${XDG_BIN_HOME}/lf" -version)" ]]; then
-    echo -e '\033[1m  Installing lf\033[0m'
-    curl -Lfso - "https://github.com/gokcehan/lf/releases/latest/download/lf-${NREDF_OS}-${NREDF_ARCH}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/"
-    if [[ -f "${XDG_BIN_HOME}/lf" ]]; then
-      chmod +x "${XDG_BIN_HOME}/lf"
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}-${NREDF_OS}-${NREDF_ARCH}.tar.gz" "${VERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${BINARY}-${NREDF_OS}-${NREDF_ARCH}.tar.gz" -C "${XDG_BIN_HOME}/"
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
       return 1
     fi
@@ -355,16 +367,25 @@ function _nredf_install_lf() {
 }
 
 function _nredf_install_lazygit() {
-  local VERSION
   _nredf_get_sys_info
+  local VERSION
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local VERSION_CMD
 
-  VERSION=$(_nredf_github_latest_release jesseduffield lazygit)
+  GHUSER="jesseduffield"
+  GHREPO="lazygit"
+  BINARY="lazygit"
+  VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION_CMD="-v | awk '{print \$6}' | awk -F= '{gsub(/,/,\"\"); print \$2}'"
 
-  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/lazygit" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$("${XDG_BIN_HOME}/lazygit" -v | awk '{print $6}' | awk -F= '{gsub(/,$/,""); print $2}')" ]]; then
-    echo -e '\033[1m  Installing lazygit\033[0m'
-    curl -Lfso - "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${VERSION#v}_${NREDF_OS}_${NREDF_UNAMEM}.tar.gz" | tar xzf - -C "${XDG_BIN_HOME}/" lazygit
-    if [[ -f "${XDG_BIN_HOME}/lazygit" ]]; then
-      chmod +x "${XDG_BIN_HOME}/lazygit"
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}_${VERSION#v}_$(uname)_$(uname -m).tar.gz" "${VERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${BINARY}_${VERSION#v}_$(uname)_$(uname -m).tar.gz" -C "${XDG_BIN_HOME}/" "${BINARY}"
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
       return 1
     fi
@@ -384,13 +405,13 @@ function _nredf_install_btop() {
   GHREPO="btop"
   BINARY="btop"
   VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
-  VERSION_CMD="-v | awk '{print \$3}')"
+  VERSION_CMD="-v | awk '{print \$3}'"
   LIBC="musl"
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
     _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}-${NREDF_UNAMEM}-${NREDF_OS}-${LIBC}.tbz" "${VERSION}"
-    tar -xjf "${NREDF_DOWNLOADS}/${BINARY}-${NREDF_UNAMEM}-${NREDF_OS}-${LIBC}.tbz" -C "${XDG_BIN_HOME}/" --strip-components=1 --wildcards --no-anchored '*btop'
+    tar -xjf "${NREDF_DOWNLOADS}/${BINARY}-${NREDF_UNAMEM}-${NREDF_OS}-${LIBC}.tbz" -C "${XDG_BIN_HOME}/" --strip-components=3 --wildcards --no-anchored "bin/${BINARY}"
     if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
       chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
@@ -403,17 +424,26 @@ function _nredf_install_ctop() {
   if ! command -pv docker >/dev/null 2>&1; then
     return 0
   fi
-  local VERSION
 
   _nredf_get_sys_info
+  local VERSION
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local VERSION_CMD
 
-  VERSION=$(_nredf_github_latest_release bcicen ctop)
+  GHUSER="bcicen"
+  GHREPO="ctop"
+  BINARY="ctop"
+  VERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION_CMD="-v | awk '{sub(",",""); print \$3}'"
 
-  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/ctop" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$("${XDG_BIN_HOME}/ctop" -v | awk '{sub(",",""); print $3}')" ]]; then
-    echo -e '\033[1m  Installing ctop\033[0m'
-    curl -Lfso "${XDG_BIN_HOME}/ctop" "https://github.com/bcicen/ctop/releases/latest/download/ctop-${VERSION#v}-${NREDF_OS}-${NREDF_ARCH}"
-    if [[ -f "${XDG_BIN_HOME}/ctop" ]]; then
-      chmod +x "${XDG_BIN_HOME}/ctop"
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION#v}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}-${VERSION}-${NREDF_OS}-${NREDF_ARCH}" "${VERSION}"
+    mv "${NREDF_DOWNLOADS}/${BINARY}-${VERSION}-${NREDF_OS}-${NREDF_ARCH}" "${XDG_BIN_HOME}/${BINARY}"
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      chmod +x "${XDG_BIN_HOME}/${BINARY}"
     else
       return 1
     fi
