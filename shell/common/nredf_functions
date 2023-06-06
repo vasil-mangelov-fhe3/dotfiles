@@ -2,6 +2,10 @@
 #
 # vim: ts=2 sw=2 et ff=unix ft=bash syntax=sh
 
+for FUNCTION in "${NREDF_DOT_PATH}/shell/common/functions/"*;
+  do source "${FUNCTION}"
+done
+
 function _nredf_set_ssh_agent() {
   if [[ -z ${SSH_CONNECTION} && "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]]; then
     unset SSH_AGENT_PID
@@ -171,66 +175,30 @@ function _nredf_set_defaults() {
 
   export _Z_DATA="${XDG_DATA_HOME}/z"
 
+  # asdf config
+  export ASDF_DIR="${HOME}/.homesick/repos/asdf"
+  export ASDF_DATA_DIR="${XDG_DATA_HOME}/asdf"
+  export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/asdfrc"
+  export ADSF_DEFAULT_TOOL_VERSIONS_FILENAME="${XDG_CONFIG_HOME}/asdf/tool-versions"
+
   # make less more friendly for non-text input files, see lesspipe(1)
-  [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+  if [ -x /usr/bin/lesspipe ]; then eval "$(SHELL=/bin/sh lesspipe)"; fi
 
   if command -v dircolors &>/dev/null; then
-    [[ -e "${XDG_CONFIG_HOME}/dircolors" ]] && eval "$(dircolors ${XDG_CONFIG_HOME}/dircolors)"
+    if [[ -e "${XDG_CONFIG_HOME}/dircolors" ]]; then eval "$(dircolors "${XDG_CONFIG_HOME}/dircolors")"; fi
   fi
 }
 
 function _nredf_set_local() {
   echo -e '\033[1mSourcing local aliases and functions\033[0m'
-  [[ ! -d "${NREDF_RC_LOCAL}" ]] && mkdir -p "${NREDF_RC_LOCAL}"
-  [[ -e "${NREDF_DOT_PATH}/shell/common/aliases" ]] && source "${NREDF_DOT_PATH}/shell/common/aliases"
-  [[ -e "${NREDF_RC_PATH}/aliases" ]] && source "${NREDF_RC_PATH}/aliases"
-  [[ -f "${NREDF_RC_LOCAL}/aliases.local" ]] && source "${NREDF_RC_LOCAL}/aliases.local" || touch "${NREDF_RC_LOCAL}/aliases.local"
-  [[ -e "${NREDF_RC_PATH}/functions" ]] && source "${NREDF_RC_PATH}/functions"
-  [[ -f "${NREDF_RC_LOCAL}/functions.local" ]] && source "${NREDF_RC_LOCAL}/functions.local" || touch "${NREDF_RC_LOCAL}/functions.local"
-  [[ -f "${NREDF_COMMON_RC_LOCAL}/rc.local" ]] && source "${NREDF_COMMON_RC_LOCAL}/rc.local" || touch "${NREDF_COMMON_RC_LOCAL}/rc.local"
-  [[ -f "${NREDF_RC_LOCAL}/rc.local" ]] && source "${NREDF_RC_LOCAL}/rc.local" || touch "${NREDF_RC_LOCAL}/rc.local"
-}
-
-function _nredf_sync_dotfiles() {
-  # Load homeshick
-  echo -e '\033[1mChecking dotfiles\033[0m'
-  if [ ! -d "${HOME}/.homesick" ]; then
-    echo -e '\033[1m  Cloning homesick\033[0m'
-    git clone https://github.com/andsens/homeshick.git "${HOME}/.homesick/repos/homeshick"
-    source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-    fpath=("${HOME}/.homesick/repos/homeshick/completions ${fpath[@]}")
-    echo -e '\033[1m  Cloning dotfiles\033[0m'
-    homeshick --quiet --batch clone https://github.com/NemesisRE/dotfiles.git
-    echo -e '\033[1m  Cloning vimfiles\033[0m'
-    homeshick --quiet --batch clone https://github.com/NemesisRE/vimfiles.git
-    echo -e '\033[1m  Linking dotfiles\033[0m'
-    homeshick --quiet --batch --force link
-    fc-cache -fv
-    exec ${SHELL}
-  else
-    source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
-    fpath=("${HOME}/.homesick/repos/homeshick/completions" "${fpath[@]}")
-    homeshick --quiet check
-    case ${?} in
-    86)
-      echo -e '\033[1m  Pulling dotfiles\033[0m'
-      homeshick --batch --force pull
-      echo -e '\033[1m  Linking dotfiles\033[0m'
-      homeshick --batch --force link
-      exec ${SHELL}
-      ;;
-    85)
-      echo -e '\033[1;38;5;222m  Your dotfiles are ahead of its upstream, consider pushing\033[0m'
-      echo -e '\033[1m  Linking dotfiles\033[0m'
-      homeshick --batch --force link
-      ;;
-    88)
-      echo -e '\033[1;38;5;222m  Your dotfiles are modified, commit or discard changes to update them\033[0m'
-      echo -e '\033[1m  Linking dotfiles\033[0m'
-      homeshick --batch --force link
-      ;;
-    esac
-  fi
+  if [[ ! -d "${NREDF_RC_LOCAL}" ]]; then mkdir -p "${NREDF_RC_LOCAL}"; fi
+  if [[ -e "${NREDF_DOT_PATH}/shell/common/aliases" ]]; then source "${NREDF_DOT_PATH}/shell/common/aliases"; fi
+  if [[ -e "${NREDF_RC_PATH}/aliases" ]]; then source "${NREDF_RC_PATH}/aliases"; fi
+  if [[ -f "${NREDF_RC_LOCAL}/aliases.local" ]]; then source "${NREDF_RC_LOCAL}/aliases.local"; else touch "${NREDF_RC_LOCAL}/aliases.local"; fi
+  if [[ -e "${NREDF_RC_PATH}/functions" ]]; then source "${NREDF_RC_PATH}/functions"; fi
+  if [[ -f "${NREDF_RC_LOCAL}/functions.local" ]]; then source "${NREDF_RC_LOCAL}/functions.local"; else touch "${NREDF_RC_LOCAL}/functions.local"; fi
+  if [[ -f "${NREDF_COMMON_RC_LOCAL}/rc.local" ]]; then source "${NREDF_COMMON_RC_LOCAL}/rc.local"; else touch "${NREDF_COMMON_RC_LOCAL}/rc.local"; fi
+  if [[ -f "${NREDF_RC_LOCAL}/rc.local" ]]; then source "${NREDF_RC_LOCAL}/rc.local"; else touch "${NREDF_RC_LOCAL}/rc.local"; fi
 }
 
 function _nredf_cleanup_dotfiles() {

@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+#
+# vim: ts=2 sw=2 et ff=unix ft=bash syntax=sh
+
 # Read functions
 source "${NREDF_DOT_PATH}/shell/common/nredf_functions"
 
@@ -24,12 +28,18 @@ if [[ -z ${SUDO_COMMAND} ]]; then
   _nredf_install_diskus
   _nredf_install_dust
   _nredf_install_yq
-  [[ -f "${HOME}/.local/bin/drone" ]] &&_nredf_install_drone
+  [[ -f "${HOME}/.local/bin/drone" ]] && _nredf_install_drone
   [[ -f "${HOME}/.local/bin/kubectl" ]] && _nredf_install_k8s_ops
 fi
 
 # run shell exclusive things
 echo -e "\033[1mCustomizing Shell\033[0m"
 source "${NREDF_RC_PATH}/rc"
+
+if [[ -d "${ASDF_DIR}" ]]; then
+  source "${ASDF_DIR}/asdf.sh"
+  source "${ASDF_DIR}/completions/asdf.bash"
+  fpath=("${ASDF_DIR}/completions ${fpath[@]}")
+fi
 
 _nredf_remote_multiplexer
