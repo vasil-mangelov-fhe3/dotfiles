@@ -9,4 +9,4 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 indent_size = 2
 tab_width = 2
-indent_style = auto
+indent_style = space
