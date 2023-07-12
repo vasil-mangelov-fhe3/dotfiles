@@ -11,17 +11,37 @@ $SCRIPT_PATH = Split-Path -Parent $MyInvocation.MyCommand.Definition
 . "${SCRIPT_PATH}\Kubectl_Completion.ps1"
 
 # Define modules to be used
+# ${MODULES} = @(
+#   'PSReadLine'
+#   , 'oh-my-posh'
+#   , 'posh-git'
+#   , 'Pscx'
+#   , 'PSFzf'
+#   , 'Recycle'
+#   , 'Terminal-Icons'
+#   , 'GuiCompletion'
+#   , 'PSKubeContext'
+# )
+
 ${MODULES} = @(
   'PSReadLine'
   , 'oh-my-posh'
   , 'posh-git'
-  , 'Pscx'
   , 'PSFzf'
   , 'Recycle'
   , 'Terminal-Icons'
   , 'GuiCompletion'
   , 'PSKubeContext'
+  , 'ZLocation'
+  , 'PoShLog'
 )
+
+if ( ${isWindows} ) {
+  ${ENV:PATH} += ";${HOME}\.local\bin"
+} elseif ( ${isLinux} ) {
+  ${ENV:PATH} += ";${HOME}/.local/bin"
+  ${MODULES}.Remove('GuiCompletion')
+}
 
 #Update-Module
 
