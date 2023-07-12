@@ -209,7 +209,7 @@ function _nredf_cleanup_dotfiles() {
 }
 
 function _nredf_remote_multiplexer() {
-  if [[ -n "${SSH_TTY}" ]] && command -v zellij &>/dev/null; then
+  if [[ -n "${SSH_TTY}" || -n "${WSL_DISTRO_NAME}" ]] && command -v zellij &>/dev/null; then
     if [[ -z "${ZELLIJ}" ]]; then
       echo -e "\033[1mStarting multiplexer\033[0m"
       if [[ -n "${SSH_AUTH_SOCK}" ]] && [[ "${SSH_AUTH_SOCK}" != "${HOME}/.ssh/agent_sock" ]]; then
