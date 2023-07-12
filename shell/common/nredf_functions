@@ -666,6 +666,7 @@ function _nredf_install_k8s_ops() {
   _nredf_install_kustomize
   _nredf_install_stern
   _nredf_install_calico
+  _nredf_install_kubent
 }
 
 function _nredf_install_kubectl() {
@@ -792,6 +793,34 @@ function _nredf_install_kubeseal() {
   TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "v")
   VERSION="${TAGVERSION#v}"
   VERSION_CMD="--version | awk '{print \$3}'"
+
+  if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
+    echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && rm -f "${XDG_BIN_HOME}/${BINARY}"
+    _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${BINARY}-${VERSION}-${NREDF_OS}-${NREDF_ARCH}.tar.gz" "${TAGVERSION}"
+    tar -xzf "${NREDF_DOWNLOADS}/${BINARY}-${VERSION}-${NREDF_OS}-${NREDF_ARCH}.tar.gz" -C "${XDG_BIN_HOME}/" "${BINARY}"
+    if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+      chmod +x "${XDG_BIN_HOME}/${BINARY}"
+    else
+      return 1
+    fi
+  fi
+}
+
+function _nredf_install_kubent() {
+  _nredf_get_sys_info
+  local VERSION
+  local GHUSER
+  local GHREPO
+  local BINARY
+  local VERSION_CMD
+
+  GHUSER="doitintl"
+  GHREPO="kube-no-trouble"
+  BINARY="kubent"
+  TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  VERSION="${TAGVERSION}"
+  VERSION_CMD="--version 2>&1 | awk '{print \$4}'"
 
   if [[ "${VERSION}" != "" && ! -f "${XDG_BIN_HOME}/${BINARY}" ]] || [[ "${VERSION}" != "" && "${VERSION}" != "$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")" ]]; then
     echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
