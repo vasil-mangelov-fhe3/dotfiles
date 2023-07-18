@@ -298,9 +298,9 @@ function _nredf_install_nvim() {
       return 1
     fi
     PRERC_CURRENT_DIR=$(pwd)
-    cd "${HOME}/.cache/vim/" || exit
+    cd "${HOME}/.cache/vim/" || return 1
     "${NREDF_DOWNLOADS}/${BINARY}.appimage" --appimage-extract &>/dev/null
-    cd "${PRERC_CURRENT_DIR}" || exit
+    cd "${PRERC_CURRENT_DIR}" || return 1
     unset PRERC_CURRENT_DIR
     ln -sf "${HOME}/.cache/vim/squashfs-root/AppRun" "${XDG_BIN_HOME}/nvim"
   fi
