@@ -781,7 +781,7 @@ function _nredf_install_fluxctl() {
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
   local FILENAME="${BINARY}_${NREDF_OS}_${NREDF_ARCH}"
-  local VERSION_CMD="--version 2>&1 | awk '{print \$4}'"
+  local VERSION_CMD="version"
   local EXTRACT_CMD="mv \"${NREDF_DOWNLOADS}/${FILENAME}\" \"${XDG_BIN_HOME}/${BINARY}\""
 
   _nredf_install_tool "${GHUSER}" "${GHREPO}" "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${EXTRACT_CMD}"
@@ -821,7 +821,7 @@ function _nredf_install_helm() {
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
   local FILENAME="${BINARY}-${TAGVERSION}-${NREDF_OS}-${NREDF_ARCH}.tar.gz"
-  local VERSION_CMD="--version | awk '{print \$3}'"
+  local VERSION_CMD="version --template\='{{ .Version }}'"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\" --strip-components=1 --wildcards --no-anchored \"*${BINARY}\""
 
   if [[ ! -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
