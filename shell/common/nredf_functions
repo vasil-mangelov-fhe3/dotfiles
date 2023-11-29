@@ -228,9 +228,39 @@ function _nredf_set_local() {
 }
 
 function _nredf_cleanup_dotfiles() {
+  if _nredf_last_run; then
+    return 0
+  fi
+
   if [[ "${NREDF_OS}" == "linux" ]]; then
     echo -e '\033[1mSearch and delete broken symlinks\033[0m'
     find "${HOME}" -type l ! -exec test -e {} \; -delete
+    _nredf_last_run "true"
+  fi
+}
+
+function _nredf_last_run() {
+  if [[ -n $BASH_VERSION ]]; then
+    local CURRENT_FUNCTION="${FUNCNAME[1]}"
+  else  # zsh
+    # shellcheck disable=SC2124,SC2154
+    local CURRENT_FUNCTION="${funcstack[@]:1:1}"
+  fi
+  local SUCCESS="${1:-"false"}"
+  # shellcheck disable=SC2155
+  local CURRENT_TIME="$(date +%s)"
+  [[ ! -d "${XDG_CACHE_HOME}/nredf/LRCache" ]] && mkdir -p "${XDG_CACHE_HOME}/nredf/LRCache"
+  local LAST_RUN_FILE="${XDG_CACHE_HOME}/nredf/LRCache/last_run${CURRENT_FUNCTION}.txt"
+  # shellcheck disable=SC2155
+  local LAST_RUN="$(cat "${LAST_RUN_FILE}" 2>/dev/null || echo "0")"
+
+  if [[ "$((LAST_RUN + 43200))" -gt "${CURRENT_TIME}" ]]; then
+    return 0
+  elif ${SUCCESS}; then
+    echo "${CURRENT_TIME}" > "${LAST_RUN_FILE}"
+    return 0
+  else
+    return 1
   fi
 }
 
@@ -298,6 +328,30 @@ function _nredf_install_tool() {
   if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
     chmod +x "${XDG_BIN_HOME}/${BINARY}"
   fi
+}
+
+function _nredf_install_tools() {
+  if _nredf_last_run; then
+    return 0
+  fi
+
+  echo -e "\033[1mLooking for fresh Batteries\033[0m"
+  _nredf_install_fzf
+  _nredf_install_nvim
+  _nredf_install_lf
+  _nredf_install_lazygit
+  _nredf_install_btop
+  _nredf_install_ctop
+  _nredf_install_zellij
+  _nredf_install_ripgrep
+  _nredf_install_fd
+  _nredf_install_duf
+  _nredf_install_diskus
+  _nredf_install_dust
+  _nredf_install_yq
+  [[ -f "${HOME}/.local/bin/drone" ]] && _nredf_install_drone
+  [[ -f "${HOME}/.kube/config" ]] && _nredf_install_k8s_ops
+  _nredf_last_run "true"
 }
 
 function _nredf_install_fzf() {
@@ -704,6 +758,10 @@ function _nredf_install_krew() {
   fi
 
   if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+    if _nredf_last_run; then
+      return 0
+    fi
+
     # Completion is currently not supported
     #if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
     #  [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
@@ -714,7 +772,9 @@ function _nredf_install_krew() {
 
     echo -e '\033[1m    Updating krew plugins\033[0m'
     kubectl krew update 2>/dev/null
-    kubectl krew upgrade 2>/dev/null
+    if kubectl krew upgrade 2>/dev/null; then
+      _nredf_last_run "true"
+    fi
 
     KREW_PLUGINS+=("ctx")
     KREW_PLUGINS+=("ns")

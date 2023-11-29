@@ -34,3 +34,37 @@ function git_remove_submodule() {
 	fi
 }
 
+function _nredf_zplug() {
+  ZPLUG_HOME="${NREDF_RC_PATH}/zplug"
+  ZPLUG_PLUGINS="${NREDF_RC_PATH}/plugins"
+  ZPLUG_LOADFILE="${NREDF_RC_PATH}/plugins.local"
+  [[ ! -f "${ZPLUG_LOADFILE}" ]] && touch "${ZPLUG_LOADFILE}"
+  PLUGINSRC="${NREDF_RC_PATH}/pluginsrc"
+
+  if [[ -f "${ZPLUG_HOME}/init.zsh" ]]; then
+    source "${ZPLUG_HOME}/init.zsh"
+    source "${ZPLUG_PLUGINS}"
+    source "${ZPLUG_LOADFILE}"
+
+    if ! zplug check; then
+      zplug install
+    fi
+
+    if ! _nredf_last_run; then
+      zplug update
+      _nredf_last_run "true"
+    fi
+
+    # source plugins and add commands to the PATH
+    zplug load
+  else
+    echo -e '\033[1mSetup zplug\033[0m'
+    [[ -d "${ZPLUG_HOME}" ]] && rm -rf "${ZPLUG_HOME}"
+    git clone https://github.com/zplug/zplug "${ZPLUG_HOME}"
+    source "${ZPLUG_HOME}/init.zsh"
+    source "${ZPLUG_PLUGINS}"
+    source "${ZPLUG_LOADFILE}"
+    zplug install
+    zplug load
+  fi
+}

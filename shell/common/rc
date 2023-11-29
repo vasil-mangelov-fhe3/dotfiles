@@ -13,24 +13,7 @@ _nredf_set_ssh_agent
 _nredf_set_local
 [[ -z ${SUDO_COMMAND} ]] && _nredf_cleanup_dotfiles
 
-if [[ -z ${SUDO_COMMAND} ]]; then
-  echo -e "\033[1mLooking for fresh Batteries\033[0m"
-  _nredf_install_fzf
-  _nredf_install_nvim
-  _nredf_install_lf
-  _nredf_install_lazygit
-  _nredf_install_btop
-  _nredf_install_ctop
-  _nredf_install_zellij
-  _nredf_install_ripgrep
-  _nredf_install_fd
-  _nredf_install_duf
-  _nredf_install_diskus
-  _nredf_install_dust
-  _nredf_install_yq
-  [[ -f "${HOME}/.local/bin/drone" ]] && _nredf_install_drone
-  [[ -f "${HOME}/.local/bin/kubectl" ]] && _nredf_install_k8s_ops
-fi
+[[ -z ${SUDO_COMMAND} ]] && _nredf_install_tools
 
 # run shell exclusive things
 echo -e "\033[1mCustomizing Shell\033[0m"
