@@ -8,6 +8,4 @@ rm -f "${HOME}/.zcompdump"
 compinit -u -d "${HOME}/.zcompdump"
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME}/zsh/zcompcache"
 zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(|.|..) ]] && reply=(..)'
-
-# Enable math functions
 zmodload zsh/mathfunc
