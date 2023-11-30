@@ -39,7 +39,6 @@ function _nredf_zplug() {
   ZPLUG_PLUGINS="${NREDF_RC_PATH}/plugins"
   ZPLUG_LOADFILE="${NREDF_RC_PATH}/plugins.local"
   [[ ! -f "${ZPLUG_LOADFILE}" ]] && touch "${ZPLUG_LOADFILE}"
-  PLUGINSRC="${NREDF_RC_PATH}/pluginsrc"
 
   if [[ -f "${ZPLUG_HOME}/init.zsh" ]]; then
     source "${ZPLUG_HOME}/init.zsh"
