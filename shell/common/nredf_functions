@@ -76,15 +76,16 @@ function _nredf_github_latest_release() {
   local GHUSER=${1}
   local GHREPO=${2}
   local TAGREGEX=${3:-""}
-  local SED=${4:-""}
+  local PREFIX=${4:-""}
   local CACHEFILE="${NREDF_GHCACHE}/nredf_github_latest_release-${GHUSER}-${GHREPO}"
 
   if [[ ! -s "${CACHEFILE}" || $(date -r "${CACHEFILE}" +%s) -le $(($(date +%s) - 3600 )) ]]; then
-    if [[ ${TAGREGEX} == "" ]]; then
-      curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases/latest" | grep -Eo '"tag_name":[![:space:]]*"[-.0-9a-zA-Z]*"' | awk -F '"' '{print $4}' | sed -e "${SED}" | head -n1 > "${CACHEFILE}"
+    if command -v jq &> /dev/null; then
+      # shellcheck disable=SC2086
+      curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases" | jq -r 'first(.[].tag_name | select(startswith("'${TAGREGEX}'"))) | sub("'^${PREFIX}'"; "")' > "${CACHEFILE}"
     else
       # shellcheck disable=SC2086
-      curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases" | grep -Eo '"tag_name":[![:space:]]*"'${TAGREGEX}'[-.0-9a-zA-Z]*"' | awk -F '"' '{print $4}' | sed -e "${SED}" | head -n1 > "${CACHEFILE}"
+      curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases" | grep -Eo '"tag_name":[![:space:]]*"'${TAGREGEX}'[-.0-9a-zA-Z]*"' | awk -F '"' '{print $4}' | sed -e "s/^${PREFIX}//" | head -n1 > "${CACHEFILE}"
     fi
   fi
   cat "${CACHEFILE}"
@@ -336,6 +337,7 @@ function _nredf_install_tools() {
   fi
 
   echo -e "\033[1mLooking for fresh Batteries\033[0m"
+  _nredf_install_jq
   _nredf_install_fzf
   _nredf_install_nvim
   _nredf_install_lf
@@ -352,6 +354,22 @@ function _nredf_install_tools() {
   [[ -f "${HOME}/.local/bin/drone" ]] && _nredf_install_drone
   [[ -f "${HOME}/.kube/config" ]] && _nredf_install_k8s_ops
   _nredf_last_run "true"
+}
+
+function _nredf_install_jq() {
+  _nredf_get_sys_info
+
+  local GHUSER="jqlang"
+  local GHREPO="jq"
+  local BINARY="jq"
+  # shellcheck disable=SC2155
+  local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
+  local VERSION=${TAGVERSION#v}
+  local FILENAME="${BINARY}-${NREDF_OS}-${NREDF_ARCH}"
+  local VERSION_CMD="--version"
+  local EXTRACT_CMD="mv \"${NREDF_DOWNLOADS}/${FILENAME}\" \"${XDG_BIN_HOME}/${BINARY}\""
+
+  _nredf_install_tool "${GHUSER}" "${GHREPO}" "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${EXTRACT_CMD}"
 }
 
 function _nredf_install_fzf() {
@@ -955,7 +973,7 @@ function _nredf_install_kustomize() {
   local GHREPO="kustomize"
   local BINARY="kustomize"
   # shellcheck disable=SC2155
-  local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "${BINARY}" "s/^${BINARY}\///")
+  local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "${BINARY}" "${BINARY}\/")
   local VERSION=${TAGVERSION#v}
   local FILENAME="${BINARY}_${TAGVERSION}_${NREDF_OS}_${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="version"
