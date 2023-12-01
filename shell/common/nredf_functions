@@ -397,11 +397,12 @@ function _nredf_install_fzf() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${BINARY}-${VERSION}-${NREDF_UNAME_LOWER}_${NREDF_ARCH}.${FILEEXT}"
+  local FILENAME="${BINARY}-${VERSION}-${NREDF_UNAME_LOWER}_${NREDF_ARCH}.${FILEEXT:-tar.gz}"
   local VERSION_CMD="--version | awk '{print \$1}'"
-  local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\""
+  # shellcheck disable=SC2016
+  local EXTRACT_CMD='
+    tar -xzf "${NREDF_DOWNLOADS}/${FILENAME}" -C "${XDG_BIN_HOME}/"
 
-  if _nredf_install_tool "${GHUSER}" "${GHREPO}" "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${EXTRACT_CMD}"; then
     #command curl -Lfso "${XDG_BIN_HOME}/fzf-tmux" "https://raw.githubusercontent.com/${GHUSER}/${GHREPO}/master/bin/fzf-tmux"
 
     #if [[ -f "${XDG_BIN_HOME}/fzf-tmux" ]]; then
@@ -421,7 +422,8 @@ function _nredf_install_fzf() {
     fi
 
     [[ -f "${NREDF_DOT_PATH}/shell/common/fzf" ]] && source "${NREDF_DOT_PATH}/shell/common/fzf"
-  fi
+  '
+  _nredf_install_tool "${GHUSER}" "${GHREPO}" "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${EXTRACT_CMD}"
 }
 
 function _nredf_install_nvim() {
@@ -435,9 +437,8 @@ function _nredf_install_nvim() {
   local VERSION=${TAGVERSION#v}
   local FILENAME="${BINARY}.appimage"
   local VERSION_CMD="--version | awk '/NVIM/{print \$2}'"
-  local EXTRACT_CMD=""
-
-  if _nredf_install_tool "${GHUSER}" "${GHREPO}" "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${EXTRACT_CMD}"; then
+  # shellcheck disable=SC2016
+  local EXTRACT_CMD='
     if [[ -f "${NREDF_DOWNLOADS}/${BINARY}.appimage" ]]; then
       chmod +x "${NREDF_DOWNLOADS}/${BINARY}.appimage"
     else
@@ -455,7 +456,9 @@ function _nredf_install_nvim() {
     cd "${PRERC_CURRENT_DIR}" || return
     unset PRERC_CURRENT_DIR
     ln -sf "${HOME}/.cache/vim/squashfs-root/AppRun" "${XDG_BIN_HOME}/nvim"
-  fi
+  '
+
+  _nredf_install_tool "${GHUSER}" "${GHREPO}" "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${EXTRACT_CMD}"
 }
 
 function _nredf_install_lf() {
@@ -785,7 +788,11 @@ function _nredf_install_krew() {
   local VERSION=${TAGVERSION#v}
   local FILENAME="${GHREPO}-${NREDF_OS}_${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="version | awk '/^GitTag/{print \$2}'"
-  local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\" \"./${FILENAME%.tar.gz}\"; mv \"${XDG_BIN_HOME}/${FILENAME%.tar.gz}\" \"${XDG_BIN_HOME}/${BINARY}\""
+  # shellcheck disable=SC2016
+  local EXTRACT_CMD='
+    tar -xzf "${NREDF_DOWNLOADS}/${FILENAME}" -C "${XDG_BIN_HOME}/" "./${FILENAME%.tar.gz}"
+    mv "${XDG_BIN_HOME}/${FILENAME%.tar.gz}" "${XDG_BIN_HOME}/${BINARY}"
+  '
 
   if _nredf_install_tool "${GHUSER}" "${GHREPO}" "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${EXTRACT_CMD}"; then
     "${XDG_BIN_HOME}/${BINARY}" install krew 2>/dev/null
@@ -881,7 +888,7 @@ function _nredf_install_fluxctl() {
   _nredf_install_tool "${GHUSER}" "${GHREPO}" "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${EXTRACT_CMD}"
 
   if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/fluxctl" ]] && source <("${XDG_BIN_HOME}/fluxctl" completion "${NREDF_SHELL_NAME}")
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && source <("${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}")
   fi
 }
 
@@ -901,7 +908,7 @@ function _nredf_install_flux() {
   _nredf_install_tool "${GHUSER}" "${GHREPO}" "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${EXTRACT_CMD}"
 
   if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/flux" ]] && source <("${XDG_BIN_HOME}/flux" completion "${NREDF_SHELL_NAME}")
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && source <("${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}")
   fi
 }
 
@@ -978,7 +985,7 @@ function _nredf_install_velero() {
   _nredf_install_tool "${GHUSER}" "${GHREPO}" "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${EXTRACT_CMD}"
 
   if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/velero" ]] && source <("${XDG_BIN_HOME}/velero" completion "${NREDF_SHELL_NAME}")
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && source <("${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}")
   fi
 }
 
