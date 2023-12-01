@@ -18,7 +18,8 @@ function _nredf_set_ssh_agent() {
 }
 
 function _nredf_get_sys_info() {
-  NREDF_UNAME=$(uname)
+  NREDF_UNAME="$(uname)"
+  NREDF_UNAME_LOWER="$(uname -s | tr '[:upper:]' '[:lower:]')"
   NREDF_UNAMEM=$(uname -m)
   case ${NREDF_UNAMEM} in
     armv5*)
@@ -71,7 +72,7 @@ function _nredf_get_sys_info() {
     darwin) NREDF_OS='macos';;
   esac
 
-  export NREDF_ARCH NREDF_LIBC NREDF_OS NREDF_PLATFORM NREDF_UNAME NREDF_UNAMEM NREDF_UNAMES
+  export NREDF_ARCH NREDF_LIBC NREDF_OS NREDF_PLATFORM NREDF_UNAME NREDF_UNAME_LOWER NREDF_UNAMEM NREDF_UNAMES
 }
 
 function _nredf_github_latest_release() {
@@ -383,7 +384,7 @@ function _nredf_install_fzf() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${BINARY}-${VERSION}-${NREDF_OS}_${NREDF_ARCH}.tar.gz"
+  local FILENAME="${BINARY}-${VERSION}-${NREDF_UNAME_LOWER}_${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="--version | awk '{print \$1}'"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\""
 
