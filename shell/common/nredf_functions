@@ -340,6 +340,7 @@ function _nredf_install_tool() {
     echo -e "\033[1;31m  \U21B3 Installation failed\033[0m"
     return 1
   fi
+  echo -e "\033[1;32m  \U21B3 Installation successful\033[0m"
 }
 
 function _nredf_install_tools() {
