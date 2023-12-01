@@ -7,6 +7,9 @@ for FUNCTION in "${NREDF_DOT_PATH}/shell/common/functions/"*;
 done
 
 function _nredf_set_ssh_agent() {
+  if ! command -v gpgconf &>/dev/null; then
+    return 1
+  fi
   if [[ -z ${SSH_CONNECTION} && "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]]; then
     unset SSH_AGENT_PID
     SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
@@ -78,7 +81,7 @@ function _nredf_github_latest_release() {
   local CACHEFILE="${NREDF_GHCACHE}/nredf_github_latest_release-${GHUSER}-${GHREPO}"
 
   if [[ ! -s "${CACHEFILE}" || $(date -r "${CACHEFILE}" +%s) -le $(($(date +%s) - 3600 )) ]]; then
-    if command -v jq &> /dev/null; then
+    if command -v jq &>/dev/null; then
       # shellcheck disable=SC2086
       command curl -fs "https://api.github.com/repos/${GHUSER}/${GHREPO}/releases" | command jq -r 'first(.[].tag_name | select(startswith("'${TAGREGEX}'"))) | sub("'^${PREFIX}'"; "")' > "${CACHEFILE}"
     else
