@@ -67,9 +67,7 @@ function _nredf_get_sys_info() {
     mingw*) NREDF_OS='windows';;
   esac
 
-  NREDF_SHELL_NAME=$(readlink /proc/$$/exe | awk -F'/' '{print $NF}')
-
-  export NREDF_ARCH NREDF_LIBC NREDF_OS NREDF_PLATFORM NREDF_UNAME NREDF_UNAMEM NREDF_UNAMES NREDF_SHELL_NAME
+  export NREDF_ARCH NREDF_LIBC NREDF_OS NREDF_PLATFORM NREDF_UNAME NREDF_UNAMEM NREDF_UNAMES
 }
 
 function _nredf_github_latest_release() {
