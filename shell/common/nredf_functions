@@ -331,13 +331,13 @@ function _nredf_install_tool() {
   if [[ -f "${FILENAME}" ]]; then
     eval "${EXTRACT_CMD}"
   else
-    echo -e "\033[1;31m    Installation failed\033[0m"
+    echo -e "\033[1;31m  \U21B3 Installation failed\033[0m"
     return 1
   fi
   if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
     chmod +x "${XDG_BIN_HOME}/${BINARY}"
   else
-    echo -e "\033[1;31m    Installation failed\033[0m"
+    echo -e "\033[1;31m  \U21B3 Installation failed\033[0m"
     return 1
   fi
 }
