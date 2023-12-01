@@ -747,7 +747,7 @@ function _nredf_install_kubectl() {
   fi
 
   echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
-  command curl -Lfso "${NREDF_DOWNLOADS}/${FILENAME}" "https://dl.k8s.io/release/${TAGVERSION}/bin/${NREDF_OS}/${NREDF_ARCH}/${BINARY}"
+  command curl -Lfso "${NREDF_DOWNLOADS}/${FILENAME}" "https://dl.k8s.io/release/${TAGVERSION}/bin/${NREDF_UNAME_LOWER}/${NREDF_ARCH}/${BINARY}"
   eval "${EXTRACT_CMD}"
   if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
     chmod +x "${XDG_BIN_HOME}/${BINARY}"
@@ -784,7 +784,7 @@ function _nredf_install_kubeadm() {
   fi
 
   echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
-  command curl -Lfso "${NREDF_DOWNLOADS}/${FILENAME}" "https://dl.k8s.io/release/${TAGVERSION}/bin/${NREDF_OS}/${NREDF_ARCH}/${BINARY}"
+  command curl -Lfso "${NREDF_DOWNLOADS}/${FILENAME}" "https://dl.k8s.io/release/${TAGVERSION}/bin/${NREDF_UNAME_LOWER}/${NREDF_ARCH}/${BINARY}"
   eval "${EXTRACT_CMD}"
   if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
     chmod +x "${XDG_BIN_HOME}/${BINARY}"
