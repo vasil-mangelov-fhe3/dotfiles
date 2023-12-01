@@ -328,7 +328,11 @@ function _nredf_install_tool() {
 
   echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
   _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${FILENAME}" "${TAGVERSION}"
-  eval "${EXTRACT_CMD}"
+  if [[ -f "${FILENAME}" ]]; then
+    eval "${EXTRACT_CMD}"
+  else
+    return 1
+  fi
   if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
     chmod +x "${XDG_BIN_HOME}/${BINARY}"
   fi
@@ -631,7 +635,7 @@ function _nredf_install_diskus() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz"
+  local FILENAME="${GHREPO}-${TAGVERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz"
   local VERSION_CMD="--version | awk '/diskus/{print \$2}'"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${NREDF_DOWNLOADS}/\"; cp \"${NREDF_DOWNLOADS}/${FILENAME%.tar.gz}/${BINARY}\" \"${XDG_BIN_HOME}/\""
 
@@ -647,7 +651,7 @@ function _nredf_install_dust() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz"
+  local FILENAME="${GHREPO}-${TAGVERSION}-${NREDF_UNAMEM}-${NREDF_PLATFORM}.tar.gz"
   local VERSION_CMD="--version | awk '/Dust/{print \$2}'"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${NREDF_DOWNLOADS}/\"; cp \"${NREDF_DOWNLOADS}/${FILENAME%.tar.gz}/${BINARY}\" \"${XDG_BIN_HOME}/\""
 
