@@ -68,6 +68,7 @@ function _nredf_get_sys_info() {
   NREDF_OS=$(uname|tr '[:upper:]' '[:lower:]')
   case "${NREDF_OS}" in
     mingw*) NREDF_OS='windows';;
+    darwin) NREDF_OS='macos';;
   esac
 
   export NREDF_ARCH NREDF_LIBC NREDF_OS NREDF_PLATFORM NREDF_UNAME NREDF_UNAMEM NREDF_UNAMES
