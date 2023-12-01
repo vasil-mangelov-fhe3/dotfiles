@@ -763,7 +763,7 @@ function _nredf_install_kubectl() {
   fi
 
   if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" 2>/dev/null > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
   fi
   echo -e "\033[1;32m    \U21B3 Installation successful\033[0m"
   _nredf_last_run "${CURRENT_TOOL}" "true"
@@ -1003,7 +1003,7 @@ function _nredf_install_helm() {
   fi
 
   if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" 2>/dev/null > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
   fi
   echo -e "\033[1;32m    \U21B3 Installation successful\033[0m"
   _nredf_last_run "${CURRENT_TOOL}" "true"
@@ -1061,7 +1061,8 @@ function _nredf_install_kustomize() {
   local BINARY="kustomize"
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "${BINARY}" "${BINARY}\/")
-  local VERSION=${TAGVERSION#v}
+  # shellcheck disable=SC2295
+  local VERSION=${TAGVERSION#${BINARY}\/v}
   local FILENAME="${BINARY}_${TAGVERSION}_${NREDF_UNAME_LOWER}_${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="version"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\" \"${BINARY}\""
