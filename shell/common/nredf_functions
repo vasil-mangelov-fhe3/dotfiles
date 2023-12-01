@@ -1055,7 +1055,7 @@ function _nredf_install_velero() {
 
 function _nredf_install_kustomize() {
   _nredf_get_sys_info
-
+  set -x
   local GHUSER="kubernetes-sigs"
   local GHREPO="kustomize"
   local BINARY="kustomize"
@@ -1063,7 +1063,7 @@ function _nredf_install_kustomize() {
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "${BINARY}")
   # shellcheck disable=SC2295
   local VERSION=${TAGVERSION#${BINARY}\/v}
-  local FILENAME="${BINARY}_${TAGVERSION}_${NREDF_UNAME_LOWER}_${NREDF_ARCH}.tar.gz"
+  local FILENAME="${BINARY}_${TAGVERSION#${BINARY}\/}_${NREDF_UNAME_LOWER}_${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="version"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\" \"${BINARY}\""
 
@@ -1072,6 +1072,7 @@ function _nredf_install_kustomize() {
   if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
     [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
   fi
+  set +x
 }
 
 function _nredf_install_stern() {
