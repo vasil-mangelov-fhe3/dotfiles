@@ -335,13 +335,13 @@ function _nredf_install_tool() {
     local CURRENT_VERSION
     CURRENT_VERSION="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
     if [[ "${VERSION}" == "${CURRENT_VERSION}" || "${TAGVERSION}" == "${CURRENT_VERSION}" ]]; then
-      echo -e "\033[1m    Current version ${VERSION}\033[0m"
+      echo -e "\033[1;32m  \U2713 ${BINARY} (${VERSION}) up-to-date\033[0m"
       _nredf_last_run "${CURRENT_TOOL}" "true"
       return 0
     fi
   fi
 
-  echo -e "\033[1m    Installing ${BINARY} Version ${VERSION}\033[0m"
+  echo -e "\033[1;36m  \U25B6 ${BINARY} is getting installed in version ${VERSION}\033[0m"
   _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${FILENAME}" "${TAGVERSION}"
   if [[ -f "${NREDF_DOWNLOADS}/${FILENAME}" ]]; then
     eval "${EXTRACT_CMD}"
@@ -360,7 +360,7 @@ function _nredf_install_tool() {
 }
 
 function _nredf_install_tools() {
-  echo -e "\033[1mLooking for fresh Batteries\033[0m"
+  echo -e "\033[1mLooking for fresh batteries\033[0m"
   _nredf_install_jq
   _nredf_install_fzf
   _nredf_install_nvim
@@ -563,7 +563,7 @@ function _nredf_install_drone() {
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
   local FILENAME="${BINARY}_${NREDF_OS}_${NREDF_ARCH}.tar.gz"
-  local VERSION_CMD="--version | awk '{print \$3}'"
+  local VERSION_CMD="--version 2>/dev/null | awk '{print \$3}'"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\""
 
   _nredf_install_tool "${GHUSER}" "${GHREPO}" "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${EXTRACT_CMD}"
