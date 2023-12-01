@@ -743,6 +743,7 @@ function _nredf_install_kubectl() {
     CURRENT_VERSION="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
     if [[ "${VERSION}" == "${CURRENT_VERSION}" || "${TAGVERSION}" == "${CURRENT_VERSION}" ]]; then
       echo -e "\033[1;32m  \U2713 ${BINARY} (${VERSION}) up-to-date\033[0m"
+      _nredf_last_run "${CURRENT_TOOL}" "true"
       return 0
     fi
   fi
@@ -795,6 +796,7 @@ function _nredf_install_kubeadm() {
     CURRENT_VERSION="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
     if [[ "${VERSION}" == "${CURRENT_VERSION}" || "${TAGVERSION}" == "${CURRENT_VERSION}" ]]; then
       echo -e "\033[1;32m  \U2713 ${BINARY} (${VERSION}) up-to-date\033[0m"
+      _nredf_last_run "${CURRENT_TOOL}" "true"
       return 0
     fi
   fi
@@ -815,7 +817,7 @@ function _nredf_install_kubeadm() {
   fi
 
   if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
+    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" 2>/dev/null > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
   fi
   echo -e "\033[1;32m    \U21B3 Installation successful\033[0m"
   _nredf_last_run "${CURRENT_TOOL}" "true"
@@ -966,7 +968,7 @@ function _nredf_install_helm() {
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
   local FILENAME="${BINARY}-${TAGVERSION}-${NREDF_UNAME_LOWER}-${NREDF_ARCH}.tar.gz"
-  local VERSION_CMD="version --template\='{{ .Version }}'"
+  local VERSION_CMD="version --template\='{{ .Version }}' 2>/dev/null"
   # shellcheck disable=SC2016
   local EXTRACT_CMD='
     tar -xzf "${NREDF_DOWNLOADS}/${FILENAME}" -C "${NREDF_DOWNLOADS}/"
@@ -982,6 +984,7 @@ function _nredf_install_helm() {
     CURRENT_VERSION="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
     if [[ "${VERSION}" == "${CURRENT_VERSION}" || "${TAGVERSION}" == "${CURRENT_VERSION}" ]]; then
       echo -e "\033[1;32m  \U2713 ${BINARY} (${VERSION}) up-to-date\033[0m"
+      _nredf_last_run "${CURRENT_TOOL}" "true"
       return 0
     fi
   fi
@@ -1063,6 +1066,7 @@ function _nredf_install_kustomize() {
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "${BINARY}")
   # shellcheck disable=SC2295
   local VERSION=${TAGVERSION#${BINARY}\/v}
+  # shellcheck disable=SC2295
   local FILENAME="${BINARY}_${TAGVERSION#${BINARY}\/}_${NREDF_UNAME_LOWER}_${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="version"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\" \"${BINARY}\""
