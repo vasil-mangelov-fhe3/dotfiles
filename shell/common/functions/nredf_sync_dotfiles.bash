@@ -20,7 +20,7 @@ function _nredf_sync_dotfiles() {
     echo -e '\033[1m  Linking dotfiles\033[0m'
     homeshick --quiet --batch --force link
     fc-cache -fv
-    _nredf_last_run "true"
+    _nredf_last_run "" "true"
     exec ${SHELL}
   else
     source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
@@ -45,6 +45,6 @@ function _nredf_sync_dotfiles() {
         homeshick --batch --force link
         ;;
     esac
-    _nredf_last_run "true"
+    _nredf_last_run "" "true"
   fi
 }

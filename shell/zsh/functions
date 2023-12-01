@@ -51,7 +51,7 @@ function _nredf_zplug() {
 
     if ! _nredf_last_run; then
       zplug update
-      _nredf_last_run "true"
+      _nredf_last_run "" "true"
     fi
 
     # source plugins and add commands to the PATH

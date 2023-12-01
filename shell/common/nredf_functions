@@ -239,18 +239,20 @@ function _nredf_cleanup_dotfiles() {
   if [[ "${NREDF_OS}" == "linux" ]]; then
     echo -e '\033[1mSearch and delete broken symlinks\033[0m'
     find "${HOME}" -type l ! -exec test -e {} \; -delete
-    _nredf_last_run "true"
+    _nredf_last_run "" "true"
   fi
 }
 
 function _nredf_last_run() {
-  if [[ -n $BASH_VERSION ]]; then
+  if [[ "${1}" != "" ]]; then
+    CURRENT_FUNCTION="${1}"
+  elif [[ -n $BASH_VERSION ]]; then
     local CURRENT_FUNCTION="${FUNCNAME[1]}"
   else  # zsh
     # shellcheck disable=SC2124,SC2154
     local CURRENT_FUNCTION="${funcstack[@]:1:1}"
   fi
-  local SUCCESS="${1:-"false"}"
+  local SUCCESS="${2:-"false"}"
   # shellcheck disable=SC2155
   local CURRENT_TIME="$(date +%s)"
   [[ ! -d "${XDG_CACHE_HOME}/nredf/LRCache" ]] && mkdir -p "${XDG_CACHE_HOME}/nredf/LRCache"
@@ -310,6 +312,17 @@ function _nredf_install_tool() {
   local VERSION_CMD=${7}
   local EXTRACT_CMD=${8}
 
+  if [[ -n $BASH_VERSION ]]; then
+    local CURRENT_TOOL="${FUNCNAME[1]}"
+  else  # zsh
+    # shellcheck disable=SC2124,SC2154
+    local CURRENT_TOOL="${funcstack[@]:1:1}"
+  fi
+
+  if _nredf_last_run "${CURRENT_TOOL}"; then
+    return 0
+  fi
+
   if [[ "${VERSION}" == "" ]]; then
     return 0
   fi
@@ -322,32 +335,31 @@ function _nredf_install_tool() {
     local CURRENT_VERSION
     CURRENT_VERSION="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
     if [[ "${VERSION}" == "${CURRENT_VERSION}" || "${TAGVERSION}" == "${CURRENT_VERSION}" ]]; then
+      echo -e "\033[1m    Current version ${VERSION}\033[0m"
+      _nredf_last_run "${CURRENT_TOOL}" "true"
       return 0
     fi
   fi
 
-  echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
+  echo -e "\033[1m    Installing ${BINARY} Version ${VERSION}\033[0m"
   _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${FILENAME}" "${TAGVERSION}"
   if [[ -f "${NREDF_DOWNLOADS}/${FILENAME}" ]]; then
     eval "${EXTRACT_CMD}"
   else
-    echo -e "\033[1;31m  \U21B3 Installation failed\033[0m"
+    echo -e "\033[1;31m    \U21B3 Installation failed\033[0m"
     return 1
   fi
   if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
     chmod +x "${XDG_BIN_HOME}/${BINARY}"
   else
-    echo -e "\033[1;31m  \U21B3 Installation failed\033[0m"
+    echo -e "\033[1;31m    \U21B3 Installation failed\033[0m"
     return 1
   fi
-  echo -e "\033[1;32m  \U21B3 Installation successful\033[0m"
+  echo -e "\033[1;32m    \U21B3 Installation successful\033[0m"
+  _nredf_last_run "${CURRENT_TOOL}" "true"
 }
 
 function _nredf_install_tools() {
-  if _nredf_last_run; then
-    return 0
-  fi
-
   echo -e "\033[1mLooking for fresh Batteries\033[0m"
   _nredf_install_jq
   _nredf_install_fzf
@@ -365,7 +377,6 @@ function _nredf_install_tools() {
   _nredf_install_yq
   [[ -f "${HOME}/.local/bin/drone" ]] && _nredf_install_drone
   [[ -f "${HOME}/.kube/config" ]] && _nredf_install_k8s_ops
-  _nredf_last_run "true"
 }
 
 function _nredf_install_jq() {
@@ -807,6 +818,8 @@ function _nredf_install_krew() {
   fi
 
   if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
+    export KREW_PLUGINS=()
+    export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
     if _nredf_last_run; then
       return 0
     fi
@@ -816,13 +829,10 @@ function _nredf_install_krew() {
     #  [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
     #fi
 
-    export KREW_PLUGINS=()
-    export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-
     echo -e '\033[1m    Updating krew plugins\033[0m'
     kubectl krew update 2>/dev/null
     if kubectl krew upgrade 2>/dev/null; then
-      _nredf_last_run "true"
+      _nredf_last_run "" "true"
     fi
 
     KREW_PLUGINS+=("ctx")
