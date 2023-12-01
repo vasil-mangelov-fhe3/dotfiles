@@ -742,20 +742,31 @@ function _nredf_install_kubectl() {
     local CURRENT_VERSION
     CURRENT_VERSION="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
     if [[ "${VERSION}" == "${CURRENT_VERSION}" || "${TAGVERSION}" == "${CURRENT_VERSION}" ]]; then
+      echo -e "\033[1;32m  \U2713 ${BINARY} (${VERSION}) up-to-date\033[0m"
       return 0
     fi
   fi
 
-  echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
+  echo -e "\033[1;36m  \U25B6 ${BINARY} is getting installed in version ${VERSION}\033[0m"
   command curl -Lfso "${NREDF_DOWNLOADS}/${FILENAME}" "https://dl.k8s.io/release/${TAGVERSION}/bin/${NREDF_UNAME_LOWER}/${NREDF_ARCH}/${BINARY}"
-  eval "${EXTRACT_CMD}"
+  if [[ -f "${NREDF_DOWNLOADS}/${FILENAME}" ]]; then
+    eval "${EXTRACT_CMD}"
+  else
+    echo -e "\033[1;31m    \U21B3 Installation failed\033[0m"
+    return 1
+  fi
   if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
     chmod +x "${XDG_BIN_HOME}/${BINARY}"
+  else
+    echo -e "\033[1;31m    \U21B3 Installation failed\033[0m"
+    return 1
   fi
 
   if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
     [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && source <("${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}")
   fi
+  echo -e "\033[1;32m    \U21B3 Installation successful\033[0m"
+  _nredf_last_run "${CURRENT_TOOL}" "true"
 }
 
 function _nredf_install_kubeadm() {
@@ -779,20 +790,31 @@ function _nredf_install_kubeadm() {
     local CURRENT_VERSION
     CURRENT_VERSION="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
     if [[ "${VERSION}" == "${CURRENT_VERSION}" || "${TAGVERSION}" == "${CURRENT_VERSION}" ]]; then
+      echo -e "\033[1;32m  \U2713 ${BINARY} (${VERSION}) up-to-date\033[0m"
       return 0
     fi
   fi
 
-  echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
+  echo -e "\033[1;36m  \U25B6 ${BINARY} is getting installed in version ${VERSION}\033[0m"
   command curl -Lfso "${NREDF_DOWNLOADS}/${FILENAME}" "https://dl.k8s.io/release/${TAGVERSION}/bin/${NREDF_UNAME_LOWER}/${NREDF_ARCH}/${BINARY}"
-  eval "${EXTRACT_CMD}"
+  if [[ -f "${NREDF_DOWNLOADS}/${FILENAME}" ]]; then
+    eval "${EXTRACT_CMD}"
+  else
+    echo -e "\033[1;31m    \U21B3 Installation failed\033[0m"
+    return 1
+  fi
   if [[ -f "${XDG_BIN_HOME}/${BINARY}" ]]; then
     chmod +x "${XDG_BIN_HOME}/${BINARY}"
+  else
+    echo -e "\033[1;31m    \U21B3 Installation failed\033[0m"
+    return 1
   fi
 
   if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
     [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && source <("${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}")
   fi
+  echo -e "\033[1;32m    \U21B3 Installation successful\033[0m"
+  _nredf_last_run "${CURRENT_TOOL}" "true"
 }
 
 function _nredf_install_krew() {
