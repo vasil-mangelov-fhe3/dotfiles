@@ -772,6 +772,10 @@ function _nredf_install_kubectl() {
 function _nredf_install_kubeadm() {
   _nredf_get_sys_info
 
+  if [[ ${NREDF_OS} =~ ^(macos|windows)$ ]]; then
+    return 0
+  fi
+
   local GHUSER=""
   local GHREPO=""
   local BINARY="kubeadm"
@@ -827,7 +831,7 @@ function _nredf_install_krew() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${GHREPO}-${NREDF_OS}_${NREDF_ARCH}.tar.gz"
+  local FILENAME="${GHREPO}-${NREDF_UNAME_LOWER}_${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="version | awk '/^GitTag/{print \$2}'"
   # shellcheck disable=SC2016
   local EXTRACT_CMD='
@@ -889,7 +893,7 @@ function _nredf_install_kubeseal() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "v")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${BINARY}-${VERSION}-${NREDF_OS}-${NREDF_ARCH}.tar.gz"
+  local FILENAME="${BINARY}-${VERSION}-${NREDF_UNAME_LOWER}-${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="--version | awk '{print \$3}'"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\" \"${BINARY}\""
 
@@ -905,7 +909,7 @@ function _nredf_install_kubent() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${BINARY}-${VERSION}-${NREDF_OS}-${NREDF_ARCH}.tar.gz"
+  local FILENAME="${BINARY}-${VERSION}-${NREDF_UNAME_LOWER}-${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="--version 2>&1 | awk '{print \$4}'"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\" \"${BINARY}\""
 
@@ -921,7 +925,7 @@ function _nredf_install_fluxctl() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${BINARY}_${NREDF_OS}_${NREDF_ARCH}"
+  local FILENAME="${BINARY}_${NREDF_UNAME_LOWER}_${NREDF_ARCH}"
   local VERSION_CMD="version"
   local EXTRACT_CMD="mv \"${NREDF_DOWNLOADS}/${FILENAME}\" \"${XDG_BIN_HOME}/${BINARY}\""
 
@@ -941,7 +945,7 @@ function _nredf_install_flux() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${BINARY}_${VERSION}_${NREDF_OS}_${NREDF_ARCH}.tar.gz"
+  local FILENAME="${BINARY}_${VERSION}_${NREDF_UNAME_LOWER}_${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="--version | awk '{print \$3}'"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\" \"${BINARY}\""
 
@@ -961,7 +965,7 @@ function _nredf_install_helm() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${BINARY}-${TAGVERSION}-${NREDF_OS}-${NREDF_ARCH}.tar.gz"
+  local FILENAME="${BINARY}-${TAGVERSION}-${NREDF_UNAME_LOWER}-${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="version --template\='{{ .Version }}'"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\" --strip-components=1 --wildcards --no-anchored \"*${BINARY}\""
 
@@ -1018,7 +1022,7 @@ function _nredf_install_velero() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${BINARY}-${TAGVERSION}-${NREDF_OS}-${NREDF_ARCH}.tar.gz"
+  local FILENAME="${BINARY}-${TAGVERSION}-${NREDF_UNAME_LOWER}-${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="version --client-only | command grep 'Version' | awk '{print \$2}'"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\" --strip-components=1 --wildcards --no-anchored \"*${BINARY}\""
 
@@ -1038,7 +1042,7 @@ function _nredf_install_kustomize() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "${BINARY}" "${BINARY}\/")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${BINARY}_${TAGVERSION}_${NREDF_OS}_${NREDF_ARCH}.tar.gz"
+  local FILENAME="${BINARY}_${TAGVERSION}_${NREDF_UNAME_LOWER}_${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="version"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\" \"${BINARY}\""
 
@@ -1058,7 +1062,7 @@ function _nredf_install_stern() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${BINARY}_${VERSION}_${NREDF_OS}_${NREDF_ARCH}.tar.gz"
+  local FILENAME="${BINARY}_${VERSION}_${NREDF_UNAME_LOWER}_${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="--version | awk 'NR==1{print \$2}'"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\" \"${BINARY}\""
 
@@ -1078,7 +1082,7 @@ function _nredf_install_calico() {
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${BINARY}-${NREDF_OS}-${NREDF_ARCH}"
+  local FILENAME="${BINARY}-${NREDF_UNAME_LOWER}-${NREDF_ARCH}"
   local VERSION_CMD="version | awk '/Client Version/{print \$3}'"
   local EXTRACT_CMD="cp "${NREDF_DOWNLOADS}/${FILENAME}" "${XDG_BIN_HOME}/${BINARY}""
 
