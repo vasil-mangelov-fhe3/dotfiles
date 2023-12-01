@@ -1055,7 +1055,7 @@ function _nredf_install_velero() {
 
 function _nredf_install_kustomize() {
   _nredf_get_sys_info
-  set -x
+
   local GHUSER="kubernetes-sigs"
   local GHREPO="kustomize"
   local BINARY="kustomize"
@@ -1072,7 +1072,6 @@ function _nredf_install_kustomize() {
   if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
     [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
   fi
-  set +x
 }
 
 function _nredf_install_stern() {
