@@ -253,6 +253,7 @@ function _nredf_last_run() {
     local CURRENT_FUNCTION="${funcstack[@]:1:1}"
   fi
   local SUCCESS="${2:-"false"}"
+  local TIMEOUT="${3:-"43200"}"
   # shellcheck disable=SC2155
   local CURRENT_TIME="$(date +%s)"
   [[ ! -d "${XDG_CACHE_HOME}/nredf/LRCache" ]] && mkdir -p "${XDG_CACHE_HOME}/nredf/LRCache"
@@ -260,10 +261,10 @@ function _nredf_last_run() {
   # shellcheck disable=SC2155
   local LAST_RUN="$(cat "${LAST_RUN_FILE}" 2>/dev/null || echo "0")"
 
-  if [[ "$((LAST_RUN + 43200))" -gt "${CURRENT_TIME}" ]]; then
+  if [[ "${LAST_RUN}" -gt "${CURRENT_TIME}" ]]; then
     return 0
   elif ${SUCCESS}; then
-    echo "${CURRENT_TIME}" > "${LAST_RUN_FILE}"
+    echo "$((CURRENT_TIME + TIMEOUT))" > "${LAST_RUN_FILE}"
     return 0
   else
     return 1
@@ -334,6 +335,11 @@ function _nredf_install_tool() {
   elif [[ -x "${XDG_BIN_HOME}/${BINARY}" ]]; then
     local CURRENT_VERSION
     CURRENT_VERSION="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
+    if [[ "${VERSION}" == "" ]]; then
+      echo -e "\033[1;33m  \U2713 Version could not be fetched \033[0m"
+      _nredf_last_run "${CURRENT_TOOL}" "true" "3600"
+      return 1
+    fi
     if [[ "${VERSION}" == "${CURRENT_VERSION}" || "${TAGVERSION}" == "${CURRENT_VERSION}" ]]; then
       echo -e "\033[1;32m  \U2713 ${BINARY} (${VERSION}) up-to-date\033[0m"
       _nredf_last_run "${CURRENT_TOOL}" "true"
@@ -741,6 +747,11 @@ function _nredf_install_kubectl() {
   elif [[ -x "${XDG_BIN_HOME}/${BINARY}" ]]; then
     local CURRENT_VERSION
     CURRENT_VERSION="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
+    if [[ "${VERSION}" == "" ]]; then
+      echo -e "\033[1;33m  \U2713 Version could not be fetched \033[0m"
+      _nredf_last_run "${CURRENT_TOOL}" "true" "3600"
+      return 1
+    fi
     if [[ "${VERSION}" == "${CURRENT_VERSION}" || "${TAGVERSION}" == "${CURRENT_VERSION}" ]]; then
       echo -e "\033[1;32m  \U2713 ${BINARY} (${VERSION}) up-to-date\033[0m"
       _nredf_last_run "${CURRENT_TOOL}" "true"
@@ -794,6 +805,11 @@ function _nredf_install_kubeadm() {
   elif [[ -x "${XDG_BIN_HOME}/${BINARY}" ]]; then
     local CURRENT_VERSION
     CURRENT_VERSION="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
+    if [[ "${VERSION}" == "" ]]; then
+      echo -e "\033[1;33m  \U2713 Version could not be fetched \033[0m"
+      _nredf_last_run "${CURRENT_TOOL}" "true" "3600"
+      return 1
+    fi
     if [[ "${VERSION}" == "${CURRENT_VERSION}" || "${TAGVERSION}" == "${CURRENT_VERSION}" ]]; then
       echo -e "\033[1;32m  \U2713 ${BINARY} (${VERSION}) up-to-date\033[0m"
       _nredf_last_run "${CURRENT_TOOL}" "true"
@@ -960,7 +976,7 @@ function _nredf_install_flux() {
 
 function _nredf_install_helm() {
   _nredf_get_sys_info
-
+  set -x
   local GHUSER="helm"
   local GHREPO="helm"
   local BINARY="helm"
@@ -982,6 +998,11 @@ function _nredf_install_helm() {
   elif [[ -x "${XDG_BIN_HOME}/${BINARY}" ]]; then
     local CURRENT_VERSION
     CURRENT_VERSION="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
+    if [[ "${VERSION}" == "" ]]; then
+      echo -e "\033[1;33m  \U2713 Version could not be fetched \033[0m"
+      _nredf_last_run "${CURRENT_TOOL}" "true" "3600"
+      return 1
+    fi
     if [[ "${VERSION}" == "${CURRENT_VERSION}" || "${TAGVERSION}" == "${CURRENT_VERSION}" ]]; then
       echo -e "\033[1;32m  \U2713 ${BINARY} (${VERSION}) up-to-date\033[0m"
       _nredf_last_run "${CURRENT_TOOL}" "true"
@@ -1009,6 +1030,7 @@ function _nredf_install_helm() {
     [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" 2>/dev/null > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
   fi
   echo -e "\033[1;32m    \U21B3 Installation successful\033[0m"
+  set +x
   _nredf_last_run "${CURRENT_TOOL}" "true"
 }
 
