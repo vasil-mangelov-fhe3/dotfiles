@@ -1060,7 +1060,7 @@ function _nredf_install_kustomize() {
   local GHREPO="kustomize"
   local BINARY="kustomize"
   # shellcheck disable=SC2155
-  local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "${BINARY}" "${BINARY}\/")
+  local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}" "${BINARY}")
   # shellcheck disable=SC2295
   local VERSION=${TAGVERSION#${BINARY}\/v}
   local FILENAME="${BINARY}_${TAGVERSION}_${NREDF_UNAME_LOWER}_${NREDF_ARCH}.tar.gz"
