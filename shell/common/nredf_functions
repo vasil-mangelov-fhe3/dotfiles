@@ -378,13 +378,17 @@ function _nredf_install_jq() {
 function _nredf_install_fzf() {
   _nredf_get_sys_info
 
+  if [[ ${NREDF_OS} =~ ^(macos|windows)$ ]]; then
+    local FILEEXT="zip"
+  fi
+
   local GHUSER="junegunn"
   local GHREPO="fzf"
   local BINARY="fzf"
   # shellcheck disable=SC2155
   local TAGVERSION=$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")
   local VERSION=${TAGVERSION#v}
-  local FILENAME="${BINARY}-${VERSION}-${NREDF_UNAME_LOWER}_${NREDF_ARCH}.tar.gz"
+  local FILENAME="${BINARY}-${VERSION}-${NREDF_UNAME_LOWER}_${NREDF_ARCH}.${FILEEXT}"
   local VERSION_CMD="--version | awk '{print \$1}'"
   local EXTRACT_CMD="tar -xzf \"${NREDF_DOWNLOADS}/${FILENAME}\" -C \"${XDG_BIN_HOME}/\""
 
