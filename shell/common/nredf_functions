@@ -328,7 +328,7 @@ function _nredf_install_tool() {
 
   echo -e "\033[1m  Installing ${BINARY} Version ${VERSION}\033[0m"
   _nredf_github_download_latest "${GHUSER}" "${GHREPO}" "${FILENAME}" "${TAGVERSION}"
-  if [[ -f "${FILENAME}" ]]; then
+  if [[ -f "${NREDF_DOWNLOADS}/${FILENAME}" ]]; then
     eval "${EXTRACT_CMD}"
   else
     echo -e "\033[1;31m  \U21B3 Installation failed\033[0m"
