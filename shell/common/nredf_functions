@@ -429,6 +429,10 @@ function _nredf_install_fzf() {
 function _nredf_install_nvim() {
   _nredf_get_sys_info
 
+  if [[ ${NREDF_OS} =~ ^(macos|windows)$ ]]; then
+    return 0
+  fi
+
   local GHUSER="neovim"
   local GHREPO="neovim"
   local BINARY="nvim"
@@ -500,6 +504,10 @@ function _nredf_install_lazygit() {
 
 function _nredf_install_btop() {
   _nredf_get_sys_info
+
+  if [[ ${NREDF_OS} =~ ^(macos|windows)$ ]]; then
+    return 0
+  fi
 
   local GHUSER="aristocratos"
   local GHREPO="btop"
