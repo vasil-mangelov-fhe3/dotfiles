@@ -1,7 +1,7 @@
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
 # OH-MY-ZSH
-zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh", \
+zplug "ohmyzsh/ohmyzsh", use:"lib/*.zsh", \
   hook-load:"
     [[ -f \"${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}\" ]] && source \"${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}\"
   "
@@ -12,7 +12,6 @@ zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh", \
   ENABLE_CORRECTION="false"
   HIST_STAMPS="dd.mm.yyyy"
 
-zplug "plugins/common-aliases", from:oh-my-zsh
 zplug "plugins/git-extras",   from:oh-my-zsh
 zplug "plugins/svn",   from:oh-my-zsh
 zplug "plugins/extract",   from:oh-my-zsh
