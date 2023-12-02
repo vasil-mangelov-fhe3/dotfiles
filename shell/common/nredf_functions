@@ -6,6 +6,82 @@ for FUNCTION in "${NREDF_DOT_PATH}/shell/common/functions/"*;
   do source "${FUNCTION}"
 done
 
+function reload() {
+  local LRCACHE=false
+  local GHCACHE=false
+  local DOWNLOADS=false
+
+  while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+      -c|--cache)
+        LRCACHE=true
+        GHCACHE=true
+        shift 1
+        ;;
+      -d|--downloads)
+        DOWNLOADS=true
+        shift 1
+        ;;
+      -f|--full)
+        LRCACHE=true
+        GHCACHE=true
+        DOWNLOADS=true
+        shift 1
+        ;;
+      -l|--last-run)
+        LRCACHE=true
+        shift 1
+        ;;
+      -h|--help)
+        printf "NREDF Reload
+
+Usage: reload [options]
+
+Runtime options:
+-c, [--cache]               # Delete 'Last Run Cache' and 'Version Cache'
+-d, [--downloads]           # Delete only 'Download Cache'
+-f, [--full]                # Delete all caches
+-l, [--last-run]            # Delete only 'Last Run Cache'
+-h, [--help]                # Show this help
+-s SHELL, [--shell SHELL]   # Reload with a different shell
+-v, [--version]             # Delete only 'Version Cache'
+
+"
+        return 0
+        ;;
+      -s|--shell)
+        if command -pv "${2}" &>/dev/null; then
+          NREDF_SHELL_NAME="${2}"
+        else
+          echo -e "\033[1;31m\U274C Command not found (${2}) \033[0m"
+          return 1
+        fi
+        shift 2
+        ;;
+      -v|--version)
+        GHCACHE=true
+        shift 1
+        ;;
+      *)
+        echo -e "\033[1;31m\U274C Unknown option: ${1} \033[0m"
+        return 1
+        ;;
+    esac
+  done
+
+  if ${LRCACHE}; then
+    rm -rf "${NREDF_LRCACHE:?}"
+  fi
+  if ${GHCACHE}; then
+    rm -rf "${NREDF_GHCACHE:?}"
+  fi
+  if ${DOWNLOADS}; then
+    rm -rf "${NREDF_DOWNLOADS:?}"
+  fi
+
+  exec "${NREDF_SHELL_NAME}"
+}
+
 function _nredf_set_ssh_agent() {
   if ! command -v gpgconf &>/dev/null; then
     return 1
@@ -147,7 +223,8 @@ function _nredf_set_defaults() {
   export XDG_STATE_HOME="${HOME}/.local/state"
   export NREDF_DOWNLOADS="${XDG_CACHE_HOME}/nredf/Download"
   export NREDF_GHCACHE="${XDG_CACHE_HOME}/nredf/GHVersionCache"
-  for XDG_PATH in "${NREDF_RC_LOCAL}" "${NREDF_COMMON_RC_LOCAL}" "${XDG_CONFIG_HOME}" "${XDG_BIN_HOME}" "${XDG_CACHE_HOME}" "${NREDF_GHCACHE}" "${NREDF_DOWNLOADS}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}"; do
+  export NREDF_LRCACHE="${XDG_CACHE_HOME}/nredf/LRCache"
+  for XDG_PATH in "${NREDF_RC_LOCAL}" "${NREDF_COMMON_RC_LOCAL}" "${XDG_CONFIG_HOME}" "${XDG_BIN_HOME}" "${XDG_CACHE_HOME}" "${NREDF_GHCACHE}" "${NREDF_LRCACHE}" "${NREDF_DOWNLOADS}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}"; do
     [[ ! -d "${XDG_PATH}" ]] && mkdir -p "${XDG_PATH}"
   done
 
@@ -256,8 +333,8 @@ function _nredf_last_run() {
   local TIMEOUT="${3:-"43200"}"
   # shellcheck disable=SC2155
   local CURRENT_TIME="$(date +%s)"
-  [[ ! -d "${XDG_CACHE_HOME}/nredf/LRCache" ]] && mkdir -p "${XDG_CACHE_HOME}/nredf/LRCache"
-  local LAST_RUN_FILE="${XDG_CACHE_HOME}/nredf/LRCache/last_run${CURRENT_FUNCTION}.txt"
+  [[ ! -d "${NREDF_LRCACHE}" ]] && mkdir -p "${NREDF_LRCACHE}"
+  local LAST_RUN_FILE="${NREDF_LRCACHE}/last_run${CURRENT_FUNCTION}.txt"
   # shellcheck disable=SC2155
   local LAST_RUN="$(cat "${LAST_RUN_FILE}" 2>/dev/null || echo "0")"
 
