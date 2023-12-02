@@ -33,8 +33,11 @@ function _nredf_install_tool() {
   elif [[ -x "${XDG_BIN_HOME}/${BINARY}" ]]; then
     local CURRENT_VERSION
     CURRENT_VERSION="$(eval "${XDG_BIN_HOME}/${BINARY} ${VERSION_CMD}")"
-    if [[ "${VERSION}" == "" ]]; then
+    if [[ "${TAGVERSION}" == "" ]]; then
       echo -e "\033[1;33m  \U2713 Version could not be fetched \033[0m"
+      #FIXME: Github API rate_limit (change last run to set timestamp)
+      # curl -LIs https://api.github.com/meta | awk '/x-ratelimit-remaining/{print $2}'
+      # curl -LIs https://api.github.com/meta | awk '/x-ratelimit-reset/{print $2}'
       _nredf_last_run "${CURRENT_TOOL}" "true" "3600"
       return 1
     fi
