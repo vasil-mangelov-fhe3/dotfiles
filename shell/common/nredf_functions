@@ -37,7 +37,7 @@ function reload() {
 
 Usage: reload [options]
 
-Runtime options:
+Options:
 -c, [--cache]               # Delete 'Last Run Cache' and 'Version Cache'
 -d, [--downloads]           # Delete only 'Download Cache'
 -f, [--full]                # Delete all caches
@@ -1053,7 +1053,7 @@ function _nredf_install_flux() {
 
 function _nredf_install_helm() {
   _nredf_get_sys_info
-  set -x
+
   local GHUSER="helm"
   local GHREPO="helm"
   local BINARY="helm"
@@ -1107,7 +1107,6 @@ function _nredf_install_helm() {
     [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" completion "${NREDF_SHELL_NAME}" 2>/dev/null > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
   fi
   echo -e "\033[1;32m    \U21B3 Installation successful\033[0m"
-  set +x
   _nredf_last_run "${CURRENT_TOOL}" "true"
 }
 
