@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+#
+# vim: ts=2 sw=2 et ff=unix ft=bash syntax=sh
+
 function _nredf_sync_dotfiles() {
   if _nredf_last_run; then
     return 0

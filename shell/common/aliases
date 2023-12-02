@@ -26,3 +26,5 @@ alias dipls="docker ps -q | xargs -n 1 docker inspect --format '{{range.NetworkS
 alias lg="lazygit"
 alias ctop='TERM="${TERM/#tmux/screen}" ctop'
 alias grep='grep --color'
+
+alias reload="_nredf_reload_shell"
