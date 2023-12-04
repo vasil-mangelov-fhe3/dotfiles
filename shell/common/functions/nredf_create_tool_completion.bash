@@ -3,7 +3,7 @@
 # vim: ts=2 sw=2 et ff=unix ft=bash syntax=sh
 # shellcheck disable=SC2086
 
-function _nredf_create_completion() {
+function _nredf_create_tool_completion() {
   local BINARY="${1}"
   local COMPLETION_CMD="${2}"
   local COMPLETION_FILE
