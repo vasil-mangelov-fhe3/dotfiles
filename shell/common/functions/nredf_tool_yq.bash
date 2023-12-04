@@ -21,7 +21,5 @@ function _nredf_tool_yq() {
 
   _nredf_install_tool "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${DOWNLOAD_CMD}" "${EXTRACT_CMD}"
 
-  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-    [[ -f "${XDG_BIN_HOME}/${BINARY}" ]] && "${XDG_BIN_HOME}/${BINARY}" shell-completion "${NREDF_SHELL_NAME}" > "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/_${BINARY}"
-  fi
+  _nredf_create_completion "${BINARY}" "shell-completion ${NREDF_SHELL_NAME}"
 }
