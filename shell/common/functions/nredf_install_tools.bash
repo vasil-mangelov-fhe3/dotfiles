@@ -16,6 +16,7 @@ function _nredf_install_tools() {
   _nredf_tool_fd
   _nredf_tool_duf
   _nredf_tool_diskus
+  _nredf_tool_doggo
   _nredf_tool_dust
   _nredf_tool_yq
   [[ -f "${HOME}/.local/bin/drone" ]] && _nredf_tool_drone

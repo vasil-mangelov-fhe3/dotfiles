@@ -33,10 +33,15 @@ function _nredf_sync_dotfiles() {
     case ${?} in
       86)
         echo -e '\033[1m  Pulling dotfiles\033[0m'
-        homeshick --batch --force pull
-        echo -e '\033[1m  Linking dotfiles\033[0m'
-        homeshick --batch --force link
-        exec ${SHELL}
+        if homeshick --batch --force pull; then
+          echo -e '\033[1m  Linking dotfiles\033[0m'
+          homeshick --batch --force link
+          exec ${SHELL}
+        else
+          echo -e '\033[1m  Linking dotfiles\033[0m'
+          homeshick --batch --force link
+          return 1
+        fi
         ;;
       85)
         echo -e '\033[1;38;5;222m  Your dotfiles are ahead of its upstream, consider pushing\033[0m'
