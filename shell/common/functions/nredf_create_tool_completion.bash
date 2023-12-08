@@ -5,7 +5,7 @@
 
 function _nredf_create_tool_completion() {
   local BINARY="${1}"
-  local COMPLETION_CMD="${2}"
+  local COMPLETION_CMD=${2}
   local COMPLETION_FILE
 
   case "${NREDF_SHELL_NAME}" in
