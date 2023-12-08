@@ -38,7 +38,7 @@ function _nredf_tool_fzf() {
 }
 
 function _nredf_tool_fzf_source() {
-  if command -pv fzf &>/dev/null; then
+  if command -v fzf &>/dev/null; then
     if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
       [[ -f "${HOME}/.config/fzf/completion.${NREDF_SHELL_NAME}" ]] && source "${HOME}/.config/fzf/completion.${NREDF_SHELL_NAME}"
       [[ -f "${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}" ]] && source "${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}"
