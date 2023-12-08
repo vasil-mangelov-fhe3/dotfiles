@@ -24,4 +24,6 @@ function _nredf_tool_ripgrep() {
   '
 
   _nredf_install_tool "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${DOWNLOAD_CMD}" "${EXTRACT_CMD}"
+
+  _nredf_create_tool_completion "${BINARY}" "--generate complete-${NREDF_SHELL_NAME}"
 }
