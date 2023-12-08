@@ -3,13 +3,8 @@
 # vim: ts=2 sw=2 et ff=unix ft=bash syntax=sh
 
 function _nredf_sync_dotfiles() {
-  if _nredf_last_run; then
-    return 0
-  fi
-
-  echo -e '\033[1mChecking dotfiles\033[0m'
   if [ ! -d "${HOME}/.homesick" ]; then
-    echo -e '\033[1m  Cloning homesick\033[0m'
+    echo -e '\033[1mInstalling homesick\033[0m'
     git clone https://github.com/andsens/homeshick.git "${HOME}/.homesick/repos/homeshick"
     source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
     fpath=("${HOME}/.homesick/repos/homeshick/completions ${fpath[@]}")
@@ -29,6 +24,10 @@ function _nredf_sync_dotfiles() {
   else
     source "${HOME}/.homesick/repos/homeshick/homeshick.sh"
     fpath=("${HOME}/.homesick/repos/homeshick/completions" "${fpath[@]}")
+    if _nredf_last_run; then
+      return 0
+    fi
+    echo -e '\033[1mChecking dotfiles\033[0m'
     homeshick --quiet check
     case ${?} in
       86)

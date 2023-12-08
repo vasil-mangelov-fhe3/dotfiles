@@ -9,3 +9,12 @@ compinit -u -d "${HOME}/.zcompdump"
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME}/zsh/zcompcache"
 zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(|.|..) ]] && reply=(..)'
 zmodload zsh/mathfunc
+
+if command -p fzf &>/dev/null; then
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    [[ -f "${HOME}/.config/fzf/completion.${NREDF_SHELL_NAME}" ]] && source "${HOME}/.config/fzf/completion.${NREDF_SHELL_NAME}"
+    [[ -f "${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}" ]] && source "${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}"
+  fi
+
+  [[ -f "${NREDF_DOT_PATH}/shell/common/fzf" ]] && source "${NREDF_DOT_PATH}/shell/common/fzf"
+fi
