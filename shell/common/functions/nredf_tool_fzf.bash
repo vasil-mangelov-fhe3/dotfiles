@@ -33,13 +33,18 @@ function _nredf_tool_fzf() {
     for FZF_FILE in completion.bash completion.zsh key-bindings.bash key-bindings.zsh key-bindings.fish; do
       command curl -Lfso "${HOME}/.config/fzf/${FZF_FILE}" "https://raw.githubusercontent.com/${GHUSER}/${GHREPO}/master/shell/${FZF_FILE}"
     done
-
-    if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
-      [[ -f "${HOME}/.config/fzf/completion.${NREDF_SHELL_NAME}" ]] && source "${HOME}/.config/fzf/completion.${NREDF_SHELL_NAME}"
-      [[ -f "${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}" ]] && source "${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}"
-    fi
-
-    [[ -f "${NREDF_DOT_PATH}/shell/common/fzf" ]] && source "${NREDF_DOT_PATH}/shell/common/fzf"
   '
   _nredf_install_tool "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${DOWNLOAD_CMD}" "${EXTRACT_CMD}"
+
+  if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+    case "${NREDF_SHELL_NAME}" in
+      bash) COMPLETION_FILE="${BINARY}.bash";;
+      zsh) COMPLETION_FILE="_${BINARY}";;
+      *) return 1;;
+    esac
+    [[ -f "${HOME}/.config/fzf/completion.${NREDF_SHELL_NAME}" ]] && cp -f "${HOME}/.config/fzf/completion.${NREDF_SHELL_NAME}" "${XDG_CONFIG_HOME}/completion/${NREDF_SHELL_NAME}/${COMPLETION_FILE}"
+    [[ -f "${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}" ]] && source "${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}"
+  fi
+
+  [[ -f "${NREDF_DOT_PATH}/shell/common/fzf" ]] && source "${NREDF_DOT_PATH}/shell/common/fzf"
 }
