@@ -36,3 +36,14 @@ function _nredf_tool_fzf() {
   '
   _nredf_install_tool "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${DOWNLOAD_CMD}" "${EXTRACT_CMD}"
 }
+
+function _nredf_tool_fzf_source() {
+  if command -pv fzf &>/dev/null; then
+    if [[ "${NREDF_SHELL_NAME}" =~ ^(bash|zsh)$ ]]; then
+      [[ -f "${HOME}/.config/fzf/completion.${NREDF_SHELL_NAME}" ]] && source "${HOME}/.config/fzf/completion.${NREDF_SHELL_NAME}"
+      [[ -f "${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}" ]] && source "${HOME}/.config/fzf/key-bindings.${NREDF_SHELL_NAME}"
+    fi
+
+    [[ -f "${NREDF_DOT_PATH}/shell/common/fzf" ]] && source "${NREDF_DOT_PATH}/shell/common/fzf"
+  fi
+}
