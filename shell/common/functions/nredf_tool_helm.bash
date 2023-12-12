@@ -16,7 +16,7 @@ function _nredf_tool_helm() {
   local DOWNLOAD_CMD="command curl -Lfso \"${NREDF_DOWNLOADS}/${FILENAME}\" \"https://get.helm.sh/${FILENAME}\""
   local EXTRACT_CMD='
     tar -xzf "${NREDF_DOWNLOADS}/${FILENAME}" -C "${NREDF_DOWNLOADS}/"
-    mv "${NREDF_DOWNLOADS}/${NREDF_UNAME_LOWER}-${NREDF_ARCH}/${BINARY}" "${XDG_BIN_HOME}/${BINARY}"
+    cp -f "${NREDF_DOWNLOADS}/${NREDF_UNAME_LOWER}-${NREDF_ARCH}/${BINARY}" "${XDG_BIN_HOME}/${BINARY}"
   '
 
   _nredf_install_tool "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${DOWNLOAD_CMD}" "${EXTRACT_CMD}"

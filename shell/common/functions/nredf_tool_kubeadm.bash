@@ -17,7 +17,7 @@ function _nredf_tool_kubeadm() {
   local VERSION_CMD='version -o short'
   local DOWNLOAD_CMD="command curl -Lfso \"${NREDF_DOWNLOADS}/${FILENAME}\" \"https://dl.k8s.io/release/${TAGVERSION}/bin/${NREDF_UNAME_LOWER}/${NREDF_ARCH}/${BINARY}\""
   local EXTRACT_CMD='
-    cp "${NREDF_DOWNLOADS}/${FILENAME}" "${XDG_BIN_HOME}/${BINARY}"
+    cp -f "${NREDF_DOWNLOADS}/${FILENAME}" "${XDG_BIN_HOME}/${BINARY}"
   '
 
   _nredf_install_tool "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${DOWNLOAD_CMD}" "${EXTRACT_CMD}"

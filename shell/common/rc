@@ -13,7 +13,7 @@ _nredf_set_ssh_agent
 [[ -z ${SUDO_COMMAND} ]] && _nredf_sync_dotfiles
 _nredf_set_local
 [[ -z ${SUDO_COMMAND} ]] && _nredf_cleanup_dotfiles
-[[ -z ${SUDO_COMMAND} ]] && _nredf_install_tools
+[[ -z ${SUDO_COMMAND} ]] && _nredf_install_tools_default
 
 # run shell exclusive things
 echo -e "\033[1mCustomizing Shell\033[0m"

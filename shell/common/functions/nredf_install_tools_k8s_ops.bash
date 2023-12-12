@@ -2,7 +2,7 @@
 #
 # vim: ts=2 sw=2 et ff=unix ft=bash syntax=sh
 
-_nredf_tool_k8s_ops () {
+_nredf_install_tools_k8s_ops () {
   _nredf_tool_kubectl;
   _nredf_tool_krew;
   _nredf_tool_kubeadm;

@@ -19,9 +19,9 @@ function _nredf_tool_fd() {
   local DOWNLOAD_CMD="_nredf_github_download_latest \"${GHUSER}\" \"${GHREPO}\" \"${FILENAME}\" \"${TAGVERSION}\""
   local EXTRACT_CMD='
     tar -xzf "${NREDF_DOWNLOADS}/${FILENAME}" -C "${NREDF_DOWNLOADS}/"
-    cp "${NREDF_DOWNLOADS}/${FILENAME%.tar.gz}/${BINARY}" \"${XDG_BIN_HOME}/"
-    cp "${NREDF_DOWNLOADS}/${FILENAME%.tar.gz}/autocomplete/_fd" \"${XDG_CONFIG_HOME}/completion/zsh/_fd"
-    cp "${NREDF_DOWNLOADS}/${FILENAME%.tar.gz}/autocomplete/fd.bash" \"${XDG_CONFIG_HOME}/completion/bash/fd.bash"
+    cp -f "${NREDF_DOWNLOADS}/${FILENAME%.tar.gz}/${BINARY}" \"${XDG_BIN_HOME}/"
+    cp -f "${NREDF_DOWNLOADS}/${FILENAME%.tar.gz}/autocomplete/_fd" \"${XDG_CONFIG_HOME}/completion/zsh/_fd"
+    cp -f "${NREDF_DOWNLOADS}/${FILENAME%.tar.gz}/autocomplete/fd.bash" \"${XDG_CONFIG_HOME}/completion/bash/fd.bash"
   '
 
   _nredf_install_tool "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${DOWNLOAD_CMD}" "${EXTRACT_CMD}"
