@@ -52,7 +52,11 @@ function _nredf_install_tool() {
     fi
   fi
 
-  echo -e "\033[1;36m  \U25B6 ${BINARY} is getting installed in version ${VERSION}\033[0m"
+  if [[ -n ${CURRENT_VERSION} ]]; then
+    echo -e "\033[1;36m  \U25B6 ${BINARY} is getting upgraded from version ${CURRENT_VERSION} to version ${VERSION}\033[0m"
+  else
+    echo -e "\033[1;36m  \U25B6 ${BINARY} is getting installed in version ${VERSION}\033[0m"
+  fi
   eval "${DOWNLOAD_CMD}"
   if [[ -f "${NREDF_DOWNLOADS}/${FILENAME}" ]]; then
     eval "${EXTRACT_CMD}"
