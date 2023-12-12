@@ -11,7 +11,7 @@ function _nredf_tool_helix() {
   local BINARY="hx"
   local TAGVERSION="$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")"
   local VERSION="${TAGVERSION#v}"
-  local FILENAME="${GHREPO}_${VERSION}_${NREDF_UNAMEM}_${NREDF_OS}.tar.xz"
+  local FILENAME="${GHREPO}-${VERSION}-${NREDF_UNAMEM}-${NREDF_OS}.tar.xz"
   local VERSION_CMD="--version | awk '{print \$2}'"
   local DOWNLOAD_CMD="_nredf_github_download_latest \"${GHUSER}\" \"${GHREPO}\" \"${FILENAME}\" \"${TAGVERSION}\""
   local EXTRACT_CMD='

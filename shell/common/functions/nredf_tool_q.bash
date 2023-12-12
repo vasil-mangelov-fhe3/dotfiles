@@ -11,7 +11,7 @@ function _nredf_tool_q() {
   local BINARY="q"
   local TAGVERSION="$(_nredf_github_latest_release "${GHUSER}" "${GHREPO}")"
   local VERSION="${TAGVERSION#v}"
-  local FILENAME="${GHREPO}_${TAGVERSION}_${NREDF_UNAME_LOWER}_${NREDF_ARCH}.tar.gz"
+  local FILENAME="${GHREPO}_${VERSION}_${NREDF_UNAME_LOWER}_${NREDF_ARCH}.tar.gz"
   local VERSION_CMD="--version | awk '{print \$3}'"
   local DOWNLOAD_CMD="_nredf_github_download_latest \"${GHUSER}\" \"${GHREPO}\" \"${FILENAME}\" \"${TAGVERSION}\""
   local EXTRACT_CMD='
