@@ -1,15 +1,3 @@
-#set editor to vim/nvim
-if command -v nvim >/dev/null 2>&1; then
-	export EDITOR="nvim"
-	export GIT_EDITOR="nvim"
-	alias vim="nvim"
-	alias vimfiler="nvim -c \"VimFilerDouble\""
-else
-	export EDITOR="vim"
-	export GIT_EDITOR="vim"
-	alias vimfiler="vim -c \"VimFilerDouble\""
-fi
-
 # Aliases
 alias r='ranger --cmd="set preview_files=true" --cmd="set use_preview_script=true"'
 alias ls="ls --color=auto"
@@ -26,5 +14,4 @@ alias dipls="docker ps -q | xargs -n 1 docker inspect --format '{{range.NetworkS
 alias lg="lazygit"
 alias ctop='TERM="${TERM/#tmux/screen}" ctop'
 alias grep='grep --color'
-
 alias reload="_nredf_reload_shell"

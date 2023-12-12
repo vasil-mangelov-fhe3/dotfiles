@@ -33,6 +33,18 @@ function _nredf_set_defaults() {
   export RLWRAP_HOME="${XDG_CACHE_HOME}/RLWRAP"
   [[ -s "${HOME}/.rvm/scripts/rvm" ]] && source "${HOME}/.rvm/scripts/rvm"
 
+#set editor to vim/nvim
+if command -v nvim &>/dev/null; then
+	export EDITOR="nvim"
+	export GIT_EDITOR="nvim"
+elif command -v hx &>/dev/null; then
+	export EDITOR="hx"
+	export GIT_EDITOR="hx"
+else
+	export EDITOR="vi"
+	export GIT_EDITOR="vi"
+fi
+
   # Load PYENV if you are using it
   if [[ -s ${HOME}/.pyenv ]]; then
     export PYENV_ROOT="${HOME}/.pyenv"
