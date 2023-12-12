@@ -17,7 +17,8 @@ function _nredf_tool_helix() {
   local EXTRACT_CMD='
     tar -xJf "${NREDF_DOWNLOADS}/${FILENAME}" -C "${NREDF_DOWNLOADS}/"
     cp -f "${NREDF_DOWNLOADS}/${FILENAME%.tar.xz}/${BINARY}" "${XDG_BIN_HOME}/"
-    cp -f "${NREDF_DOWNLOADS}/${FILENAME%.tar.xz}/{contrib,runtime}" "${XDG_CONFIG_HOME}/${GHREPO}/"
+    cp -f "${NREDF_DOWNLOADS}/${FILENAME%.tar.xz}/contrib" "${XDG_CONFIG_HOME}/${GHREPO}/"
+    cp -f "${NREDF_DOWNLOADS}/${FILENAME%.tar.xz}/runtime" "${XDG_CONFIG_HOME}/${GHREPO}/"
   '
 
   _nredf_install_tool "${BINARY}" "${FILENAME}" "${TAGVERSION}" "${VERSION}" "${VERSION_CMD}" "${DOWNLOAD_CMD}" "${EXTRACT_CMD}"
