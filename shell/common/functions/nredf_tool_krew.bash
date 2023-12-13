@@ -60,7 +60,9 @@ function _nredf_tool_krew() {
     KREW_PLUGINS+=("cert-manager")
 
     for KREW_PLUGIN in "${KREW_PLUGINS[@]}"; do
-      kubectl krew list | command grep -q "${KREW_PLUGIN}" || kubectl krew install "${KREW_PLUGIN}" 2>/dev/null
+      if ! kubectl krew list | command grep -q "${KREW_PLUGIN}"; then
+        kubectl krew install "${KREW_PLUGIN}" 2>/dev/null
+      fi
     done
   fi
 }
