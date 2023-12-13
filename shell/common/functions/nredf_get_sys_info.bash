@@ -9,7 +9,7 @@ function _nredf_get_sys_info() {
   case ${NREDF_UNAMEM} in
     armv5*)
       NREDF_ARCH="armv5"
-      NREDF_LIBC="musl"
+      NREDF_LIBC="musleabi"
       ;;
     armv6*)
       NREDF_ARCH="armv6"
@@ -17,7 +17,7 @@ function _nredf_get_sys_info() {
       ;;
     armv7*)
       NREDF_ARCH="arm"
-      NREDF_LIBC="musl"
+      NREDF_LIBC="musleabihf"
       ;;
     aarch64)
       NREDF_ARCH="arm64"
